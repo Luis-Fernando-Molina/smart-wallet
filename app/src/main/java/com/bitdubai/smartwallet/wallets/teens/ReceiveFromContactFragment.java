@@ -111,30 +111,30 @@ public class ReceiveFromContactFragment  extends android.app.Fragment {
         ImageView profile_picture = (ImageView) rootView.findViewById(R.id.profile_picture);
         switch (Integer.parseInt(tagId[0])) {
 
-            case 1:
-                profile_picture.setImageResource(R.drawable.lucia_profile_picture);
-                break;
-            case 2:
-                profile_picture.setImageResource(R.drawable.juan_profile_picture);
-                break;
-            case 3:
-                profile_picture.setImageResource(R.drawable.karina_profile_picture);
-                break;
-            case 4:
-                profile_picture.setImageResource(R.drawable.simon_profile_picture);
-                break;
-            case 5:
-                profile_picture.setImageResource(R.drawable.celine_profile_picture);
-                break;
-            case 6:
-                profile_picture.setImageResource(R.drawable.taylor_profile_picture);
-                break;
-            case 7:
-                profile_picture.setImageResource(R.drawable.stephani_profile_picture);
-                break;
-            case 8:
-                profile_picture.setImageResource(R.drawable.kimberly_profile_picture);
-                break;
+                case 1:
+                    profile_picture.setImageResource(R.drawable.lucia_profile_picture);
+                    break;
+                case 2:
+                    profile_picture.setImageResource(R.drawable.juan_profile_picture);
+                    break;
+                case 3:
+                    profile_picture.setImageResource(R.drawable.karina_profile_picture);
+                    break;
+                case 4:
+                    profile_picture.setImageResource(R.drawable.simon_profile_picture);
+                    break;
+                case 5:
+                    profile_picture.setImageResource(R.drawable.celine_profile_picture);
+                    break;
+                case 6:
+                    profile_picture.setImageResource(R.drawable.taylor_profile_picture);
+                    break;
+                case 7:
+                    profile_picture.setImageResource(R.drawable.stephani_profile_picture);
+                    break;
+                case 8:
+                    profile_picture.setImageResource(R.drawable.kimberly_profile_picture);
+                    break;
         }
 
         return rootView;

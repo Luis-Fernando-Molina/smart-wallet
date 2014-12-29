@@ -50,7 +50,7 @@ public class SendAllFragment extends android.app.Fragment {
 
         transactions = new String[][]{
                 {},
-                {"Electricity bill","New chair","New desk"},
+                 {"Electricity bill","New chair","New desk"},
                 {"Flat rent","Flat rent","Flat rent","interest paid :(","Flat rent","Car repair","Invoice #2,356 that should have been paid on August"},
                 {"Test address"},
                 {"More pictures"}
@@ -58,7 +58,7 @@ public class SendAllFragment extends android.app.Fragment {
 
         transactions_amounts = new String[][]{
                 {},
-                {"$325.00","$55.00","$420.00"},
+  {"$325.00","$55.00","$420.00"},
                 {"$1,400.00","$1,200.00","$1,400.00","$40.00","$1,900.00","$10,550.00","$1.00"},
                 {"$0.50"},
                 {"$25.00"}
@@ -223,7 +223,7 @@ public class SendAllFragment extends android.app.Fragment {
                     holder = (ViewHolder) convertView.getTag();
                 }
 
-                // holder.text.setText(getGroup(groupPosition).toString());
+               // holder.text.setText(getGroup(groupPosition).toString());
             }
 
             return convertView;

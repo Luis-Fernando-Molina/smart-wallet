@@ -17,7 +17,7 @@ import com.bitdubai.smartwallet.walletframework.MyApplication;
  */
 public class ReceiveAllFragment extends android.app.Fragment {
 
-    View rootView;
+ View rootView;
     ExpandableListView lv;
     private String[] contacts;
     private String[] amounts;

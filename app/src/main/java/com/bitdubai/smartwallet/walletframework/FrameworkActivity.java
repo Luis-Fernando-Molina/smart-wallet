@@ -108,8 +108,8 @@ public class FrameworkActivity extends FragmentActivity
 
     public void onSendIconClicked(View v) {
 
-        String tagId = v.getTag().toString();
-        MyApplication.setChildId(tagId);
+            String tagId = v.getTag().toString();
+            MyApplication.setChildId(tagId);
 
         Intent intent;
         intent = new Intent(this, SendToContactActivity.class);
@@ -121,11 +121,11 @@ public class FrameworkActivity extends FragmentActivity
 
     public void onSendAllIconClicked(View v) {
 
-        int tagId = (int) v.getTag();
-        MyApplication.setTagId(tagId);
-        Intent intent;
-        intent = new Intent(this, SentHistoryActivity.class);
-        startActivity(intent);
+    int tagId = (int) v.getTag();
+    MyApplication.setTagId(tagId);
+    Intent intent;
+    intent = new Intent(this, SentHistoryActivity.class);
+    startActivity(intent);
         return;
 
     }

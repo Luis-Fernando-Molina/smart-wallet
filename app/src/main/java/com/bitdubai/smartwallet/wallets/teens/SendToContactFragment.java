@@ -82,7 +82,7 @@ public  class SendToContactFragment extends android.app.Fragment {
 
 
         String[] tagId = MyApplication.getChildId().split("-");
-        TextView tv;
+         TextView tv;
 
         tv = (TextView) rootView.findViewById(R.id.notes);
         tv.setTypeface(MyApplication.getDefaultTypeface());
