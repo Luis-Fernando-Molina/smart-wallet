@@ -1,5 +1,6 @@
 package com.bitdubai.smartwallet.walletframework;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bitdubai.smartwallet.R;
@@ -18,7 +21,7 @@ import com.bitdubai.smartwallet.wallets.teens.SendAllFragment;
 public class SentHistoryActivity extends Activity {
 
     private PagerSlidingTabStrip tabs;
-    private CharSequence mTitle = "Send History";
+    private CharSequence mTitle = "Sent History";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,54 @@ public class SentHistoryActivity extends Activity {
         abTitle.setTextColor(Color.WHITE);
         ((MyApplication) this.getApplication()).setActionBarProperties(this,getWindow(),tabs, getActionBar(), getResources(),abTitle, mTitle.toString());
 
+
+            /* Custom Action Bar with Icon and Text */
+
+        int tagId = MyApplication.getTagId();
+        String[] contacts;
+
+
+        contacts = new String[]{ "", "Luis Fernando Molina", "Guillermo Villanueva", "Pedro Perrotta", "Mariana Duyos"};
+
+
+        final ViewGroup actionBarLayout = (ViewGroup) getLayoutInflater().inflate(
+                R.layout.wallets_teens_fragment_sent_history_action_bar,
+                null);
+
+        // Set up your ActionBar
+        final ActionBar actionBar = getActionBar();
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(actionBarLayout);
+
+        TextView tv;
+
+        tv = (TextView) actionBarLayout.findViewById(R.id.contact_name);
+        tv.setTypeface(MyApplication.getDefaultTypeface());
+        tv.setText(contacts[tagId]);
+
+        ImageView profile_picture = (ImageView) actionBarLayout.findViewById(R.id.profile_picture2);
+
+        switch (tagId)
+        {
+            case 1:
+                profile_picture.setImageResource(R.drawable.luis_profile_picture);
+                break;
+            case 2:
+                profile_picture.setImageResource(R.drawable.guillermo_profile_picture);
+                break;
+            case 3:
+                profile_picture.setImageResource(R.drawable.pedro_profile_picture);
+                break;
+            case 4:
+                profile_picture.setImageResource(R.drawable.mariana_profile_picture);
+                break;
+        }
+
+
     }
+
 
 
     @Override
@@ -63,8 +113,8 @@ public class SentHistoryActivity extends Activity {
 
     public void onSendToContactIconClicked(View v) {
 
-        int tagId = (int)v.getTag();
-        MyApplication.setTagId(tagId);
+        String tagId = v.getTag().toString();
+        MyApplication.setChildId(tagId);
         Intent intent;
         intent = new Intent(this, SendToContactActivity.class);
         startActivity(intent);

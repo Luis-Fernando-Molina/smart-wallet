@@ -27,6 +27,7 @@ public class MyApplication extends Application {
     private final static Handler handler = new Handler();
     public static Typeface mDefaultTypeface;
     public static int mTAGID;
+    public static String mCHILDID;
     public  static int mWalletId;
 
     private static CharSequence mTitle;
@@ -52,9 +53,13 @@ public class MyApplication extends Application {
         return mTAGID;
     }
 
+    public static String getChildId() {
+        return mCHILDID;
+    }
+
     public static void setTagId(int TagId) { mTAGID = TagId; }
 
-
+    public static void setChildId(String childId) { mCHILDID = childId; }
     public static void setDefaultTypeface(Typeface DefaultTypeface) {
         mDefaultTypeface = DefaultTypeface;
     }
@@ -102,6 +107,7 @@ public class MyApplication extends Application {
                 s = new SpannableString(mTitle);
                 color = "#F0E173";
                 actionBar.setIcon(context.getDrawable(R.drawable.wallet_1));
+
                 wallpaper = context.getDrawable(R.drawable.background_tabs_diagonal_rotated);
                 abTitle.setTextColor(Color.BLACK);
                 walletStyle = "Young";

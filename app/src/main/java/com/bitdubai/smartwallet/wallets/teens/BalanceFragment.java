@@ -66,6 +66,7 @@ public class BalanceFragment extends ListFragment implements LoaderManager.Loade
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        MyApplication.setTagId(position);
         Intent intent;
         View clickedView = v;
         intent = new Intent(getActivity(), AccountDetailActivity.class);
@@ -278,6 +279,7 @@ public class BalanceFragment extends ListFragment implements LoaderManager.Loade
                     account_picture.setImageResource(R.drawable.account_type_savings_2_small);
                     break;
             }
+
 
             TextView tv;
 

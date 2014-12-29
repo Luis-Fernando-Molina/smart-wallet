@@ -43,7 +43,7 @@ import com.bitdubai.smartwallet.wallets.teens.ReceiveFragment;
 import com.bitdubai.smartwallet.wallets.teens.RefillFragment;
 import com.bitdubai.smartwallet.wallets.teens.StoresFragment;
 public class AccountDetailActivity extends FragmentActivity
-        {
+{
 
     private final Handler handler = new Handler();
 
@@ -56,7 +56,7 @@ public class AccountDetailActivity extends FragmentActivity
 
     private String walletStyle = "";
 
-        /**
+    /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
@@ -67,83 +67,100 @@ public class AccountDetailActivity extends FragmentActivity
 
 
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.wallet_framework_activity_account_detail);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.wallet_framework_activity_account_detail);
 
-            // I get the action bar title id and put it on a text view in order to later change its color
-            int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
-            TextView abTitle = (TextView) findViewById(titleId);
-            abTitle.setTextColor(Color.WHITE);
+        // I get the action bar title id and put it on a text view in order to later change its color
+        int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
+        TextView abTitle = (TextView) findViewById(titleId);
+        abTitle.setTextColor(Color.WHITE);
 
-            Intent i=getIntent();
+        Intent i=getIntent();
 
-            tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 
-            mTitle = "Account details";
+        mTitle = "Account details";
 
-            ((MyApplication) this.getApplication()).setActionBarProperties(this, getWindow(), tabs, getActionBar(), getResources(), abTitle, mTitle.toString());
-            //super.onCreate(savedInstanceState);
-            //setContentView(R.layout.activity_main);
+        ((MyApplication) this.getApplication()).setActionBarProperties(this, getWindow(), tabs, getActionBar(), getResources(), abTitle, mTitle.toString());
+        //super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_main);
 
-            //getWindow().getDecorView().setBackgroundResource(R.drawable.wallet_wallpaper_yellow);
+        //getWindow().getDecorView().setBackgroundResource(R.drawable.wallet_wallpaper_yellow);
 
-            pager = (ViewPager) findViewById(R.id.pager);
-            adapter = new MyPagerAdapter(getSupportFragmentManager());
+        pager = (ViewPager) findViewById(R.id.pager);
+        adapter = new MyPagerAdapter(getSupportFragmentManager());
 
-            pager.setAdapter(adapter);
+        pager.setAdapter(adapter);
 
-            final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
-                    .getDisplayMetrics());
-            pager.setPageMargin(pageMargin);
+        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
+                .getDisplayMetrics());
+        pager.setPageMargin(pageMargin);
 
-            tabs.setViewPager(pager);
+        tabs.setViewPager(pager);
 
-            Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/CaviarDreams.ttf");
-            ((MyApplication) this.getApplication()).setDefaultTypeface(tf);
-            tabs.setTypeface(tf, 1);
-            //changeColor(currentColor);
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/CaviarDreams.ttf");
+        ((MyApplication) this.getApplication()).setDefaultTypeface(tf);
+        tabs.setTypeface(tf, 1);
+        //changeColor(currentColor);
 
-            tabs.setBackgroundResource(R.drawable.background_tiled_diagonal_light);
-            tabs.setDividerColor(0xFFBBBBBB);
+        tabs.setBackgroundResource(R.drawable.background_tiled_diagonal_light);
+        tabs.setDividerColor(0xFFBBBBBB);
 
 
 
             /* Custom Action Bar with Icon and Text */
 
-            final ViewGroup actionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                    R.layout.wallets_teens_fragment_account_detail_action_bar,
-                    null);
-
-            // Set up your ActionBar
-            final ActionBar actionBar = getActionBar();
-            actionBar.setDisplayShowHomeEnabled(false);
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setDisplayShowCustomEnabled(true);
-            actionBar.setCustomView(actionBarLayout);
-
-            TextView tv;
-
-            tv = (TextView) actionBarLayout.findViewById(R.id.account_type);
-            tv.setTypeface(MyApplication.getDefaultTypeface());
-
-            tv = (TextView) actionBarLayout.findViewById(R.id.balance);
-            tv.setTypeface(MyApplication.getDefaultTypeface());
-
-            tv = (TextView) actionBarLayout.findViewById(R.id.balance_available);
-            tv.setTypeface(MyApplication.getDefaultTypeface());
-
-            tv = (TextView) actionBarLayout.findViewById(R.id.account_alias);
-            tv.setTypeface(MyApplication.getDefaultTypeface());
-
-        }
+        int tagId = MyApplication.getTagId();
+        String[] account_types;
+        String[] balances;
+        String[] balances_available;
+        String[] account_aliases;
 
 
+        account_types = new String[]{"Saving account", "Current account", "Saving account"};
+        account_aliases = new String[]{"My savings", "Pocket money", "Holiday savings"};
+        balances = new String[]{"$4,615.00", "$78.50", "$500.00"};
+        balances_available = new String[]{"$1,615.00 available", "$55.00 available", "$300.00 available"};
 
 
-            //***
+        final ViewGroup actionBarLayout = (ViewGroup) getLayoutInflater().inflate(
+                R.layout.wallets_teens_fragment_account_detail_action_bar,
+                null);
+
+        // Set up your ActionBar
+        final ActionBar actionBar = getActionBar();
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(actionBarLayout);
+
+        TextView tv;
+
+        tv = (TextView) actionBarLayout.findViewById(R.id.account_type);
+        tv.setTypeface(MyApplication.getDefaultTypeface());
+        tv.setText(account_types[tagId]);
+
+        tv = (TextView) actionBarLayout.findViewById(R.id.balance);
+        tv.setTypeface(MyApplication.getDefaultTypeface());
+        tv.setText(balances[tagId]);
+
+        tv = (TextView) actionBarLayout.findViewById(R.id.balance_available);
+        tv.setTypeface(MyApplication.getDefaultTypeface());
+        tv.setText(balances_available[tagId]);
+
+        tv = (TextView) actionBarLayout.findViewById(R.id.account_alias);
+        tv.setTypeface(MyApplication.getDefaultTypeface());
+        tv.setText(account_aliases[tagId]);
+
+    }
+
+
+
+
+    //***
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
@@ -333,9 +350,9 @@ public class AccountDetailActivity extends FragmentActivity
 
             Fragment currentFragment;
             switch (position) {
-             //   case 0:
-             //       currentFragment =   AccountDetailAccountFragment.newInstance(position);
-             //       break;
+                //   case 0:
+                //       currentFragment =   AccountDetailAccountFragment.newInstance(position);
+                //       break;
                 case 0:
                     currentFragment =   AccountDetailAllFragment.newInstance(position);
                     break;
