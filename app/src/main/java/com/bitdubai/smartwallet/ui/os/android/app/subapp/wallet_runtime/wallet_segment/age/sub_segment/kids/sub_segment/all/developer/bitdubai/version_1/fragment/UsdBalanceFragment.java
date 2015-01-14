@@ -4,8 +4,10 @@ package com.bitdubai.smartwallet.ui.os.android.app.subapp.wallet_runtime.wallet_
  * Created by ciencias on 25.11.14.
  */
 import android.content.ClipData;
+import android.content.ClipDescription;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -84,12 +86,15 @@ public class UsdBalanceFragment extends Fragment {
     }
 
     private final class dragTouchListener implements View.OnTouchListener {
-        public boolean onTouch(View view, MotionEvent motionEvent) {
+        public boolean onTouch(View imageView, MotionEvent motionEvent) {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                view.startDrag(data, shadowBuilder, view, 0);
-                view.setVisibility(View.INVISIBLE);
+                ClipData clipData = ClipData.newPlainText("", "");
+                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(imageView);
+            /*start the drag - contains the data to be dragged,
+            metadata for this data and callback for drawing shadow*/
+                imageView.startDrag(clipData, shadowBuilder, imageView, 0);
+//        we're dragging the shadow so make the view invisible
+                imageView.setVisibility(View.INVISIBLE);
                 return true;
             } else {
                 return false;
@@ -100,35 +105,79 @@ public class UsdBalanceFragment extends Fragment {
     private class dropListener implements View.OnDragListener {
 
         @Override
-        public boolean onDrag(View v, DragEvent event) {
-            int action = event.getAction();
+        public boolean onDrag(View receivingLayoutView, DragEvent dragEvent) {
+            View draggedImageView = (View) dragEvent.getLocalState();
+            int action = dragEvent.getAction();
             switch (action) {
-                 case DragEvent.ACTION_DRAG_STARTED:
-                    // do nothing
-                    break;
+                case DragEvent.ACTION_DRAG_STARTED:
+                   // Log.i(TAG, "drag action started");
+
+                    // Determines if this View can accept the dragged data
+                    if (dragEvent.getClipDescription()
+                            .hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+                       // Log.i(TAG, "Can accept this data");
+
+                        // returns true to indicate that the View can accept the dragged data.
+                        return true;
+
+                    } else {
+                       // Log.i(TAG, "Can not accept this data");
+
+                    }
+
+                    // Returns false. During the current drag and drop operation, this View will
+                    // not receive events again until ACTION_DRAG_ENDED is sent.
+                    return false;
+
                 case DragEvent.ACTION_DRAG_ENTERED:
-                    // v.setBackgroundDrawable(enterShape);
-                    break;
+                 //   Log.i(TAG, "drag action entered");
+//                the drag point has entered the bounding box
+                    return true;
+
+                case DragEvent.ACTION_DRAG_LOCATION:
+                   // Log.i(TAG, "drag action location");
+                /*triggered after ACTION_DRAG_ENTERED
+                stops after ACTION_DRAG_EXITED*/
+                    return true;
+
                 case DragEvent.ACTION_DRAG_EXITED:
-                    //v.setBackgroundDrawable(normalShape);
-                    break;
+                 //   Log.i(TAG, "drag action exited");
+//                the drag shadow has left the bounding box
+                    return true;
                 case DragEvent.ACTION_DROP:
-                  /*  View view = (View) event.getLocalState();
-                    ViewGroup owner = (ViewGroup) view.getParent();
-                    owner.removeView(view);
-                    LinearLayout container = (LinearLayout) owner;
-                    container.addView(view);
-                    view.setVisibility(View.VISIBLE);*/
-                    break;
+                    try {
+                        ViewGroup draggedImageViewParentLayout = (ViewGroup) draggedImageView.getParent();
+                        draggedImageViewParentLayout.removeView(draggedImageView);
+                       // ImageView bottomLinearLayout = (ImageView) receivingLayoutView;
+                       // bottomLinearLayout.(draggedImageView);
+                        draggedImageView.setVisibility(View.VISIBLE);
+                    }
+                    catch (Exception ex) {
+                        String strError = ex.getMessage();
+                    }
+
                 case DragEvent.ACTION_DRAG_ENDED:
-                    // v.setBackgroundDrawable(normalShape);
-                /*    View view = (View) event.getLocalState();
-                    ViewGroup owner = (ViewGroup) view.getParent();
-                    owner.removeView(view);
-                    LinearLayout container = (LinearLayout) owner;
-                    container.addView(view);
-                    view.setVisibility(View.VISIBLE);*/
-                    break;
+                   // Log.i(TAG, "drag action ended");
+                   // Log.i(TAG, "getResult: " + dragEvent.getResult());
+
+//                if the drop was not successful, set the ball to visible
+                    if (!dragEvent.getResult()) {
+                      //  Log.i(TAG, "setting visible");
+                        try
+                        {
+                            draggedImageView.setVisibility(View.VISIBLE);
+
+                        }
+                        catch(Exception ex)
+                        {
+                            String strError = ex.getMessage();
+                        }
+
+                    }
+
+
+                    return true;
+
                 default:
                     break;
             }

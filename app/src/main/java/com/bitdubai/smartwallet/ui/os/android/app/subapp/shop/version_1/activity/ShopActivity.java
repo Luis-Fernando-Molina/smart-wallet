@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.TypedValue;
@@ -31,6 +32,7 @@ import android.widget.TextView;
 
 import com.bitdubai.smartwallet.R;
 import com.bitdubai.smartwallet.ui.os.android.app.common.version_1.classes.MyTypefaceSpan;
+import com.bitdubai.smartwallet.ui.os.android.app.common.version_1.fragment.NavigationDrawerFragment;
 import com.bitdubai.smartwallet.ui.os.android.app.subapp.wallet_runtime.wallet_framework.version_1.classes.MyLayoutInflaterFactory;
 import com.bitdubai.smartwallet.ui.os.android.app.subapp.wallet_runtime.wallet_framework.version_1.activity.RequestsSentActivity;
 import com.bitdubai.smartwallet.ui.os.android.app.common.version_1.classes.MyApplication;
@@ -44,7 +46,7 @@ import com.bitdubai.smartwallet.ui.os.android.app.subapp.shop.version_1.fragment
 /**
  * Created by Natalia on 09/01/2015.
  */
-public class ShopActivity  extends FragmentActivity
+public class ShopActivity  extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks
 {
 
     private final Handler handler = new Handler();
@@ -60,7 +62,7 @@ public class ShopActivity  extends FragmentActivity
 
     private CharSequence mTitle = "My Shop";
     private Menu menu;
-
+    private NavigationDrawerFragment mNavigationDrawerFragment;
 
 
 
@@ -71,11 +73,22 @@ public class ShopActivity  extends FragmentActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shop_activity_shop);
-
+        MyApplication.setActivityId("ShopActivity");
         // I get the action bar title id and put it on a text view in order to later change its color
         int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
         TextView abTitle = (TextView) findViewById(titleId);
         abTitle.setTextColor(Color.WHITE);
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+
+        // Set up the drawer.
+        mNavigationDrawerFragment.setUp(
+                R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
 
         Intent i=getIntent();
 
@@ -235,6 +248,12 @@ public class ShopActivity  extends FragmentActivity
 
     }
 
+    //***
+    @Override
+    public void onNavigationDrawerItemSelected(int position) {
+
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -244,8 +263,8 @@ public class ShopActivity  extends FragmentActivity
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        currentColor = savedInstanceState.getInt("currentColor");
-        changeColor(currentColor);
+     //   currentColor = savedInstanceState.getInt("currentColor");
+      //  changeColor(currentColor);
     }
 
     private Drawable.Callback drawableCallback = new Drawable.Callback() {
@@ -317,5 +336,7 @@ public class ShopActivity  extends FragmentActivity
             }
             return currentFragment;
         }
+
+
     }
 }

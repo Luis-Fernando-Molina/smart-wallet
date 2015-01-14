@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.support.v4.app.Fragment;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -18,7 +22,7 @@ import com.bitdubai.smartwallet.ui.os.android.app.common.version_1.classes.MyApp
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import android.support.v4.app.Fragment;
+
 
 /**
  * Created by Natalia on 12/01/2015.
@@ -36,7 +40,14 @@ public class ShopDesktopFragment extends Fragment {
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);
         f.setArguments(b);
+
         return f;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -296,13 +307,10 @@ public class ShopDesktopFragment extends Fragment {
          */
         private class ViewHolder {
 
-
-
             public ImageView imageView;
             public TextView companyTextView;
-
-
         }
+
 
     }
 
