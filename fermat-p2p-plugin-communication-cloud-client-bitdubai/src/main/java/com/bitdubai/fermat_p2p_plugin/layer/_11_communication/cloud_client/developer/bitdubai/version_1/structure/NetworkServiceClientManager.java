@@ -1,6 +1,7 @@
 package com.bitdubai.fermat_p2p_plugin.layer._11_communication.cloud_client.developer.bitdubai.version_1.structure;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -20,6 +21,7 @@ import com.bitdubai.fermat_api.layer._10_communication.fmp.FMPPacket.FMPPacketTy
 import com.bitdubai.fermat_api.layer._1_definition.communication.FMPPacketFactory;
 import com.bitdubai.fermat_api.layer._1_definition.communication.cloud.CloudFMPConnectionManager;
 import com.bitdubai.fermat_api.layer._1_definition.crypto.asymmetric.AsymmectricCryptography;
+import com.bitdubai.fermat_api.layer._1_definition.enums.NetworkServices;
 import com.bitdubai.fermat_p2p_plugin.layer._11_communication.cloud_client.developer.bitdubai.version_1.exceptions.ConnectionAlreadyRegisteredException;
 import com.bitdubai.fermat_p2p_plugin.layer._11_communication.cloud_client.developer.bitdubai.version_1.exceptions.ConnectionAlreadyRequestedException;
 import com.bitdubai.fermat_p2p_plugin.layer._11_communication.cloud_client.developer.bitdubai.version_1.exceptions.IllegalPacketSenderException;
@@ -34,10 +36,15 @@ public class NetworkServiceClientManager extends CloudFMPConnectionManager {
 	
 	private final String serverPublicKey;
 	
+	private final NetworkServices networkService;
 
-	public NetworkServiceClientManager(final CommunicationChannelAddress serverAddress, final ExecutorService executor, final String clientPrivateKey, final String serverPublicKey) throws IllegalArgumentException {
+	public NetworkServiceClientManager(final CommunicationChannelAddress serverAddress, final ExecutorService executor, final String clientPrivateKey, final String serverPublicKey, final NetworkServices networkService) throws IllegalArgumentException {
 		super(serverAddress, executor, clientPrivateKey, AsymmectricCryptography.derivePublicKey(clientPrivateKey), CloudFMPConnectionManagerMode.FMP_CLIENT);
+		checkBigIntegerHexString(serverPublicKey);
 		this.serverPublicKey = serverPublicKey;
+		if(networkService == null)
+			throw new IllegalArgumentException();
+		this.networkService = networkService;
 	}
 	
 	@Override
@@ -115,7 +122,7 @@ public class NetworkServiceClientManager extends CloudFMPConnectionManager {
 
 	@Override
 	public void handleConnectionDeny(final FMPPacket dataPacket) throws FMPException {
-		System.out.println(dataPacket.toString());
+		running.set(false);
 	}
 
 	@Override
@@ -158,27 +165,24 @@ public class NetworkServiceClientManager extends CloudFMPConnectionManager {
 			selector = Selector.open();
 			clientChannel = SocketChannel.open();
 			clientChannel.configureBlocking(false);
-			SelectionKey serverConnection = clientChannel.register(selector, SelectionKey.OP_CONNECT);
+			SelectionKey serverConnection = clientChannel.register(selector, SelectionKey.OP_WRITE);
 			clientChannel.connect(address.getSocketAddress());
 			if(clientChannel.isConnectionPending())
 				clientChannel.finishConnect();
 			running.set(clientChannel.isConnected());
 			unregisteredConnections.put(serverPublicKey, serverConnection);
+			requestConnectionToServer();
 			executor.execute(this);
-		}catch(IOException ex){
+		}catch(IOException ex){	
 			throw new CloudConnectionException(ex.getMessage());
 		}
 	}
 	
-	public void requestConnectionToServer() throws CloudConnectionException{
-		if(isRegistered())
-			throw new ConnectionAlreadyRegisteredException();
-		if(!requestedConnections.isEmpty())
-			throw new ConnectionAlreadyRequestedException();
+	private void requestConnectionToServer() throws CloudConnectionException{
 		String sender = eccPublicKey;
 		String destination = serverPublicKey;
 		FMPPacketType type = FMPPacketType.CONNECTION_REQUEST;
-		String message = eccPublicKey;
+		String message = AsymmectricCryptography.encryptMessagePublicKey(networkService.toString(), serverPublicKey);
 		String signature = AsymmectricCryptography.createMessageSignature(message, eccPrivateKey);
 		try{
 			FMPPacket packet = FMPPacketFactory.constructCloudPacket(sender, destination, type, message, signature);
@@ -196,12 +200,26 @@ public class NetworkServiceClientManager extends CloudFMPConnectionManager {
 		return registeredConnections.containsKey(serverPublicKey);
 	}
 	
+	public NetworkServices getNetworkService(){
+		return networkService;
+	}
+	
 	private boolean validatePacketSignature(final FMPPacket dataPacket){
 		String message = dataPacket.getMessage();
 		String signature = dataPacket.getSignature();
 		String sender = dataPacket.getSender();
 		
 		return AsymmectricCryptography.verifyMessageSignature(signature, message, sender);
+	}
+	
+	private void checkBigIntegerHexString(final String hex) throws IllegalArgumentException {
+		if(hex == null || hex.isEmpty())
+			throw new IllegalArgumentException();
+		try{
+			new BigInteger(hex,16);
+		} catch(NumberFormatException ex){
+			throw new IllegalArgumentException(ex.getMessage());
+		}
 	}
 	
 }

@@ -8,7 +8,8 @@ import org.junit.Test;
 import com.bitdubai.fermat_api.layer._10_communication.cloud.CloudConnectionException;
 
 public class StartTest extends CloudClientManagerUnitTest{
-	private static final int TCP_PORT_PADDING = 100;
+	
+	private static final int TCP_PORT_PADDING = 200;
 	
 	@Test
 	public void Start_NoServer_ThrowsCloudConnectionException() throws Exception {

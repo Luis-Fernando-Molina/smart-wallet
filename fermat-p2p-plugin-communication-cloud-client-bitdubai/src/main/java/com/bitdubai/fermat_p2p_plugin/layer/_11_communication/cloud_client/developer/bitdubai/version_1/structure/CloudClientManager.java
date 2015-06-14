@@ -1,6 +1,7 @@
 package com.bitdubai.fermat_p2p_plugin.layer._11_communication.cloud_client.developer.bitdubai.version_1.structure;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -39,6 +40,7 @@ public class CloudClientManager extends CloudFMPConnectionManager {
 	
 	public CloudClientManager(final CommunicationChannelAddress serverAddress, final ExecutorService executor, final String clientPrivateKey, final String serverPublicKey) throws IllegalArgumentException {
 		super(serverAddress, executor, clientPrivateKey, AsymmectricCryptography.derivePublicKey(clientPrivateKey), CloudFMPConnectionManagerMode.FMP_CLIENT);
+		checkBigIntegerHexString(serverPublicKey);
 		this.serverPublicKey = serverPublicKey;
 		networkServiceRegistry = new ConcurrentHashMap<NetworkServices, NetworkServiceClientManager>();
 		networkServiceRegistry.clear();
@@ -195,6 +197,10 @@ public class CloudClientManager extends CloudFMPConnectionManager {
 			throw new CloudConnectionException(ex.getMessage());
 		}
 	}
+	
+	public void registerNetworkService(NetworkServices networkService) {
+		
+	}
 
 	public boolean isRegistered() {
 		return registeredConnections.containsKey(serverPublicKey);
@@ -207,5 +213,17 @@ public class CloudClientManager extends CloudFMPConnectionManager {
 		
 		return AsymmectricCryptography.verifyMessageSignature(signature, message, sender);
 	}
+	
+	private void checkBigIntegerHexString(final String hex) throws IllegalArgumentException {
+		if(hex == null || hex.isEmpty())
+			throw new IllegalArgumentException();
+		try{
+			new BigInteger(hex,16);
+		} catch(NumberFormatException ex){
+			throw new IllegalArgumentException(ex.getMessage());
+		}
+	}
+
+	
 	
 }

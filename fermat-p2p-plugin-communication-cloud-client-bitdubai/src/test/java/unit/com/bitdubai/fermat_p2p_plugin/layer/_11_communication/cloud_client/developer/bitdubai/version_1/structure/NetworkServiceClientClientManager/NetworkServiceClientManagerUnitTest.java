@@ -1,16 +1,17 @@
-package unit.com.bitdubai.fermat_p2p_plugin.layer._11_communication.cloud_client.developer.bitdubai.version_1.structure.CloudClientManager;
+package unit.com.bitdubai.fermat_p2p_plugin.layer._11_communication.cloud_client.developer.bitdubai.version_1.structure.NetworkServiceClientClientManager;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.bitdubai.fermat_api.layer._10_communication.CommunicationChannelAddress;
 import com.bitdubai.fermat_api.layer._1_definition.communication.CommunicationChannelAddressFactory;
+import com.bitdubai.fermat_api.layer._1_definition.enums.NetworkServices;
 import com.bitdubai.fermat_p2p_plugin.layer._11_communication.cloud_client.developer.bitdubai.version_1.structure.CloudClientManager;
+import com.bitdubai.fermat_p2p_plugin.layer._11_communication.cloud_client.developer.bitdubai.version_1.structure.NetworkServiceClientManager;
 import com.bitdubai.fermat_p2p_plugin.layer._11_communication.cloud_server.developer.bitdubai.version_1.structure.CloudServiceManager;
 import com.bitdubai.fermat_p2p_plugin.layer._11_communication.cloud_server.developer.bitdubai.version_1.structure.ECCKeyPair;
 
-public abstract class CloudClientManagerUnitTest {
-	
+public abstract class NetworkServiceClientManagerUnitTest {
 	
 	protected String clientPrivateKey;
 	
@@ -18,12 +19,13 @@ public abstract class CloudClientManagerUnitTest {
 	protected String serverPublicKey = "047F9F57BDE5771B4A9DA604B1CA138AA3B593B7EFBC3C890E384CF8B3EB3080E70DDA5130A26768DDEF30379AA6F9B924339407B0D429964503372CB71D3328D0";
 
 	protected String testHost = "localhost";
-	protected Integer testBasePort = 10000;
+	protected Integer testBasePort = 11000;
 	protected CommunicationChannelAddress testAddress;
 	protected ExecutorService testExecutor = Executors.newFixedThreadPool(30);
+	protected NetworkServices testNetworkService = NetworkServices.INTRA_USER;
 	
 	protected CloudServiceManager testServer;
-	protected CloudClientManager testClient;
+	protected NetworkServiceClientManager testClient;
 	
 	protected void setUpParameters(int tcpPadding) throws Exception{
 		testAddress = CommunicationChannelAddressFactory.constructCloudAddress(testHost, testBasePort+tcpPadding);
@@ -32,7 +34,7 @@ public abstract class CloudClientManagerUnitTest {
 	
 	protected void setUp(int tcpPadding) throws Exception{
 		setUpParameters(tcpPadding);
-		testClient = new CloudClientManager(testAddress, testExecutor, clientPrivateKey, serverPublicKey);
+		testClient = new NetworkServiceClientManager(testAddress, testExecutor, clientPrivateKey, serverPublicKey, testNetworkService);
 	}
 	
 	protected void setUpWithServer(int tcpPadding) throws Exception{
@@ -40,13 +42,11 @@ public abstract class CloudClientManagerUnitTest {
 		ECCKeyPair testKeyPair = new ECCKeyPair(serverPrivateKey);
 		testServer = new CloudServiceManager(testAddress, testExecutor, testKeyPair);
 		testServer.start();
-		testClient = new CloudClientManager(testAddress, testExecutor, clientPrivateKey, serverPublicKey);
-		
+		testClient = new NetworkServiceClientManager(testAddress, testExecutor, clientPrivateKey, serverPublicKey, testNetworkService);
 	}
 	
 	protected int getThreadSleepMillis(){
 		return 1000;
 	}
-
 
 }
