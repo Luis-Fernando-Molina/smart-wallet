@@ -12,7 +12,7 @@ import com.bitdubai.fermat_api.layer.osa_android.database_system.DealsWithPlugin
 import com.bitdubai.fermat_api.layer.osa_android.database_system.PluginDatabaseSystem;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantCreateDatabaseException;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantInsertRecordException;
-import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantLoadTableToMemory;
+import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantLoadTableToMemoryException;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.DatabaseNotFoundException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantOpenDatabaseException;
 import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.DealsWithErrors;
@@ -205,7 +205,7 @@ public class BlockchainInfoIncomingCryptoCatchUpAgent implements Agent, DealsWit
                     try {
                         table.loadToMemory();
                     }
-                    catch (CantLoadTableToMemory cantLoadTableToMemory) {
+                    catch (CantLoadTableToMemoryException cantLoadTableToMemory) {
                          //I can not solve this situation.
                         this.errorManager1.reportUnexpectedPluginException(Plugins.BITDUBAI_BLOCKCHAIN_INFO_WORLD, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantLoadTableToMemory);
                         throw new CantGetLastAnnouncedTrxHashException();
@@ -267,7 +267,7 @@ public class BlockchainInfoIncomingCryptoCatchUpAgent implements Agent, DealsWit
                         table.setStringFilter(BlockchainInfoDatabaseConstants.INCOMING_CRYPTO_TABLE_TRX_HASH_COLUMN_NAME, tx.getHash(), DatabaseFilterType.EQUAL);
                         try {
                             table.loadToMemory();
-                        } catch (CantLoadTableToMemory cantLoadTableToMemory) {
+                        } catch (CantLoadTableToMemoryException cantLoadTableToMemory) {
                             /**
                              * I can not solve this situation.
                              */

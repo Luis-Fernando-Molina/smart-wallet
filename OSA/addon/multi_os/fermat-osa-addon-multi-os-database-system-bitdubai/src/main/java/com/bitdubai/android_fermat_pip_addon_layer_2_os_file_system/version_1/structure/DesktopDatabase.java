@@ -12,7 +12,7 @@ import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.Cant
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantCreateTableException;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.DatabaseNotFoundException;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.DatabaseTransactionFailedException;
-import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.InvalidOwnerId;
+import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.InvalidOwnerIdException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantOpenDatabaseException;
 import com.bitdubai.fermat_osa_addon.layer.desktop.database_system.developer.bitdubai.version_1.desktop.database.bridge.DesktopDatabaseBridge;
 import com.bitdubai.fermat_osa_addon.layer.desktop.database_system.developer.bitdubai.version_1.desktop.database.bridge.EnviromentVariables;
@@ -342,17 +342,17 @@ public class DesktopDatabase  implements Database, DatabaseFactory {
      *
      * @param ownerId Plugin owner id
      * @param table DatabaseTableFactory object containing the definition of the table
-     * @throws InvalidOwnerId
+     * @throws InvalidOwnerIdException
      * @throws CantCreateTableException
      */
     @Override
-    public void createTable(UUID ownerId, DatabaseTableFactory table) throws InvalidOwnerId, CantCreateTableException {
+    public void createTable(UUID ownerId, DatabaseTableFactory table) throws InvalidOwnerIdException, CantCreateTableException {
 
         /**
          * I check that the owner id is the same I currently have..
          */
         if (this.ownerId != ownerId) {
-            throw new InvalidOwnerId();
+            throw new InvalidOwnerIdException();
         }
         
          /**
@@ -401,7 +401,7 @@ public class DesktopDatabase  implements Database, DatabaseFactory {
      * Create  primary keys and index if defined
      *
      * @param table DatabaseTableFactory object containing the definition of the table
-     * @throws InvalidOwnerId
+     * @throws InvalidOwnerIdException
      * @throws CantCreateTableException
      */
     @Override
@@ -466,16 +466,16 @@ public class DesktopDatabase  implements Database, DatabaseFactory {
      * @param ownerId Plugin owner id
      * @param tableName table name to use
      * @return DatabaseTableFactory Object
-     * @throws InvalidOwnerId
+     * @throws InvalidOwnerIdException
      */
     @Override
-    public DatabaseTableFactory newTableFactory(UUID ownerId, String tableName) throws InvalidOwnerId {
+    public DatabaseTableFactory newTableFactory(UUID ownerId, String tableName) throws InvalidOwnerIdException {
 
         /**
          * I check that the owner id is the same I currently have..
          */
         if (this.ownerId != ownerId) {
-            throw new InvalidOwnerId();
+            throw new InvalidOwnerIdException();
         }
 
         return new DesktopDatabaseTableFactory(tableName);
@@ -486,7 +486,7 @@ public class DesktopDatabase  implements Database, DatabaseFactory {
      *
      * @param tableName table name to use
      * @return DatabaseTableFactory object
-     * @throws InvalidOwnerId
+     * @throws InvalidOwnerIdException
      */
     @Override
     public DatabaseTableFactory newTableFactory(String tableName) {

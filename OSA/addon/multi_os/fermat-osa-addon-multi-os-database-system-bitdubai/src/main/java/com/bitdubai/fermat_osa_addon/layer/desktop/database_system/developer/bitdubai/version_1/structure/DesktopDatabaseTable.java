@@ -11,8 +11,8 @@ import com.bitdubai.fermat_api.layer.osa_android.database_system.DatabaseTableFi
 import com.bitdubai.fermat_api.layer.osa_android.database_system.DatabaseTableFilterGroup;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.DatabaseTableRecord;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantInsertRecordException;
-import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantLoadTableToMemory;
-import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantUpdateRecord;
+import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantLoadTableToMemoryException;
+import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantUpdateRecordException;
 import com.bitdubai.fermat_osa_addon.layer.desktop.database_system.developer.bitdubai.version_1.desktop.database.bridge.DesktopDatabaseBridge;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -176,10 +176,10 @@ public class DesktopDatabaseTable implements  DatabaseTable {
      * <p>This method update a table record in the database
      *
      * @param record DatabaseTableRecord object to update
-     * @throws CantUpdateRecord
+     * @throws CantUpdateRecordException
      */
     @Override
-    public void updateRecord (DatabaseTableRecord record) throws CantUpdateRecord
+    public void updateRecord (DatabaseTableRecord record) throws CantUpdateRecordException
     {
 
         try
@@ -207,7 +207,7 @@ public class DesktopDatabaseTable implements  DatabaseTable {
        
         }catch (Exception exception)
         {
-           throw new CantUpdateRecord();
+           throw new CantUpdateRecordException();
         }
     }
 
@@ -261,10 +261,10 @@ public class DesktopDatabaseTable implements  DatabaseTable {
      * <p>This method load all table records in a List of DatabaseTableRecord object
      * <p>Then use the method getRecords() to to retrieve.
      *
-     * @throws CantLoadTableToMemory
+     * @throws CantLoadTableToMemoryException
      */
     @Override
-    public void loadToMemory() throws CantLoadTableToMemory {
+    public void loadToMemory() throws CantLoadTableToMemoryException {
 
 
         this.tableRecord  = new DesktopDatabaseRecord();
@@ -305,7 +305,7 @@ public class DesktopDatabaseTable implements  DatabaseTable {
 
 
         } catch (Exception e) {
-            throw new CantLoadTableToMemory();
+            throw new CantLoadTableToMemoryException();
         }
 
         tableRecord.setValues(recordValues);
