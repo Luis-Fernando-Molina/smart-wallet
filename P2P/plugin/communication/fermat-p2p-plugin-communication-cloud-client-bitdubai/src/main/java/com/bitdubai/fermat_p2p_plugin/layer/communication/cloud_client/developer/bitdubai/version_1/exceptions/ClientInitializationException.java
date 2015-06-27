@@ -13,20 +13,4 @@ public class ClientInitializationException extends CloudCommunicationException {
         super(message, cause, context, possibleReason);
     }
 
-    public ClientInitializationException(final String message, final Exception cause) {
-        this(message, cause, "", "");
-    }
-
-    public ClientInitializationException(final String message) {
-        this(message, null);
-    }
-
-    public ClientInitializationException(final Exception exception) {
-        this(exception.getMessage());
-        setStackTrace(exception.getStackTrace());
-    }
-
-    public ClientInitializationException() {
-        this(DEFAULT_MESSAGE);
-    }
 }

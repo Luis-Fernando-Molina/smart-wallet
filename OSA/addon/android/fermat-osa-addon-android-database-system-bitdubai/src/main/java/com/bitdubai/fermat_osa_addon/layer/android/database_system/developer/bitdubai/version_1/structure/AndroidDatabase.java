@@ -6,10 +6,8 @@ import java.util.List;
 import java.util.UUID;
 
 import android.content.Context;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.Database;
@@ -24,7 +22,7 @@ import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.Cant
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantCreateTableException;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.DatabaseNotFoundException;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.DatabaseTransactionFailedException;
-import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.InvalidOwnerId;
+import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.InvalidOwnerIdException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantOpenDatabaseException;
 
 /**
@@ -339,17 +337,17 @@ te a specific database file
      *
      * @param ownerId Plugin owner id
      * @param table DatabaseTableFactory object containing the definition of the table
-     * @throws InvalidOwnerId
+     * @throws InvalidOwnerIdException
      * @throws CantCreateTableException
      */
     @Override
-    public void createTable(UUID ownerId, DatabaseTableFactory table) throws InvalidOwnerId, CantCreateTableException {
+    public void createTable(UUID ownerId, DatabaseTableFactory table) throws InvalidOwnerIdException, CantCreateTableException {
 
         /**
          * I check that the owner id is the same I currently have..
          */
         if (this.ownerId != ownerId) {
-            throw new InvalidOwnerId();
+            throw new InvalidOwnerIdException();
         }
         
          /**
@@ -398,7 +396,7 @@ te a specific database file
      * Create  primary keys and index if defined
      *
      * @param table DatabaseTableFactory object containing the definition of the table
-     * @throws InvalidOwnerId
+     * @throws InvalidOwnerIdException
      * @throws CantCreateTableException
      */
     @Override
@@ -463,16 +461,16 @@ te a specific database file
      * @param ownerId Plugin owner id
      * @param tableName table name to use
      * @return DatabaseTableFactory Object
-     * @throws InvalidOwnerId
+     * @throws InvalidOwnerIdException
      */
     @Override
-    public DatabaseTableFactory newTableFactory(UUID ownerId, String tableName) throws InvalidOwnerId {
+    public DatabaseTableFactory newTableFactory(UUID ownerId, String tableName) throws InvalidOwnerIdException {
 
         /**
          * I check that the owner id is the same I currently have..
          */
         if (this.ownerId != ownerId) {
-            throw new InvalidOwnerId();
+            throw new InvalidOwnerIdException();
         }
 
         return new AndroidDatabaseTableFactory(tableName);
@@ -483,7 +481,7 @@ te a specific database file
      *
      * @param tableName table name to use
      * @return DatabaseTableFactory object
-     * @throws InvalidOwnerId
+     * @throws InvalidOwnerIdException
      */
     @Override
     public DatabaseTableFactory newTableFactory(String tableName) {

@@ -12,8 +12,8 @@ import com.bitdubai.fermat_api.layer.osa_android.database_system.DatabaseTableRe
 import com.bitdubai.fermat_api.layer.osa_android.database_system.DealsWithPluginDatabaseSystem;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.PluginDatabaseSystem;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantCreateDatabaseException;
-import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantLoadTableToMemory;
-import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantUpdateRecord;
+import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantLoadTableToMemoryException;
+import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantUpdateRecordException;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.DatabaseNotFoundException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantOpenDatabaseException;
 import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.DealsWithErrors;
@@ -268,11 +268,11 @@ public class BlockchainInfoIncomingCryptoAnnouncerAgent implements Agent, DealsW
                 try {
                     table.loadToMemory();
                 }
-                catch (CantLoadTableToMemory cantLoadTableToMemory) {
+                catch (CantLoadTableToMemoryException cantLoadTableToMemory) {
                     /**
                      * I can not solve this situation.
                      */
-                   // errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_BLOCKCHAIN_INFO_WORLD, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantLoadTableToMemory);
+                   // errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_BLOCKCHAIN_INFO_WORLD, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantLoadTableToMemoryException);
                     throw new CantReadAnnouncedTransactionException();
                 }
                 //table.clearAllFilters();
@@ -293,7 +293,7 @@ public class BlockchainInfoIncomingCryptoAnnouncerAgent implements Agent, DealsW
                     try {
                         table.updateRecord(records.get(0));
 
-                    } catch (CantUpdateRecord cantUpdateRecord) {
+                    } catch (CantUpdateRecordException cantUpdateRecord) {
                         /**
                          * I can not solve this situation.
                          */
@@ -323,7 +323,7 @@ public class BlockchainInfoIncomingCryptoAnnouncerAgent implements Agent, DealsW
                     try {
                         table.updateRecord(records.get(0));
 
-                    } catch (CantUpdateRecord cantUpdateRecord) {
+                    } catch (CantUpdateRecordException cantUpdateRecord) {
                         /**
                          * I can not solve this situation.
                          */
