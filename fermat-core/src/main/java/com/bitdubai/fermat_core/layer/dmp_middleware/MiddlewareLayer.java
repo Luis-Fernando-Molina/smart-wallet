@@ -12,6 +12,7 @@ import com.bitdubai.fermat_core.layer.dmp_middleware.wallet_contacts.WalletConta
 import com.bitdubai.fermat_core.layer.dmp_middleware.wallet_factory.WalletFactorySubsystem;
 import com.bitdubai.fermat_core.layer.dmp_middleware.wallet_manager.WalletManagerSubsystem;
 import com.bitdubai.fermat_core.layer.dmp_middleware.wallet_publisher.WalletPublisherSubsystem;
+import com.bitdubai.fermat_core.layer.dmp_middleware.wallet_settings.WalletSettingsSubsystem;
 import com.bitdubai.fermat_core.layer.dmp_middleware.wallet_store.WalletStoreSubsystem;
 
 /**
@@ -26,7 +27,7 @@ public class MiddlewareLayer implements PlatformLayer {
     private Plugin mWalletManagerPlugin;
     private Plugin mWalletPublisherPlugin;
     private Plugin mWalletStorePlugin;
-
+    private Plugin mWalletSettingPlugin;
 
     public Plugin getAppRuntimePlugin() {
         return mAppRuntimePlugin;
@@ -56,6 +57,9 @@ public class MiddlewareLayer implements PlatformLayer {
         return mWalletStorePlugin;
     }
 
+    public Plugin getmWalletSettingPlugin() {
+        return mWalletSettingPlugin;
+    }
 
     @Override
     public void start() throws CantStartLayerException {
@@ -145,6 +149,20 @@ public class MiddlewareLayer implements PlatformLayer {
         try {
             walletStoreSubsystem.start();
             mWalletStorePlugin = walletStoreSubsystem.getPlugin();
+
+        } catch (CantStartSubsystemException e) {
+            System.err.println("CantStartSubsystemException: " + e.getMessage());
+        }
+
+
+        /**
+         * Let's try to start the wallet settings subsystem.
+         */
+        MiddlewareSubsystem walletSettingsSubsystem = new WalletSettingsSubsystem();
+
+        try {
+            walletSettingsSubsystem.start();
+            mWalletSettingPlugin = walletSettingsSubsystem.getPlugin();
 
         } catch (CantStartSubsystemException e) {
             System.err.println("CantStartSubsystemException: " + e.getMessage());

@@ -12,10 +12,10 @@ import java.util.UUID;
 public interface InstalledWallet {
 
     List<InstalledLanguage> getLanguagesId();
-    List<InstalledSkin> getSkinsId();
-    WalletCategory getWalletCategory();
-    String getWalletIcon();
-    UUID getWalletIdInThisDevice();
-    String getWalletName();
-    ReferenceWallet getWalletType();
+     List<InstalledSkin> getSkinsId();
+     WalletCategory getWalletCategory();
+     String getWalletIcon();
+     UUID getWalletIdInThisDevice();
+     String getWalletName();
+     ReferenceWallet getWalletType();
 }
