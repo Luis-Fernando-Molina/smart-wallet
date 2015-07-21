@@ -24,18 +24,19 @@ import java.util.ArrayList;
 
 import com.bitdubai.android_core.app.ApplicationSession;
 import com.bitdubai.android_core.app.SubAppActivity;
-import com.bitdubai.fermat_api.layer.dmp_middleware.app_runtime.SideMenu;
-import com.bitdubai.fermat_api.layer.dmp_middleware.app_runtime.App;
-import com.bitdubai.fermat_api.layer.dmp_middleware.app_runtime.AppRuntimeManager;
-import com.bitdubai.fermat_api.layer.dmp_middleware.app_runtime.SubApp;
-import com.bitdubai.fermat_api.layer.dmp_middleware.app_runtime.enums.Activities;
+
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.SideMenu;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
+import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.App;
+import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.AppRuntimeManager;
+import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.SubApp;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.SideMenu;
+
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_core.CorePlatformContext;
 import com.bitdubai.fermat_core.Platform;
 import com.bitdubai.fermat.R;
-import com.bitdubai.sub_app.wallet_factory.fragment.version_3.activity.FactoryActivity;
-import com.bitdubai.sub_app.wallet_publisher.activity.PublisherActivity;
-import com.bitdubai.sub_app.wallet_publisher.activity.ShopsActivity;
+
 
 
 import java.util.List;
@@ -52,7 +53,7 @@ public class NavigationDrawerFragment extends Fragment {
     private AppRuntimeManager appRuntimeMiddleware;
     private App app;
     private SubApp subApp;
-    private com.bitdubai.fermat_api.layer.dmp_middleware.app_runtime.Activity activity;
+    private com.bitdubai.fermat_api.layer.all_definition.navigation_structure.Activity activity;
     private CorePlatformContext platformContext;
     /**
      * Remember the position of the selected item.
@@ -82,6 +83,8 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+
+    private List<String> menuOption;
 
     public NavigationDrawerFragment() {
     }
@@ -147,7 +150,7 @@ public class NavigationDrawerFragment extends Fragment {
 
             this.appRuntimeMiddleware =  (AppRuntimeManager)platformContext.getPlugin(Plugins.BITDUBAI_APP_RUNTIME_MIDDLEWARE);
 
-            String[] menuOption = new String[]{} ;
+            menuOption = new ArrayList<String>();
 
             mDrawerListView.setAdapter(new NavigationDrawerArrayAdapter(
                     getActivity(),
@@ -180,14 +183,14 @@ public class NavigationDrawerFragment extends Fragment {
         //create menu option based activity submenu definition
         try {
 
-            List<String> menuOption = new ArrayList<String>();
-            List<com.bitdubai.fermat_api.layer.dmp_middleware.app_runtime.MenuItem> menuItem = new ArrayList<>();
+            menuOption = new ArrayList<String>();
+            List<com.bitdubai.fermat_api.layer.all_definition.navigation_structure.MenuItem> menuItem = new ArrayList<>();
 
             if (sideMenu != null) {
                 menuItem = sideMenu.getMenuItems();
                 for (int i = 0; i < menuItem.size(); i++) {
 
-                    com.bitdubai.fermat_api.layer.dmp_middleware.app_runtime.MenuItem menu = menuItem.get(i);
+                    com.bitdubai.fermat_api.layer.all_definition.navigation_structure.MenuItem menu = menuItem.get(i);
                     menuOption.add(menu.getLabel());
                 }
 
@@ -195,7 +198,7 @@ public class NavigationDrawerFragment extends Fragment {
 
             mDrawerListView.setAdapter(new NavigationDrawerArrayAdapter(
                     getActivity(),
-                    menuOption.toArray(new String[menuItem.size()])));
+                    menuOption));
 
             mFragmentContainerView = getActivity().findViewById(fragmentId);
             mDrawerLayout = drawerLayout;
@@ -271,76 +274,37 @@ public class NavigationDrawerFragment extends Fragment {
 
     private void selectItem(int position) {
 
-        try{
+        try {
 
 
-        mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
-        }
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(mFragmentContainerView);
-        }
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
-        }
-        if(ApplicationSession.getActivityId()=="DesktopActivity") {
-
-            //Factory projects
-            if (position == 3) {
-                Intent intent;
-                intent = new Intent(super.getActivity(), FactoryActivity.class);
-                startActivity(intent);
+            mCurrentSelectedPosition = position;
+            if (mDrawerListView != null) {
+                mDrawerListView.setItemChecked(position, true);
             }
-            //Shop MANAGER
-            if (position == 1) {
-
+            if (mDrawerLayout != null) {
+                mDrawerLayout.closeDrawer(mFragmentContainerView);
             }
-            //Publisher Wallets
-            if (position == 4){
-                Intent intent;
-                intent = new Intent(super.getActivity(), PublisherActivity.class);
-               startActivity(intent);
+            if (mCallbacks != null) {
+                mCallbacks.onNavigationDrawerItemSelected(position);
             }
-
-            //wallet store
-            if (position == 5){
-                AppRuntimeManager appRuntimeMiddleware =  (AppRuntimeManager)platformContext.getPlugin(Plugins.BITDUBAI_APP_RUNTIME_MIDDLEWARE);
-                appRuntimeMiddleware =  (AppRuntimeManager)platformContext.getPlugin(Plugins.BITDUBAI_APP_RUNTIME_MIDDLEWARE);
-                Intent intent;
-                appRuntimeMiddleware.getActivity(Activities.CWP_WALLET_RUNTIME_STORE_MAIN);
-                intent = new Intent(getActivity(), SubAppActivity.class);
-                intent.putExtra("executeStart","1");
-                startActivity(intent);
+            //test mati
+            if (ApplicationSession.getAppRuntimeMiddleware().getLasActivity().getType().getKey() == "DesktopActivity") {
 
 
-            }
-
-        }else if(ApplicationSession.getActivityId()=="PublisherActivity") {
-            if (position == 1)
-            {
-                Intent intent;
-                intent = new Intent(super.getActivity(), ShopsActivity.class);
-                startActivity(intent);
-            }
-        }else {
-            if(ApplicationSession.getActivityId()=="FactoryActivity") {
-
-                if (position == 3) {
+                //wallet store
+                if (position == 5) {
+                    AppRuntimeManager appRuntimeMiddleware = (AppRuntimeManager) platformContext.getPlugin(Plugins.BITDUBAI_APP_RUNTIME_MIDDLEWARE);
+                    appRuntimeMiddleware = (AppRuntimeManager) platformContext.getPlugin(Plugins.BITDUBAI_APP_RUNTIME_MIDDLEWARE);
                     Intent intent;
-                    intent = new Intent(super.getActivity(), FactoryActivity.class);
+                    appRuntimeMiddleware.getActivity(Activities.CWP_WALLET_RUNTIME_STORE_MAIN);
+                    intent = new Intent(getActivity(), SubAppActivity.class);
+                    intent.putExtra("executeStart", "1");
                     startActivity(intent);
-                }
-            }else
-            {
-                if (position == 1) {
-                    Intent intent;
-                    //  intent = new Intent(super.getActivity(), ContactsActivity.class);
-                    //startActivity(intent);
-                }
-            }
 
-        }
+
+                }
+
+            }
         }
         catch (Exception e)
         {

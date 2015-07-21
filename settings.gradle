@@ -1,9 +1,11 @@
 
 
-include ':fermat-android-core'
+include ':fermat-android-core', ':fermat-dmp-plugin-middleware-wallet-settings-bitdubai'
+include ':fermat-android-api'
 
 include ':fermat-core'
 include ':fermat-api'
+include ':fermat-pip-api'
 include ':fermat-p2p-api'
 include ':fermat-cry-api'
 
@@ -44,9 +46,6 @@ project(':fermat-osa-addon-android-file-system-bitdubai').projectDir = new File(
 include ':fermat-osa-addon-android-device-connectivity-bitdubai'
 project(':fermat-osa-addon-android-device-connectivity-bitdubai').projectDir = new File('OSA/addon/android/fermat-osa-addon-android-device-connectivity-bitdubai')
 
-include ':fermat-osa-addon-android-device-location-bitdubai'
-project(':fermat-osa-addon-android-device-location-bitdubai').projectDir = new File('OSA/addon/android/fermat-osa-addon-android-device-location-bitdubai')
-
 include ':fermat-osa-addon-android-device-power-bitdubai'
 project(':fermat-osa-addon-android-device-power-bitdubai').projectDir = new File('OSA/addon/android/fermat-osa-addon-android-device-power-bitdubai')
 
@@ -62,6 +61,10 @@ project(':fermat-osa-addon-multi-os-database-system-bitdubai').projectDir = new 
 
 include ':fermat-osa-addon-multi-os-file-system-bitdubai'
 project(':fermat-osa-addon-multi-os-file-system-bitdubai').projectDir = new File('OSA/addon/multi_os/fermat-osa-addon-multi-os-file-system-bitdubai')
+
+include ':fermat-osa-addon-android-device-location-bitdubai'
+project(':fermat-osa-addon-android-device-location-bitdubai').projectDir = new File('OSA/addon/android/fermat-osa-addon-android-device-location-bitdubai')
+
 */
 
 // PIP Projects (Addons)
@@ -230,16 +233,17 @@ project(':fermat-dmp-plugin-module-wallet-manager-bitdubai').projectDir = new Fi
 include ':fermat-dmp-plugin-module-wallet-publisher-bitdubai'
 project(':fermat-dmp-plugin-module-wallet-publisher-bitdubai').projectDir = new File('DMP/plugin/module/fermat-dmp-plugin-module-wallet-publisher-bitdubai')
 
-include ':fermat-dmp-plugin-module-wallet-runtime-bitdubai'
-project(':fermat-dmp-plugin-module-wallet-runtime-bitdubai').projectDir = new File('DMP/plugin/module/fermat-dmp-plugin-module-wallet-runtime-bitdubai')
-
 include ':fermat-dmp-plugin-module-wallet-store-bitdubai'
 project(':fermat-dmp-plugin-module-wallet-store-bitdubai').projectDir = new File('DMP/plugin/module/fermat-dmp-plugin-module-wallet-store-bitdubai')
 
 
 // Milestone 1 project:
-include ':fermat-dmp-plugin-middleware-app-runtime-bitdubai'
-project(':fermat-dmp-plugin-middleware-app-runtime-bitdubai').projectDir = new File('DMP/plugin/middleware/fermat-dmp-plugin-middleware-app-runtime-bitdubai')
+include ':fermat-dmp-plugin-engine-sub-app-runtime-bitdubai'
+project(':fermat-dmp-plugin-engine-sub-app-runtime-bitdubai').projectDir = new File('DMP/plugin/engine/fermat-dmp-plugin-engine-sub-app-runtime-bitdubai')
+
+include ':fermat-dmp-plugin-engine-wallet-runtime-bitdubai'
+project(':fermat-dmp-plugin-engine-wallet-runtime-bitdubai').projectDir = new File('DMP/plugin/engine/fermat-dmp-plugin-engine-wallet-runtime-bitdubai')
+
 
 include ':fermat-dmp-plugin-middleware-bank-notes-bitdubai'
 project(':fermat-dmp-plugin-middleware-bank-notes-bitdubai').projectDir = new File('DMP/plugin/middleware/fermat-dmp-plugin-middleware-bank-notes-bitdubai')
@@ -276,9 +280,12 @@ project(':fermat-dmp-addon-license-wallet-bitdubai').projectDir = new File('DMP/
 include ':fermat-dmp-android-reference-niche-wallet-bitcoin-wallet-bitdubai'
 project(':fermat-dmp-android-reference-niche-wallet-bitcoin-wallet-bitdubai').projectDir = new File('DMP/android/reference_niche_wallet/fermat-dmp-android-reference-niche-wallet-bitcoin-wallet-bitdubai')
 
+/*
+
 include ':fermat-dmp-android-reference-niche-wallet-age-kids-boys-bitdubai'
 project(':fermat-dmp-android-reference-niche-wallet-age-kids-boys-bitdubai').projectDir = new File('DMP/android/reference_niche_wallet/fermat-dmp-android-reference-niche-wallet-age-kids-boys-bitdubai')
 
+*/
 
 /*
 
@@ -317,3 +324,37 @@ project(':fermat-dmp-android-sub-app-wallet-publisher-bitdubai').projectDir = ne
 include ':fermat-dmp-android-sub-app-shop-manager-bitdubai'
 project(':fermat-dmp-android-sub-app-shop-manager-bitdubai').projectDir = new File('DMP/android/sub_app/fermat-dmp-android-sub-app-shop-manager-bitdubai')
 
+
+// Milestone 2 project middlware:
+
+include ':fermat-dmp-plugin-middleware-wallet-factory-bitdubai'
+project(':fermat-dmp-plugin-middleware-wallet-factory-bitdubai').projectDir = new File('DMP/plugin/middleware/fermat-dmp-plugin-middleware-wallet-factory-bitdubai')
+
+include ':fermat-dmp-plugin-middleware-wallet-store-bitdubai'
+project(':fermat-dmp-plugin-middleware-wallet-store-bitdubai').projectDir = new File('DMP/plugin/middleware/fermat-dmp-plugin-middleware-wallet-store-bitdubai')
+
+include ':fermat-dmp-plugin-middleware-wallet-publisher-bitdubai'
+project(':fermat-dmp-plugin-middleware-wallet-publisher-bitdubai').projectDir = new File('DMP/plugin/middleware/fermat-dmp-plugin-middleware-wallet-publisher-bitdubai')
+
+include ':fermat-dmp-plugin-middleware-wallet-manager-bitdubai'
+project(':fermat-dmp-plugin-middleware-wallet-manager-bitdubai').projectDir = new File('DMP/plugin/middleware/fermat-dmp-plugin-middleware-wallet-manager-bitdubai')
+
+// Milestone 2 project network service:
+
+include ':fermat-dmp-plugin-network-service-wallet-statistics-bitdubai'
+project(':fermat-dmp-plugin-network-service-wallet-statistics-bitdubai').projectDir = new File('DMP/plugin/network_service/fermat-dmp-plugin-network-service-wallet-statistics-bitdubai')
+
+
+// Milestone 2 project identity:
+
+include ':fermat-pip-plugin-identity-developer-bitdubai'
+project(':fermat-pip-plugin-identity-developer-bitdubai').projectDir = new File('PIP/plugin/identity/fermat-pip-plugin-identity-developer-bitdubai')
+
+
+// Milestone 2 project module:
+
+include ':fermat-pip-plugin-module-developer-bitdubai'
+project(':fermat-pip-plugin-module-developer-bitdubai').projectDir = new File('PIP/plugin/module/fermat-pip-plugin-module-developer-bitdubai')
+
+
+project(':fermat-dmp-plugin-middleware-wallet-settings-bitdubai').projectDir = new File('DMP/plugin/middleware/fermat-dmp-plugin-middleware-wallet-settings-bitdubai')

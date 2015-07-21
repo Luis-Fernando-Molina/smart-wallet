@@ -3,22 +3,19 @@ package com.bitdubai.fermat_cry_plugin.layer.crypto_network.bitcoin.developer.bi
 import com.bitdubai.fermat_api.DealsWithPluginIdentity;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.dmp_world.Agent;
-import com.bitdubai.fermat_api.layer.dmp_world.wallet.exceptions.CantInitializeMonitorAgentException;
 import com.bitdubai.fermat_api.layer.dmp_world.wallet.exceptions.CantStartAgentException;
-import com.bitdubai.fermat_api.layer.all_definition.enums.PlatformComponents;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.DealsWithPluginFileSystem;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.DealsWithLogger;
-import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogLevel;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogManager;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.DealsWithErrors;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.ErrorManager;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.UnexpectedPlatformExceptionSeverity;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.DealsWithErrors;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.UnexpectedPlatformExceptionSeverity;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
 import com.bitdubai.fermat_cry_api.layer.crypto_network.bitcoin.BitcoinManager;
 import com.bitdubai.fermat_cry_api.layer.crypto_network.bitcoin.exceptions.CantConnectToBitcoinNetwork;
+import com.bitdubai.fermat_cry_plugin.layer.crypto_network.bitcoin.developer.bitdubai.version_1.BitcoinCryptoNetworkPluginRoot;
 import com.bitdubai.fermat_cry_plugin.layer.crypto_network.bitcoin.developer.bitdubai.version_1.exceptions.CantCreateBlockStoreFileException;
-import com.bitdubai.fermat_cry_plugin.layer.crypto_network.bitcoin.developer.bitdubai.version_1.exceptions.CantDisconnectFromNetworkException;
 
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.PeerAddress;
@@ -26,13 +23,9 @@ import org.bitcoinj.core.PeerGroup;
 import org.bitcoinj.core.Wallet;
 import org.bitcoinj.net.discovery.DnsDiscovery;
 import org.bitcoinj.params.RegTestParams;
-import org.bitcoinj.store.BlockStoreException;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created by rodrigo on 08/06/15.
@@ -150,24 +143,6 @@ public class BitcoinCryptoNetworkMonitoringAgent implements Agent, BitcoinManage
          */
         peers.stopAsync();
         peers.awaitTerminated();
-
-        if (peers.isRunning())
-        /**
-         * If it didn't stop, then I will re try after 10 seconds.
-         */
-            try {
-                peers.awaitTerminated(10, TimeUnit.SECONDS);
-            } catch (TimeoutException e) {
-                try {
-                    StringBuilder context = new StringBuilder("Current amount of connected Peers: " + peers.getConnectedPeers().size());
-                    context.append(CantDisconnectFromNetworkException.CONTEXT_CONTENT_SEPARATOR);
-                    context.append("Is running: " + peers.isRunning());
-                    throw new CantDisconnectFromNetworkException("Could not stop CryptoNetwork agent and terminate connection.", e, context.toString(),"Service is already stopped.");
-                } catch (CantDisconnectFromNetworkException e1) {
-
-                    errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_BITCOIN_CRYPTO_NETWORK, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e1);
-                }
-            }
     }
 
     /**
@@ -230,14 +205,14 @@ public class BitcoinCryptoNetworkMonitoringAgent implements Agent, BitcoinManage
             InetSocketAddress inetSocketAddress = new InetSocketAddress(REGTEST_SERVER_ADDRESS, REGTEST_SERVER_PORT);
             PeerAddress peerAddress = new PeerAddress(inetSocketAddress);
             peers.addAddress(peerAddress);
-            System.out.println("CryptoNetwork information: Using RegTest. Connecting to " + inetSocketAddress.toString());
+            logManager.log(BitcoinCryptoNetworkPluginRoot.getLogLevelByClass(this.getClass().getName()), "CryptoNetwork information: Using RegTest. Connecting to " + inetSocketAddress.toString(), null, null);
         }
         else
         /**
          * If it is not RegTest, then I will get the Peers by DNSDiscovery
          */
         {
-            System.out.println("CryptoNetwork information: Using " + networkParameters.toString() + " network.");
+            logManager.log(BitcoinCryptoNetworkPluginRoot.getLogLevelByClass(this.getClass().getName()), "CryptoNetwork information: Using " + networkParameters.toString() + " network.", null, null);
             peers.addPeerDiscovery(new DnsDiscovery(this.networkParameters));
         }
 

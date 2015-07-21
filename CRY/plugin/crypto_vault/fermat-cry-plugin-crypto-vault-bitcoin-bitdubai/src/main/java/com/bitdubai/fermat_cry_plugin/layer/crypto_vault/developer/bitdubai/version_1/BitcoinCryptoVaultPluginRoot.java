@@ -27,14 +27,14 @@ import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.DealsWithLogger;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogLevel;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogManager;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.DealsWithErrors;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.ErrorManager;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_api.layer.pip_platform_service.event_manager.DealsWithEvents;
-import com.bitdubai.fermat_api.layer.pip_platform_service.event_manager.EventListener;
-import com.bitdubai.fermat_api.layer.pip_platform_service.event_manager.EventManager;
-import com.bitdubai.fermat_api.layer.pip_user.device_user.DealsWithDeviceUsers;
-import com.bitdubai.fermat_api.layer.pip_user.device_user.DeviceUserManager;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.DealsWithErrors;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.event_manager.DealsWithEvents;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.event_manager.EventListener;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.event_manager.EventManager;
+import com.bitdubai.fermat_pip_api.layer.pip_user.device_user.DealsWithDeviceUsers;
+import com.bitdubai.fermat_pip_api.layer.pip_user.device_user.DeviceUserManager;
 import com.bitdubai.fermat_cry_api.layer.crypto_network.bitcoin.BitcoinCryptoNetworkManager;
 import com.bitdubai.fermat_cry_api.layer.crypto_network.bitcoin.DealsWithBitcoinCryptoNetwork;
 import com.bitdubai.fermat_cry_api.layer.crypto_network.bitcoin.exceptions.CantConnectToBitcoinNetwork;
@@ -42,6 +42,7 @@ import com.bitdubai.fermat_cry_api.layer.crypto_network.bitcoin.exceptions.CantC
 import com.bitdubai.fermat_cry_api.layer.crypto_vault.CryptoVaultManager;
 import com.bitdubai.fermat_cry_api.layer.crypto_vault.exceptions.CouldNotGetCryptoStatusException;
 import com.bitdubai.fermat_cry_api.layer.crypto_vault.exceptions.CouldNotSendMoneyException;
+import com.bitdubai.fermat_cry_api.layer.crypto_vault.exceptions.CryptoTransactionAlreadySentException;
 import com.bitdubai.fermat_cry_api.layer.crypto_vault.exceptions.InvalidSendToAddressException;
 import com.bitdubai.fermat_cry_api.layer.crypto_vault.exceptions.VaultNotConnectedToNetworkException;
 import com.bitdubai.fermat_cry_plugin.layer.crypto_vault.developer.bitdubai.version_1.exceptions.CantExecuteQueryException;
@@ -285,9 +286,9 @@ public class BitcoinCryptoVaultPluginRoot implements CryptoVaultManager, Databas
 
     @Override
     public void start() throws CantStartPluginException {
-        //logManager.log(logLevel, "CryptoVault7 Starting...", "CryptoVault Starting...", "CryptoVault Starting...");
-        System.out.println("Crypto Vault Starting....");
-
+        //logManager.log(BitcoinCryptoVaultPluginRoot.getLogLevelByClass(this.getClass().getName()), "CryptoVault Starting...", null, null);
+        // TODO COMMENTED PRINTLN
+        System.out.println("CryptoVault starting...");
 
         /**
          * I get the userId from the deviceUserManager
@@ -344,12 +345,14 @@ public class BitcoinCryptoVaultPluginRoot implements CryptoVaultManager, Databas
              */
             try {
                 vault = new BitcoinCryptoVault(this.userId);
+                vault.setLogManager(logManager);
                 vault.setErrorManager(errorManager);
                 vault.setPluginDatabaseSystem(pluginDatabaseSystem);
                 vault.setDatabase(this.database);
-                vault.setPluginFileSystem(pluginFileSystem);
+                vault.setPluginFileSystem(this.pluginFileSystem);
                 vault.setBitcoinCryptoNetworkManager(bitcoinCryptoNetworkManager);
                 vault.setPluginId(pluginId);
+                vault.setEventManager(eventManager);
 
                 vault.loadOrCreateVault();
 
@@ -362,6 +365,7 @@ public class BitcoinCryptoVaultPluginRoot implements CryptoVaultManager, Databas
                     vault.connectVault();
                 } catch (CantConnectToBitcoinNetwork cantConnectToBitcoinNetwork) {
                     errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_BITCOIN_CRYPTO_VAULT, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantConnectToBitcoinNetwork);
+                    throw new CantStartPluginException("Error trying to start CryptoVault plugin.", cantConnectToBitcoinNetwork, null, "I couldn't connect to the Bitcoin network.");
 
                 }
 
@@ -371,6 +375,7 @@ public class BitcoinCryptoVaultPluginRoot implements CryptoVaultManager, Databas
                  * If I couldnt create the Vault, I cant go on.
                  */
                 errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_BITCOIN_CRYPTO_VAULT, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantCreateCryptoWalletException );
+                throw new CantStartPluginException("Error trying to start CryptoVault plugin.", cantCreateCryptoWalletException, null, "Probably not enought space available to save the vault.");
             }
 
 
@@ -393,7 +398,7 @@ public class BitcoinCryptoVaultPluginRoot implements CryptoVaultManager, Databas
              * the service is started.
              */
             this.serviceStatus = ServiceStatus.STARTED;
-            System.out.println("CryptoVault started.");
+            logManager.log(BitcoinCryptoVaultPluginRoot.getLogLevelByClass(this.getClass().getName()), "CryptoVault started.", null, null);
     }
 
     /**
@@ -480,7 +485,7 @@ public class BitcoinCryptoVaultPluginRoot implements CryptoVaultManager, Databas
     }
 
     @Override
-    public String sendBitcoins(UUID walletId, UUID FermatTrId, CryptoAddress addressTo, long satoshis) throws com.bitdubai.fermat_cry_api.layer.crypto_vault.exceptions.InsufficientMoneyException, InvalidSendToAddressException, CouldNotSendMoneyException {
+    public String sendBitcoins(UUID walletId, UUID FermatTrId, CryptoAddress addressTo, long satoshis) throws com.bitdubai.fermat_cry_api.layer.crypto_vault.exceptions.InsufficientMoneyException, InvalidSendToAddressException, CouldNotSendMoneyException, CryptoTransactionAlreadySentException {
         return vault.sendBitcoins(FermatTrId, addressTo, satoshis);
     }
 

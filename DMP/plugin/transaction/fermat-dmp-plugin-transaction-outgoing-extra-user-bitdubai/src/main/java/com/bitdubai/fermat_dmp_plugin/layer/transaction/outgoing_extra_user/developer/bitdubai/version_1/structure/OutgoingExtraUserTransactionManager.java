@@ -1,6 +1,7 @@
 package com.bitdubai.fermat_dmp_plugin.layer.transaction.outgoing_extra_user.developer.bitdubai.version_1.structure;
 
 import com.bitdubai.fermat_api.DealsWithPluginIdentity;
+import com.bitdubai.fermat_api.layer.all_definition.enums.Actors;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.all_definition.money.CryptoAddress;
 import com.bitdubai.fermat_api.layer.dmp_basic_wallet.bitcoin_wallet.exceptions.CantCalculateBalanceException;
@@ -14,9 +15,9 @@ import com.bitdubai.fermat_api.layer.dmp_transaction.outgoing_extrauser.exceptio
 import com.bitdubai.fermat_api.layer.osa_android.database_system.DealsWithPluginDatabaseSystem;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.PluginDatabaseSystem;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantInsertRecordException;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.DealsWithErrors;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.ErrorManager;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.DealsWithErrors;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
 import com.bitdubai.fermat_cry_api.layer.crypto_vault.CryptoVaultManager;
 import com.bitdubai.fermat_cry_api.layer.crypto_vault.DealsWithCryptoVault;
 import com.bitdubai.fermat_dmp_plugin.layer.transaction.outgoing_extra_user.developer.bitdubai.version_1.exceptions.CantInitializeDaoException;
@@ -99,7 +100,7 @@ public class OutgoingExtraUserTransactionManager implements DealsWithBitcoinWall
      */
 
     @Override
-    public void send(UUID walletID, CryptoAddress destinationAddress, long cryptoAmount) throws InsufficientFundsException, CantSendFundsException {
+    public void send(UUID walletID, CryptoAddress destinationAddress, long cryptoAmount, String notes, UUID deliveredByActorId, Actors deliveredByActorType, UUID deliveredToActorId, Actors deliveredToActorType) throws InsufficientFundsException, CantSendFundsException {
         OutgoingExtraUserDao dao = new OutgoingExtraUserDao();
         dao.setErrorManager(this.errorManager);
         dao.setPluginDatabaseSystem(this.pluginDatabaseSystem);
@@ -110,7 +111,7 @@ public class OutgoingExtraUserTransactionManager implements DealsWithBitcoinWall
             throw new CantSendFundsException("I coundn't initialize dao",e,"Plug-in id: "+this.pluginId.toString(),"");
         }
 
-        /* Wa
+        /*
          * TODO: Create a class fir tge selection of the correct wallet
          *       We will have as parameter the walletId and walletType
          *       The class will have a reference to all the basicwallet managers
@@ -119,8 +120,13 @@ public class OutgoingExtraUserTransactionManager implements DealsWithBitcoinWall
          */
 
         BitcoinWalletWallet bitcoinWalletWallet;
+
+
+
         try {
-            bitcoinWalletWallet = this.bitcoinWalletManager.loadWallet(walletID);
+                 bitcoinWalletWallet = this.bitcoinWalletManager.loadWallet(walletID);
+
+
         } catch (CantLoadWalletException e) {
             this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_OUTGOING_EXTRA_USER_TRANSACTION,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
             throw new CantSendFundsException("I couldn't load the wallet",e,"WalletId: "+ walletID.toString(),"");
@@ -128,20 +134,18 @@ public class OutgoingExtraUserTransactionManager implements DealsWithBitcoinWall
 
         long funds;
         try {
-            //TODO: revisar por el cambio en la interface
-
-            funds = bitcoinWalletWallet.getBalance();
+            funds = bitcoinWalletWallet.getAvailableBalance().getBalance();
         } catch (CantCalculateBalanceException e) {
             this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_OUTGOING_EXTRA_USER_TRANSACTION, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
             throw new CantSendFundsException("I couldn't calculate balance",e,"","");
         }
 
         if(cryptoAmount > funds) {
-            throw new InsufficientFundsException("", null, "CryptoAmount: " + cryptoAmount + "\nBalance: " + funds, "Many transactions were accepted before discounting from basic wallet balanace");
+            throw new InsufficientFundsException("We don't have enough funds", null, "CryptoAmount: " + cryptoAmount + "\nBalance: " + funds, "Many transactions were accepted before discounting from basic wallet balanace");
         }
 
         try {
-            dao.registerNewTransaction(walletID, destinationAddress, cryptoAmount);
+            dao.registerNewTransaction(walletID, destinationAddress, cryptoAmount,notes,deliveredByActorId, deliveredByActorType, deliveredToActorId, deliveredToActorType);
         } catch (CantInsertRecordException e) {
             this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_OUTGOING_EXTRA_USER_TRANSACTION, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, e);
             throw new CantSendFundsException("I couldn't insert new record",e,"","");

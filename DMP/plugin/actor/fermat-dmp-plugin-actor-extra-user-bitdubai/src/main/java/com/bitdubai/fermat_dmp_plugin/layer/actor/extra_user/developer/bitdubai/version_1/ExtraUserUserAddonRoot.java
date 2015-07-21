@@ -1,8 +1,7 @@
 package com.bitdubai.fermat_dmp_plugin.layer.actor.extra_user.developer.bitdubai.version_1;
 
-import com.bitdubai.fermat_api.Addon;
-
 import com.bitdubai.fermat_api.CantStartPluginException;
+import com.bitdubai.fermat_api.Plugin;
 import com.bitdubai.fermat_api.Service;
 import com.bitdubai.fermat_api.layer.all_definition.developer.DatabaseManagerForDevelopers;
 import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperDatabase;
@@ -10,27 +9,21 @@ import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperDatabaseT
 import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperDatabaseTableRecord;
 import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperObjectFactory;
 import com.bitdubai.fermat_api.layer.all_definition.developer.LogManagerForDevelopers;
-import com.bitdubai.fermat_api.layer.all_definition.enums.Addons;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.all_definition.enums.ServiceStatus;
-import com.bitdubai.fermat_api.layer.osa_android.database_system.DealsWithPlatformDatabaseSystem;
-import com.bitdubai.fermat_api.layer.osa_android.database_system.PlatformDatabaseSystem;
+import com.bitdubai.fermat_api.layer.osa_android.database_system.DealsWithPluginDatabaseSystem;
+import com.bitdubai.fermat_api.layer.osa_android.database_system.PluginDatabaseSystem;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.DealsWithLogger;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogLevel;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogManager;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.DealsWithErrors;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.ErrorManager;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.UnexpectedAddonsExceptionSeverity;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_api.layer.pip_platform_service.event_manager.DealsWithEvents;
-import com.bitdubai.fermat_api.layer.pip_platform_service.event_manager.EventManager;
-import com.bitdubai.fermat_api.layer.osa_android.file_system.DealsWithPlatformFileSystem;
-import com.bitdubai.fermat_api.layer.osa_android.file_system.PlatformFileSystem;
-import com.bitdubai.fermat_api.layer.pip_user.extra_user.ExtraUserManager;
-import com.bitdubai.fermat_api.layer.pip_user.User;
-import com.bitdubai.fermat_api.layer.pip_user.extra_user.exceptions.CantCreateExtraUserRegistry;
-import com.bitdubai.fermat_api.layer.pip_user.extra_user.exceptions.CantGetExtraUserRegistry;
-import com.bitdubai.fermat_api.layer.pip_user.extra_user.exceptions.CantInitializeExtraUserRegistryException;
+import com.bitdubai.fermat_api.layer.dmp_actor.Actor;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.DealsWithErrors;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
+import com.bitdubai.fermat_api.layer.dmp_actor.extra_user.ExtraUserManager;
+import com.bitdubai.fermat_api.layer.dmp_actor.extra_user.exceptions.CantCreateExtraUserRegistry;
+import com.bitdubai.fermat_api.layer.dmp_actor.extra_user.exceptions.CantGetExtraUserRegistry;
+import com.bitdubai.fermat_api.layer.dmp_actor.extra_user.exceptions.CantInitializeExtraUserRegistryException;
 import com.bitdubai.fermat_dmp_plugin.layer.actor.extra_user.developer.bitdubai.version_1.structure.ExtraUserDeveloperDatabaseFactory;
 import com.bitdubai.fermat_dmp_plugin.layer.actor.extra_user.developer.bitdubai.version_1.structure.ExtraUserRegistry;
 
@@ -49,7 +42,7 @@ import java.util.regex.Pattern;
  * This plug-in manages a registry of known extra users..
  */
 
-public class ExtraUserUserAddonRoot implements Addon, DatabaseManagerForDevelopers, DealsWithErrors, DealsWithEvents, DealsWithLogger, LogManagerForDevelopers, DealsWithPlatformDatabaseSystem, DealsWithPlatformFileSystem, ExtraUserManager, Service  {
+public class ExtraUserUserAddonRoot implements DatabaseManagerForDevelopers, DealsWithErrors, DealsWithLogger, LogManagerForDevelopers, DealsWithPluginDatabaseSystem, ExtraUserManager, Plugin, Service  {
 
     /**
      * DatabaseManagerForDevelopers interface implementation
@@ -57,10 +50,9 @@ public class ExtraUserUserAddonRoot implements Addon, DatabaseManagerForDevelope
      */
     @Override
     public List<DeveloperDatabase> getDatabaseList(DeveloperObjectFactory developerObjectFactory) {
-        ExtraUserDeveloperDatabaseFactory dbFactory = new ExtraUserDeveloperDatabaseFactory(errorManager, platformDatabaseSystem);
+        ExtraUserDeveloperDatabaseFactory dbFactory = new ExtraUserDeveloperDatabaseFactory(errorManager, pluginDatabaseSystem, pluginId);
         List<DeveloperDatabase> developerDatabaseList = null;
         try {
-            dbFactory.initializeDatabase();
             developerDatabaseList = dbFactory.getDatabaseList(developerObjectFactory);
         } catch (Exception e) {
             System.out.println("******* Error trying to get database list for plugin Wallet Contacts");
@@ -77,10 +69,9 @@ public class ExtraUserUserAddonRoot implements Addon, DatabaseManagerForDevelope
      */
     @Override
     public List<DeveloperDatabaseTable> getDatabaseTableList(DeveloperObjectFactory developerObjectFactory, DeveloperDatabase developerDatabase) {
-        ExtraUserDeveloperDatabaseFactory dbFactory = new ExtraUserDeveloperDatabaseFactory(errorManager, platformDatabaseSystem);
+        ExtraUserDeveloperDatabaseFactory dbFactory = new ExtraUserDeveloperDatabaseFactory(errorManager, pluginDatabaseSystem, pluginId);
         List<DeveloperDatabaseTable> developerDatabaseTableList = null;
         try {
-            dbFactory.initializeDatabase();
             developerDatabaseTableList = dbFactory.getDatabaseTableList(developerObjectFactory);
         } catch (Exception e) {
             System.out.println("******* Error trying to get database table list for plugin Wallet Contacts");
@@ -98,7 +89,7 @@ public class ExtraUserUserAddonRoot implements Addon, DatabaseManagerForDevelope
      */
     @Override
     public List<DeveloperDatabaseTableRecord> getDatabaseTableContent(DeveloperObjectFactory developerObjectFactory, DeveloperDatabase developerDatabase, DeveloperDatabaseTable developerDatabaseTable) {
-        ExtraUserDeveloperDatabaseFactory dbFactory = new ExtraUserDeveloperDatabaseFactory(errorManager, platformDatabaseSystem);
+        ExtraUserDeveloperDatabaseFactory dbFactory = new ExtraUserDeveloperDatabaseFactory(errorManager, pluginDatabaseSystem, pluginId);
         List<DeveloperDatabaseTableRecord> developerDatabaseTableRecordList = null;
         try {
             dbFactory.initializeDatabase();
@@ -120,12 +111,6 @@ public class ExtraUserUserAddonRoot implements Addon, DatabaseManagerForDevelope
     ErrorManager errorManager;
 
     /**
-     * DealWithEvents Interface member variables.
-     */
-    EventManager eventManager;
-
-
-    /**
      * DealsWithLogger interface member variable
      */
     LogManager logManager;
@@ -135,14 +120,12 @@ public class ExtraUserUserAddonRoot implements Addon, DatabaseManagerForDevelope
     /**
      * DealsWithPlatformDatabaseSystem Interface member variables.
      */
-    PlatformDatabaseSystem platformDatabaseSystem;
+    PluginDatabaseSystem pluginDatabaseSystem;
 
     /**
-     * DealsWithPlatformFileSystem Interface member variables.
+     * Plugin Interface member variables.
      */
-    PlatformFileSystem platformFileSystem;
-
-
+    UUID pluginId;
 
     /**
      * Service Interface member variables.
@@ -163,11 +146,6 @@ public class ExtraUserUserAddonRoot implements Addon, DatabaseManagerForDevelope
     /**
      * DealWithEvents Interface implementation.
      */
-
-    @Override
-    public void setEventManager(EventManager eventManager) {
-        this.eventManager = eventManager;
-    }
 
 
     @Override
@@ -223,30 +201,13 @@ public class ExtraUserUserAddonRoot implements Addon, DatabaseManagerForDevelope
              */
             String[] correctedClass = className.split((Pattern.quote("$")));
             return ExtraUserUserAddonRoot.newLoggingLevel.get(correctedClass[0]);
+
         } catch (Exception e){
             /**
              * If I couldn't get the correct loggin level, then I will set it to minimal.
              */
             return DEFAULT_LOG_LEVEL;
         }
-    }
-
-
-    /**
-     * DealsWithPluginDatabaseSystem interface implementation.
-     */
-    @Override
-    public void setPlatformDatabaseSystem(PlatformDatabaseSystem platformDatabaseSystem) {
-        this.platformDatabaseSystem = platformDatabaseSystem;
-    }
-
-    /**
-     * DealsWithPlatformFileSystem implementation.
-     */
-
-    @Override
-    public void setPlatformFileSystem(PlatformFileSystem platformFileSystem) {
-        this.platformFileSystem  = platformFileSystem;
     }
 
     /**
@@ -260,19 +221,14 @@ public class ExtraUserUserAddonRoot implements Addon, DatabaseManagerForDevelope
      *   @param UUID user id.
      * */
     @Override
-    public User getUser(UUID id){
-        User user = null;
-        try
-        {
-            user = this.extraUserRegistry.getUser(id);
+    public Actor getActor(UUID id) {
+        Actor actor = null;
+        try {
+            actor = this.extraUserRegistry.getUser(id);
+        } catch (CantGetExtraUserRegistry cantGetExtraUserRegistry) {
+            errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_EXTRA_USER, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, cantGetExtraUserRegistry);
         }
-        catch (CantGetExtraUserRegistry cantGetExtraUserRegistry){
-            errorManager.reportUnexpectedAddonsException(Addons.EXTRA_USER, UnexpectedAddonsExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_ADDONS, cantGetExtraUserRegistry);
-
-        }
-
-        return user;
-
+        return actor;
     }
 
     /**
@@ -281,21 +237,15 @@ public class ExtraUserUserAddonRoot implements Addon, DatabaseManagerForDevelope
      * @param userName
      * @return Object user
      */
-
     @Override
-    public User createUser(String userName){
-        User user = null;
-        try
-        {
+    public Actor createActor(String userName) {
+        Actor user = null;
+        try {
             user = this.extraUserRegistry.createUser(userName);
-        }
-        catch (CantCreateExtraUserRegistry cantCreateExtraUserRegistry){
+        } catch (CantCreateExtraUserRegistry cantCreateExtraUserRegistry) {
             errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_EXTRA_USER, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, cantCreateExtraUserRegistry);
-
         }
-
         return user;
-
     }
 
     /**
@@ -311,13 +261,15 @@ public class ExtraUserUserAddonRoot implements Addon, DatabaseManagerForDevelope
          */
         this.extraUserRegistry = new ExtraUserRegistry();
 
-        this.extraUserRegistry.setPlatformDatabaseSystem(this.platformDatabaseSystem);
+        this.extraUserRegistry.setPluginDatabaseSystem(this.pluginDatabaseSystem);
+        this.extraUserRegistry.setErrorManager(errorManager);
+        this.extraUserRegistry.setPluginId(pluginId);
 
         try {
             this.extraUserRegistry.initialize();
 
         } catch (CantInitializeExtraUserRegistryException cantInitializeExtraUserRegistryException) {
-            errorManager.reportUnexpectedAddonsException(Addons.EXTRA_USER, UnexpectedAddonsExceptionSeverity.DISABLES_THIS_ADDONS, cantInitializeExtraUserRegistryException);
+            errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_EXTRA_USER, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantInitializeExtraUserRegistryException);
             throw new CantStartPluginException(cantInitializeExtraUserRegistryException, Plugins.BITDUBAI_USER_EXTRA_USER);
         }
 
@@ -350,5 +302,13 @@ public class ExtraUserUserAddonRoot implements Addon, DatabaseManagerForDevelope
     }
 
 
+    @Override
+    public void setId(UUID pluginId) {
+        this.pluginId = pluginId;
+    }
 
+    @Override
+    public void setPluginDatabaseSystem(PluginDatabaseSystem pluginDatabaseSystem) {
+        this.pluginDatabaseSystem = pluginDatabaseSystem;
+    }
 }

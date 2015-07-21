@@ -1,37 +1,37 @@
 package com.bitdubai.sub_app.developer.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.internal.widget.AdapterViewCompat;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.bitdubai.fermat_api.Plugin;
-import com.bitdubai.fermat_api.layer.pip_actor.developer.ClassHierarchyLevels;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.interfaces.FermatScreenSwapper;
+import com.bitdubai.fermat_pip_api.layer.pip_actor.developer.ClassHierarchyLevels;
 import com.bitdubai.sub_app.developer.R;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Addons;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogLevel;
-import com.bitdubai.fermat_api.layer.pip_actor.developer.LogTool;
-import com.bitdubai.fermat_api.layer.pip_actor.developer.ToolManager;
+import com.bitdubai.fermat_pip_api.layer.pip_actor.developer.LogTool;
+import com.bitdubai.fermat_pip_api.layer.pip_actor.developer.ToolManager;
 import com.bitdubai.sub_app.developer.common.ArrayListLoggers;
 import com.bitdubai.sub_app.developer.common.Loggers;
 
@@ -45,7 +45,7 @@ import java.util.Map;
  * haves all methods for the log tools activity of a developer
  * <p/>
  * <p/>
- * Created by Leon Acosta - (laion.cj91@gmail.com) on 25/06/15.
+ * Created by Matias Furszyfer
  *
  * @version 1.0
  */
@@ -66,6 +66,8 @@ public class LogToolsFragment extends Fragment {
 
     private GridView gridView;
 
+    Typeface tf;
+
     public static LogToolsFragment newInstance(int position) {
         LogToolsFragment f = new LogToolsFragment();
         Bundle b = new Bundle();
@@ -77,6 +79,8 @@ public class LogToolsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        tf= Typeface.createFromAsset(getActivity().getAssets(), "fonts/CaviarDreams.ttf");
 
         try {
             ToolManager toolManager = platform.getToolManager();
@@ -101,147 +105,28 @@ public class LogToolsFragment extends Fragment {
          */
     }
 
-    /*@Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        String selectedWord = ((TextView) info.targetView).getText().toString();
-
-
-        menu.setHeaderTitle(selectedWord);
-        menu.add(LogLevel.NOT_LOGGING.toString());
-        menu.add(LogLevel.MINIMAL_LOGGING.toString());
-        menu.add(LogLevel.MODERATE_LOGGING.toString());
-        menu.add(LogLevel.AGGRESSIVE_LOGGING.toString());
-    }*/
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        GridView gv = (GridView) v;
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-
-        //String selectedWord = ((TextView) info.targetView).getText().toString();
-        //menu.setHeaderTitle(selectedWord);
-        //menu.add(LogLevel.NOT_LOGGING.toString());
-        menu.add(5,Loggers.LOGGER_LEVEL_NOT_LOGGING,1,LogLevel.NOT_LOGGING.toString());
-        menu.add(5,Loggers.LOGGER_LEVEL_MINIMAL_LOGGING,1,LogLevel.MINIMAL_LOGGING.toString());
-        menu.add(5,Loggers.LOGGER_LEVEL_MODERATE_LOGGING,1,LogLevel.MODERATE_LOGGING.toString());
-        menu.add(5,Loggers.LOGGER_LEVEL_AGGRESSIVE_LOGGING,1,LogLevel.AGGRESSIVE_LOGGING.toString());
-        int position = info.position;
-        /*if(!(position==0 || position==2))
-        {
-            menu.close();
-            )*/
-        }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-
-        RelativeLayout relativeLayout = (RelativeLayout)info.targetView;
-        String selectedWord = ((TextView)relativeLayout.findViewById(R.id.company_text_view)).getText().toString();
-        Loggers logger=lstLoggers.get(info.position);
-
-        //TODO: MATI
-        //TODO: rodri fijate que ahí lo está haciendo
-
-        switch  (item.getItemId()) {
-            case  Loggers.LOGGER_LEVEL_NOT_LOGGING: {
-                Toast.makeText(getActivity(), selectedWord, Toast.LENGTH_SHORT).show();
-                changeLogLevel(logger.level0, LogLevel.NOT_LOGGING, selectedWord);
-                break;
-            }
-            case  Loggers.LOGGER_LEVEL_MINIMAL_LOGGING: {
-                //Toast.makeText(getActivity(), logger.level1, Toast.LENGTH_SHORT).show();
-                changeLogLevel(logger.level0, LogLevel.MINIMAL_LOGGING, selectedWord);
-                break;
-            }
-            case  Loggers.LOGGER_LEVEL_MODERATE_LOGGING: {
-                //Toast.makeText(getActivity(), logger.level2, Toast.LENGTH_SHORT).show();
-                changeLogLevel(logger.level0, LogLevel.MODERATE_LOGGING, selectedWord);
-                break;
-            }
-            case  Loggers.LOGGER_LEVEL_AGGRESSIVE_LOGGING: {
-                //Toast.makeText(getActivity(), logger.level3, Toast.LENGTH_SHORT).show();
-                changeLogLevel(logger.level0, LogLevel.AGGRESSIVE_LOGGING, selectedWord);
-                break;
-            }
-            default: {
-                Toast.makeText(getActivity(), "Nada seleccionado", Toast.LENGTH_SHORT).show();
-                break;
-            }
-        }
-        //preguntar que carajo es el resource
-        /*Loggers logger = lstLoggers.get(info.position);
-        if (item.getTitle() == LogLevel.NOT_LOGGING.toString()) {
-            changeLogLevel(logger.level0,LogLevel.NOT_LOGGING, selectedWord);
-        } else if (item.getTitle() == LogLevel.MINIMAL_LOGGING.toString()) {
-            changeLogLevel(logger.level0,LogLevel.MINIMAL_LOGGING, selectedWord);
-        } else if (item.getTitle() == LogLevel.MODERATE_LOGGING.toString()) {
-            changeLogLevel(logger.level0,LogLevel.MODERATE_LOGGING, selectedWord);
-        } else if (item.getTitle() == LogLevel.AGGRESSIVE_LOGGING.toString()) {
-            changeLogLevel(logger.level0,LogLevel.AGGRESSIVE_LOGGING, selectedWord);
-        } else {
-            return false;
-        }*/
-        return true;
-    }
 
     private void changeLogLevel(String pluginKey,LogLevel logLevel, String resource) {
         try {
-            HashMap<String, LogLevel> data = new HashMap<String, LogLevel>();
+            //Plugins plugin = Plugins.getByKey("Bitcoin Crypto Network");
             Plugins plugin = Plugins.getByKey(pluginKey);
 
-            /**
-             * I will get all the PullPath matches with resource
-             */
-            for (Loggers logger : lstLoggers){
-                if (logger.level0 == resource)
-                    data.put(logger.fullPath,logLevel);
-                if (logger.level1 == resource)
-                    data.put(logger.fullPath,logLevel);
-                if (logger.level2 == resource)
-                    data.put(logger.fullPath,logLevel);
-                if (logger.level3 == resource)
-                    data.put(logger.fullPath,logLevel);
-            }
-            for (ClassHierarchyLevels classes : logTool.getClassesHierarchyPlugins(plugin)){
-                if (classes.getLevel0() == resource)
-                    data.put(classes.getFullPath(),logLevel);
-                if (classes.getLevel1() == resource)
-                    data.put(classes.getFullPath(),logLevel);
-                if (classes.getLevel2() == resource)
-                data.put(classes.getFullPath(),logLevel);
-                if (classes.getLevel3() == resource)
-                data.put(classes.getFullPath(),logLevel);
-            }
 
+            //logTool.setLogLevel(plugin, logLevel);
+            /**
+             * Now I must look in pluginClasses map the match of the selected class to pass the full path
+             */
+            HashMap<String, LogLevel> data = new HashMap<String, LogLevel>();
+            data.put(resource, logLevel);
             logTool.setNewLogLevelInClass(plugin, data);
 
-
-            LogToolsFragment logToolsFragment = new LogToolsFragment();
-
-            FragmentTransaction FT = getFragmentManager().beginTransaction();
-
-            FT.replace(R.id.logContainer, logToolsFragment);
-
-            FT.commit();
         } catch (Exception e) {
             System.out.println("*********** soy un error " + e.getMessage());
         }
     }
 
 
-
-
-
-    @Override
+        @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_log_tools, container, false);
 
@@ -271,13 +156,12 @@ public class LogToolsFragment extends Fragment {
 
 
                     Loggers log = new Loggers();
-                    log.level0=classes.getLevel0();
-                    log.level1=classes.getLevel1();
-                    log.level2=classes.getLevel2();
-                    log.level3=classes.getLevel3();
-                    log.fullPath=classes.getFullPath();
+
                     log.type=Loggers.TYPE_PLUGIN;
+                    log.classHierarchyLevels=classes;
                     log.picture="plugin";
+                    log.pluginKey=plugin.getKey();
+                    //log.logLevel=classes.
                     lstLoggers.add(log);
                 }
 
@@ -298,13 +182,16 @@ public class LogToolsFragment extends Fragment {
                     //loading de loggers class
 
                     Loggers log = new Loggers();
-                    log.level0 = classes.getLevel0();
+                    /*log.level0 = classes.getLevel0();
                     log.level1 = classes.getLevel1();
                     log.level2 = classes.getLevel2();
                     log.level3 = classes.getLevel3();
                     log.fullPath = classes.getFullPath();
+                    */
                     log.type = Loggers.TYPE_ADDON;
                     log.picture = "addon";
+                    log.pluginKey=addon.getKey();
+                    log.classHierarchyLevels=classes;
                     lstLoggers.add(log);
                 }
 
@@ -330,13 +217,14 @@ public class LogToolsFragment extends Fragment {
 
 
 
-            AppListAdapter _adpatrer = new AppListAdapter(getActivity(), R.layout.shell_wallet_desktop_front_grid_item, lstLoggersToShow);
+            AppListAdapter _adpatrer = new AppListAdapter(getActivity(), R.layout.grid_items, lstLoggersToShow);
             _adpatrer.notifyDataSetChanged();
             gridView.setAdapter(_adpatrer);
         }catch (Exception e){
                 showMessage("LogTools Fragment onCreateView Exception - " + e.getMessage());
                 e.printStackTrace();
             }
+
         registerForContextMenu(gridView);
         return rootView;
 
@@ -372,10 +260,10 @@ public class LogToolsFragment extends Fragment {
 
             final Loggers item = getItem(position);
 
-            ViewHolder holder;
+            final ViewHolder holder;
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Service.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.shell_wallet_desktop_front_grid_item, parent, false);
+                convertView = inflater.inflate(R.layout.grid_items_with_button, parent, false);
 
 
 
@@ -393,45 +281,44 @@ public class LogToolsFragment extends Fragment {
                         Loggers item = (Loggers) gridView.getItemAtPosition(position);
 
 
-                        LogToolsFragmentLevel2 logToolsFragmentLevel2 = new LogToolsFragmentLevel2();
+                        ArrayListLoggers lst = lstLoggers.getListFromLevel(item, ArrayListLoggers.LEVEL_0);
 
-                        logToolsFragmentLevel2.setLoggers(lstLoggers.getListFromLevel(item, ArrayListLoggers.LEVEL_0));
-                        //DatabaseToolsDatabaseListFragment databaseToolsDatabaseListFragment = new DatabaseToolsDatabaseListFragment();
+                        //set the next fragment and params
+                        Object[] params = new Object[1];
 
-                        //databaseToolsDatabaseListFragment.setResource(item);
+                        params[0] = lst;
+                        ((FermatScreenSwapper)getActivity()).setScreen("DeveloperLogLevel1Fragment");
+                        ((FermatScreenSwapper)getActivity()).setParams(params);
+                        ((FermatScreenSwapper)getActivity()).changeScreen();
 
-                        FragmentTransaction FT = getFragmentManager().beginTransaction();
 
-
-                        //FT.add(databaseToolsDatabaseListFragment, TAG_DATABASE_TOOLS_FRAGMENT);
-                        FT.replace(R.id.logContainer, logToolsFragmentLevel2, "fragmento2");
-                        FT.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                        FT.commit();
                     }
                 });
+
                 holder.imageView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
-                        Toast.makeText(getActivity(),"tocando",Toast.LENGTH_SHORT).show();
-                        //getActivity().openContextMenu(view);
+                        String loggerText = holder.companyTextView.getText().toString();
+                        CustomDialogClass cdd=new CustomDialogClass(getActivity(),item,item.pluginKey);
+                        cdd.show();
                         return true;
                     }
                 });
 
-                registerForContextMenu(holder.imageView );
                 TextView textView =(TextView) convertView.findViewById(R.id.company_text_view);
                 Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/CaviarDreams.ttf");
                 textView.setTypeface(tf);
                 holder.companyTextView = textView;
+                String textToShow=item.classHierarchyLevels.getLevel0();
 
+                holder.companyTextView.setText(textToShow);
 
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            holder.companyTextView.setText(item.level0);
-            // holder.companyTextView.setTypeface(MyApplication.getDefaultTypeface());
+
 
 
             switch (item.picture) {
@@ -448,8 +335,6 @@ public class LogToolsFragment extends Fragment {
                     holder.imageView.setTag("CPWWRWAKAV1M|3");
                     break;
             }
-
-
             return convertView;
         }
 
@@ -464,6 +349,165 @@ public class LogToolsFragment extends Fragment {
         public ImageView imageView;
         public TextView companyTextView;
 
+
+    }
+
+    public class CustomDialogClass extends Dialog implements
+            android.view.View.OnClickListener {
+
+
+        private Loggers logger;
+        private String pluginKey;
+        public Activity c;
+        public Dialog d;
+
+        ListView list;
+        String[] web = {
+                "Not logging",
+                "Minimal logging",
+                "Moderate logging",
+                "Agressive logging"
+        } ;
+
+        List<String> lstEnum;
+
+        Integer[] img ={
+                R.drawable.ic_action_accept_grey,
+                0,
+                0,
+                0
+        };
+
+        public CustomDialogClass(Activity a,Loggers loggers,String pluginKey) {
+            super(a);
+            this.logger=loggers;
+            this.pluginKey=pluginKey;
+            loadDisplayName();
+            this.c = a;
+            setLogLevelImage();
+
+            logger.logLevel = LogLevel.NOT_LOGGING;
+        }
+
+        private void loadDisplayName(){
+            lstEnum=new ArrayList<>();
+            for(int i=0;i<LogLevel.values().length;i++){
+                lstEnum.add(LogLevel.values()[i].getDisplayName());
+            }
+        }
+        private void setLogLevelImage(){
+            if(logger.logLevel!=null) {
+                switch (logger.logLevel) {
+                    case NOT_LOGGING:
+                        img = new Integer[]{
+                                1, 0, 0, 0
+                        };
+                        break;
+                    case MINIMAL_LOGGING:
+                        img = new Integer[]{
+                                0, 1, 0, 0
+                        };
+                        break;
+                    case MODERATE_LOGGING:
+                        img = new Integer[]{
+                                0, 0, 1, 0
+                        };
+                        break;
+                    case AGGRESSIVE_LOGGING:
+                        img = new Integer[]{
+                                0, 0, 0, 1
+                        };
+                        break;
+                }
+            }else{
+                logger.logLevel= LogLevel.NOT_LOGGING;
+            }
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.popup);
+
+
+
+            CustomList adapter = new
+                    CustomList(c, lstEnum, img);
+            list = (ListView) findViewById(R.id.listView);
+            list.setAdapter(adapter);
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    Toast.makeText(c,web[+ position] + " activated", Toast.LENGTH_SHORT).show();
+                    String item =list.getItemAtPosition(position).toString();
+                    if(item.compareTo(LogLevel.NOT_LOGGING.toString())==0) {
+                        changeLogLevel(pluginKey, LogLevel.NOT_LOGGING, logger.classHierarchyLevels.getFullPath());
+                        logger.logLevel = LogLevel.NOT_LOGGING;
+                    }else if (item.compareTo(LogLevel.MINIMAL_LOGGING.toString())==0){
+                        changeLogLevel(pluginKey, LogLevel.MINIMAL_LOGGING, logger.classHierarchyLevels.getFullPath());
+                        logger.logLevel = LogLevel.MINIMAL_LOGGING;
+                    }else if(item.compareTo(LogLevel.MODERATE_LOGGING.toString())==0){
+                        changeLogLevel(pluginKey, LogLevel.MODERATE_LOGGING, logger.classHierarchyLevels.getFullPath());
+                        logger.logLevel = LogLevel.MODERATE_LOGGING;
+                    }else if (item.compareTo(LogLevel.AGGRESSIVE_LOGGING.toString())==0){
+                        changeLogLevel(pluginKey, LogLevel.AGGRESSIVE_LOGGING, logger.classHierarchyLevels.getFullPath());
+                        logger.logLevel = LogLevel.AGGRESSIVE_LOGGING;
+                    }
+                    dismiss();
+                }
+            });
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            int i = v.getId();
+            /*if (i == R.id.btn_yes) {
+                c.finish();
+
+            } else if (i == R.id.btn_no) {
+                dismiss();
+
+            } else {
+            }*/
+            dismiss();
+        }
+
+        public class CustomList extends ArrayAdapter<String>{
+
+            private final Activity context;
+            private final List<String> listEnumsToDisplay;
+            private final Integer[] imageId;
+            public CustomList(Activity context,
+                              List<String> listEnumsToDisplay, Integer[] imageId) {
+                super(context, R.layout.list_single, listEnumsToDisplay);
+                this.context = context;
+                this.listEnumsToDisplay = listEnumsToDisplay;
+                this.imageId = imageId;
+
+            }
+            @Override
+            public View getView(int position, View view, ViewGroup parent) {
+                LayoutInflater inflater = context.getLayoutInflater();
+                View rowView= inflater.inflate(R.layout.list_single, null, true);
+                TextView txtTitle = (TextView) rowView.findViewById(R.id.txt);
+
+                ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
+                txtTitle.setTextColor(Color.WHITE);
+                txtTitle.setText(listEnumsToDisplay.get(position));
+                //txtTitle.setText(LogLevel.MINIMAL_LOGGING.toString());
+
+                setLogLevelImage();
+                if(imageId[position]!=0){
+                    imageView.setImageResource(R.drawable.ic_action_accept_grey);
+                }
+
+                return rowView;
+            }
+        }
 
     }
 }

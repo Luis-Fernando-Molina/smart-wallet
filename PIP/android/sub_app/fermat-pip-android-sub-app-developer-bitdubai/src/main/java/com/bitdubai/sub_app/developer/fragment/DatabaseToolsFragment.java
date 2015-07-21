@@ -1,40 +1,30 @@
 package com.bitdubai.sub_app.developer.fragment;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bitdubai.fermat_api.Addon;
+
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.interfaces.FermatScreenSwapper;
 import com.bitdubai.sub_app.developer.R;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Addons;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
-import com.bitdubai.fermat_api.layer.pip_actor.developer.DatabaseTool;
-import com.bitdubai.fermat_api.layer.pip_actor.developer.ToolManager;
+import com.bitdubai.fermat_pip_api.layer.pip_actor.developer.DatabaseTool;
+import com.bitdubai.fermat_pip_api.layer.pip_actor.developer.ToolManager;
 import com.bitdubai.sub_app.developer.common.Resource;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +66,7 @@ public class DatabaseToolsFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRetainInstance(true);
         try {
             ToolManager toolManager = platform.getToolManager();
             try {
@@ -136,7 +126,7 @@ public class DatabaseToolsFragment extends Fragment{
                 gridView.setNumColumns(3);
             }
             //@SuppressWarnings("unchecked")
-            AppListAdapter _adpatrer = new AppListAdapter(getActivity(), R.layout.shell_wallet_desktop_front_grid_item, mlist);
+            AppListAdapter _adpatrer = new AppListAdapter(getActivity(), R.layout.developer_app_grid_item, mlist);
             _adpatrer.notifyDataSetChanged();
             gridView.setAdapter(_adpatrer);
 
@@ -184,13 +174,10 @@ public class DatabaseToolsFragment extends Fragment{
             ViewHolder holder;
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Service.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.shell_wallet_desktop_front_grid_item, parent, false);
+                convertView = inflater.inflate(R.layout.developer_app_grid_item, parent, false);
 
 
                 holder = new ViewHolder();
-
-
-
 
                 holder.imageView = (ImageView) convertView.findViewById(R.id.image_view);
 
@@ -199,17 +186,16 @@ public class DatabaseToolsFragment extends Fragment{
                     public void onClick(View view) {
 
                         Resource item=(Resource) gridView.getItemAtPosition(position);
-                        DatabaseToolsDatabaseListFragment databaseToolsDatabaseListFragment = new DatabaseToolsDatabaseListFragment();
 
-                        databaseToolsDatabaseListFragment.setResource(item);
+                        //set the next fragment and params
+                        Object[] params = new Object[1];
 
-                        FragmentTransaction FT = getFragmentManager().beginTransaction();
+                        params[0] = item;
 
+                        ((FermatScreenSwapper)getActivity()).setScreen("DeveloperDatabaseFragment");
+                        ((FermatScreenSwapper)getActivity()).setParams(params);
+                        ((FermatScreenSwapper)getActivity()).changeScreen();
 
-                        //FT.add(databaseToolsDatabaseListFragment, TAG_DATABASE_TOOLS_FRAGMENT);
-                        FT.replace(R.id.hola, databaseToolsDatabaseListFragment);
-                        FT.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                        FT.commit();
                     }
                 });
 

@@ -11,6 +11,8 @@ android {
 
     packagingOptions {
         exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
     }
 
     defaultConfig {
@@ -27,18 +29,7 @@ android {
     sourceSets {
         main {
             res.srcDirs = ['src/main/structured_res/app/shell/version_1',
-                           'src/main/structured_res/app/subapp/shop/version_1',
-                           'src/main/structured_res/app/subapp/shop_manager/version_1',
-                           'src/main/structured_res/app/subapp/wallet_factory/version_1',
-                           'src/main/structured_res/app/subapp/wallet_factory/version_2',
-                           'src/main/structured_res/app/subapp/wallet_store/version_1',
-                           'src/main/structured_res/app/subapp/publisher/version_1',
-                           'src/main/structured_res/app/subapp/wallet_manager/version_1',
-                           'src/main/structured_res/app/subapp/wallet_runtime/wallet_framework/version_1',
-                           'src/main/structured_res/app/subapp/wallet_runtime/version_1',
-                           'src/main/structured_res/app/subapp/wallet_runtime/wallet_segment/age/sub_segment/teens/sub_segment/all/developer/bitdubai/version_1',
-                           'src/main/structured_res/app/subapp/wallet_runtime/wallet_segment/age/sub_segment/kids/sub_segment/all/developer/bitdubai/version_1',
-                           'src/main/res']
+                             'src/main/res']
         }
     }
     buildTypes {
@@ -56,6 +47,8 @@ android {
 
 dependencies {
 
+    compile 'com.android.support:multidex:1.0.0'
+
     compile project(':fermat-api')
     compile project(':fermat-core')
 
@@ -64,13 +57,14 @@ dependencies {
 
     compile project(':fermat-osa-addon-android-database-system-bitdubai')
     compile project(':fermat-osa-addon-android-file-system-bitdubai')
-    compile project(':fermat-osa-addon-android-device-location-bitdubai')
+//    compile project(':fermat-osa-addon-android-device-location-bitdubai')
     compile project(':fermat-osa-addon-android-logger-bitdubai')
 
     // DMP Projects (Wallets)
 
     compile project(':fermat-dmp-android-reference-niche-wallet-bitcoin-wallet-bitdubai')
-    compile project(':fermat-dmp-android-reference-niche-wallet-age-kids-boys-bitdubai')
+
+
 
     /*
 
@@ -88,6 +82,10 @@ dependencies {
     */
     // DMP Projects (Sub APPs)
 
+    compile project(':fermat-dmp-android-sub-app-wallet-factory-bitdubai')
+    compile project(':fermat-dmp-android-sub-app-wallet-publisher-bitdubai')
+    compile project(':fermat-dmp-android-sub-app-wallet-store-bitdubai')
+
     /*
 
     Sub APPs on the pipeline
@@ -95,10 +93,6 @@ dependencies {
     */
 
     compile project(':fermat-dmp-android-sub-app-wallet-manager-bitdubai')
-    compile project(':fermat-dmp-android-sub-app-wallet-factory-bitdubai')
-    compile project(':fermat-dmp-android-sub-app-wallet-store-bitdubai')
-    compile project(':fermat-dmp-android-sub-app-wallet-publisher-bitdubai')
-    compile project(':fermat-dmp-android-sub-app-shop-manager-bitdubai')
     compile project(':fermat-pip-android-sub-app-sub-app-manager-bitdubai')
 
 
@@ -112,4 +106,6 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:support-v13:21.0.3'
     compile 'com.google.android.gms:play-services:6.5.87'
+
+
 }

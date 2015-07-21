@@ -1,16 +1,13 @@
 package com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1;
 
-import com.bitdubai.fermat_api.Addon;
 import com.bitdubai.fermat_api.Plugin;
 import com.bitdubai.fermat_api.Service;
 import com.bitdubai.fermat_api.layer.all_definition.developer.DatabaseManagerForDevelopers;
-import com.bitdubai.fermat_api.layer.all_definition.developer.DealsWithLogManagers;
 import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperDatabase;
 import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperDatabaseTable;
 import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperDatabaseTableRecord;
 import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperObjectFactory;
 import com.bitdubai.fermat_api.layer.all_definition.developer.LogManagerForDevelopers;
-import com.bitdubai.fermat_api.layer.all_definition.enums.Addons;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.all_definition.enums.ServiceStatus;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.DealsWithPluginDatabaseSystem;
@@ -18,9 +15,9 @@ import com.bitdubai.fermat_api.layer.osa_android.database_system.PluginDatabaseS
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.DealsWithLogger;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogLevel;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogManager;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.DealsWithErrors;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.ErrorManager;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.DealsWithErrors;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
 import com.bitdubai.fermat_cry_api.layer.crypto_module.actor_address_book.exceptions.CantGetActorAddressBookRegistryException;
 import com.bitdubai.fermat_cry_api.layer.crypto_module.actor_address_book.interfaces.ActorAddressBookManager;
 import com.bitdubai.fermat_cry_api.layer.crypto_module.actor_address_book.interfaces.ActorAddressBookRegistry;
@@ -54,14 +51,7 @@ public class ActorAddressBookCryptoModulePluginRoot implements ActorAddressBookM
     @Override
     public List<DeveloperDatabase> getDatabaseList(DeveloperObjectFactory developerObjectFactory) {
         ActorAddressBookCryptoModuleDeveloperDatabaseFactory dbFactory = new ActorAddressBookCryptoModuleDeveloperDatabaseFactory(pluginDatabaseSystem, pluginId);
-        List<DeveloperDatabase> developerDatabaseList = null;
-        try {
-            dbFactory.initializeDatabase();
-            developerDatabaseList = dbFactory.getDatabaseList(developerObjectFactory);
-        } catch (Exception e) {
-            System.out.println("******* Error trying to get database list for plugin Wallet Contacts");
-        }
-        return developerDatabaseList;
+        return dbFactory.getDatabaseList(developerObjectFactory);
     }
 
     /**
@@ -74,14 +64,7 @@ public class ActorAddressBookCryptoModulePluginRoot implements ActorAddressBookM
     @Override
     public List<DeveloperDatabaseTable> getDatabaseTableList(DeveloperObjectFactory developerObjectFactory, DeveloperDatabase developerDatabase) {
         ActorAddressBookCryptoModuleDeveloperDatabaseFactory dbFactory = new ActorAddressBookCryptoModuleDeveloperDatabaseFactory(pluginDatabaseSystem, pluginId);
-        List<DeveloperDatabaseTable> developerDatabaseTableList = null;
-        try {
-            dbFactory.initializeDatabase();
-            developerDatabaseTableList = dbFactory.getDatabaseTableList(developerObjectFactory);
-        } catch (Exception e) {
-            System.out.println("******* Error trying to get database table list for plugin Wallet Contacts");
-        }
-        return developerDatabaseTableList;
+        return dbFactory.getDatabaseTableList(developerObjectFactory);
     }
 
     /**

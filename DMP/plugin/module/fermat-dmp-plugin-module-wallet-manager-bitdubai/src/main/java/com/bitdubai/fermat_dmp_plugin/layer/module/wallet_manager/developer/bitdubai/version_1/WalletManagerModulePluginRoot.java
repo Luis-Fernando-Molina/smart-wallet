@@ -5,8 +5,11 @@ package com.bitdubai.fermat_dmp_plugin.layer.module.wallet_manager.developer.bit
 import com.bitdubai.fermat_api.CantStartPluginException;
 import com.bitdubai.fermat_api.DealsWithPluginIdentity;
 import com.bitdubai.fermat_api.Plugin;
+import com.bitdubai.fermat_api.layer.all_definition.developer.LogManagerForDevelopers;
 import com.bitdubai.fermat_api.layer.all_definition.enums.DeviceDirectory;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
+import com.bitdubai.fermat_api.layer.all_definition.event.EventSource;
+import com.bitdubai.fermat_api.layer.all_definition.event.EventType;
 import com.bitdubai.fermat_api.layer.dmp_basic_wallet.bitcoin_wallet.interfaces.BitcoinWalletManager;
 import com.bitdubai.fermat_api.layer.dmp_basic_wallet.bitcoin_wallet.interfaces.DealsWithBitcoinWallet;
 import com.bitdubai.fermat_api.layer.dmp_module.wallet_manager.NicheWalletType;
@@ -17,7 +20,6 @@ import com.bitdubai.fermat_api.layer.dmp_module.wallet_manager.exceptions.CantCr
 import com.bitdubai.fermat_api.layer.dmp_module.wallet_manager.exceptions.CantLoadWalletsException;
 import com.bitdubai.fermat_api.layer.all_definition.event.PlatformEvent;
 import com.bitdubai.fermat_api.layer.dmp_module.wallet_manager.exceptions.CantPersistWalletException;
-import com.bitdubai.fermat_api.layer.osa_android.database_system.DealsWithPlatformDatabaseSystem;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.DealsWithPluginDatabaseSystem;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.PluginDatabaseSystem;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.FileLifeSpan;
@@ -27,20 +29,18 @@ import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantCrea
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantLoadFileException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantPersistFileException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.FileNotFoundException;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.DealsWithErrors;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.ErrorManager;
+import com.bitdubai.fermat_api.layer.osa_android.logger_system.DealsWithLogger;
+import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogLevel;
+import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogManager;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.DealsWithErrors;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
 
 import com.bitdubai.fermat_api.Service;
 import com.bitdubai.fermat_api.layer.all_definition.enums.ServiceStatus;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.DealsWithPluginFileSystem;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_api.layer.pip_platform_service.event_manager.*;
-import com.bitdubai.fermat_dmp_plugin.layer.module.wallet_manager.developer.bitdubai.version_1.event_handlers.NavigationStructureUpdatedEventHandler;
-import com.bitdubai.fermat_dmp_plugin.layer.module.wallet_manager.developer.bitdubai.version_1.event_handlers.UserCreatedEventHandler;
-import com.bitdubai.fermat_dmp_plugin.layer.module.wallet_manager.developer.bitdubai.version_1.event_handlers.UserLoggedInEventHandler;
-import com.bitdubai.fermat_dmp_plugin.layer.module.wallet_manager.developer.bitdubai.version_1.event_handlers.WalletCreatedEventHandler;
-import com.bitdubai.fermat_dmp_plugin.layer.module.wallet_manager.developer.bitdubai.version_1.event_handlers.WalletResourcesInstalledEventHandler;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.event_manager.*;
 import com.bitdubai.fermat_dmp_plugin.layer.module.wallet_manager.developer.bitdubai.version_1.structure.WalletManagerWallet;
 
 import java.util.ArrayList;
@@ -53,13 +53,9 @@ import java.util.UUID;
 /**
  * Created by ciencias on 21.01.15.
  */
-public class WalletManagerModulePluginRoot implements Service, WalletManager, DealsWithBitcoinWallet,DealsWithEvents,DealsWithErrors, DealsWithPluginDatabaseSystem,DealsWithPluginFileSystem, Plugin {
+public class WalletManagerModulePluginRoot implements Service, WalletManager, DealsWithBitcoinWallet,DealsWithEvents,DealsWithErrors, DealsWithLogger,DealsWithPluginDatabaseSystem,DealsWithPluginFileSystem,LogManagerForDevelopers,Plugin {
     
-    /**
-     * PlatformService Interface member variables.
-     */
-    ServiceStatus serviceStatus;
-    List<EventListener> listenersAdded = new ArrayList<>();
+
     
     /**
      * WalletManager Interface member variables.
@@ -77,6 +73,18 @@ public class WalletManagerModulePluginRoot implements Service, WalletManager, De
 
     BitcoinWalletManager bitcoinWalletManager;
 
+    /**
+     * DealsWithLogger interface member variable
+     */
+    LogManager logManager;
+
+    static Map<String, LogLevel> newLoggingLevel = new HashMap<String, LogLevel>();
+
+    /**
+     * Service Interface member variables.
+     */
+    ServiceStatus serviceStatus = ServiceStatus.CREATED;
+    List<EventListener> listenersAdded = new ArrayList<>();
 
     /**
      * DealsWithPluginDatabaseSystem Interface member variables.
@@ -133,8 +141,7 @@ public class WalletManagerModulePluginRoot implements Service, WalletManager, De
          */
 
         boolean existWallet = false;
-        try
-        {
+        try{
             //load user's wallets ids
             this.loadUserWallets(userId);
 
@@ -160,21 +167,16 @@ public class WalletManagerModulePluginRoot implements Service, WalletManager, De
 
                     //Save wallet id on file
 
-                    try
-                    {
+                    try {
                         this.persistWallet(walletId);
                     }
-                    catch (CantPersistWalletException cantPersistWalletException)
-                    {
-                        //errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_WALLET_MANAGER_MODULE, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantPersistWalletException);
+                    catch (CantPersistWalletException cantPersistWalletException) {
                         throw new CantStartPluginException(cantPersistWalletException, Plugins.BITDUBAI_WALLET_MANAGER_MODULE);
 
                     }
 
                 }
-                catch (com.bitdubai.fermat_api.layer.dmp_basic_wallet.bitcoin_wallet.exceptions.CantCreateWalletException cantCreateWalletException)
-                {
-                    //errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_WALLET_MANAGER_MODULE, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantCreateWalletException);
+                catch (com.bitdubai.fermat_api.layer.dmp_basic_wallet.bitcoin_wallet.exceptions.CantCreateWalletException cantCreateWalletException) {
                     throw new CantStartPluginException(cantCreateWalletException, Plugins.BITDUBAI_WALLET_MANAGER_MODULE);
 
                 }
@@ -183,7 +185,7 @@ public class WalletManagerModulePluginRoot implements Service, WalletManager, De
         }
         catch(CantLoadWalletsException cantLoadWalletsException)
         {
-            errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_WALLET_MANAGER_MODULE, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantLoadWalletsException);
+           errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_WALLET_MANAGER_MODULE, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantLoadWalletsException);
             throw new CantStartPluginException();
         }
 
@@ -536,5 +538,54 @@ public class WalletManagerModulePluginRoot implements Service, WalletManager, De
     public void setId(UUID pluginId) {
         this.pluginId = pluginId;
     }
+
+
+    /**
+     * DealsWithLogger Interface implementation.
+     */
+
+    @Override
+    public void setLogManager(LogManager logManager) {
+        this.logManager = logManager;
+    }
+
+    /**
+     * LogManagerForDevelopers Interface implementation.
+     */
+
+    @Override
+    public List<String> getClassesFullPath() {
+        List<String> returnedClasses = new ArrayList<String>();
+        returnedClasses.add("com.bitdubai.fermat_dmp_plugin.layer.module.wallet_manager.developer.bitdubai.version_1.WalletManagerModulePluginRoot");
+        returnedClasses.add("com.bitdubai.fermat_dmp_plugin.layer.module.wallet_manager.developer.bitdubai.version_1.structure.WalletManagerWallet");
+
+
+        /**
+         * I return the values.
+         */
+        return returnedClasses;
+    }
+
+
+    @Override
+    public void setLoggingLevelPerClass(Map<String, LogLevel> newLoggingLevel) {
+        /**
+         * I will check the current values and update the LogLevel in those which is different
+         */
+
+        for (Map.Entry<String, LogLevel> pluginPair : newLoggingLevel.entrySet()) {
+            /**
+             * if this path already exists in the Root.bewLoggingLevel I'll update the value, else, I will put as new
+             */
+            if (WalletManagerModulePluginRoot.newLoggingLevel.containsKey(pluginPair.getKey())) {
+                WalletManagerModulePluginRoot.newLoggingLevel.remove(pluginPair.getKey());
+                WalletManagerModulePluginRoot.newLoggingLevel.put(pluginPair.getKey(), pluginPair.getValue());
+            } else {
+                WalletManagerModulePluginRoot.newLoggingLevel.put(pluginPair.getKey(), pluginPair.getValue());
+            }
+        }
+
+    }
+
 }
 

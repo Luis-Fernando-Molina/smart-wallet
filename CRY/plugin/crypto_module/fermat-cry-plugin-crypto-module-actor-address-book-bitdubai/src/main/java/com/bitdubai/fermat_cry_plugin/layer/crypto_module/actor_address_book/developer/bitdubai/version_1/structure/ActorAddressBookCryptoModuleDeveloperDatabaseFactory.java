@@ -74,7 +74,7 @@ public class ActorAddressBookCryptoModuleDeveloperDatabaseFactory implements Dea
             /**
              * The database exists but cannot be open. I can not handle this situation.
              */
-            throw new CantInitializeActorAddressBookCryptoModuleException();
+            throw new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, cantOpenDatabaseException, "", "Exception not handled by the plugin, there is a problem and i cannot open the database.");
         } catch (DatabaseNotFoundException databaseNotFoundException) {
 
             ActorAddressBookCryptoModuleDatabaseFactory databaseFactory = new ActorAddressBookCryptoModuleDatabaseFactory();
@@ -92,7 +92,7 @@ public class ActorAddressBookCryptoModuleDeveloperDatabaseFactory implements Dea
                 /**
                  * The database cannot be created. I can not handle this situation.
                  */
-                throw new CantInitializeActorAddressBookCryptoModuleException();
+                throw new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, cantCreateDatabaseException, "", "Exception not handled by the plugin, there is a problem and i cannot create the database.");
             }
         }
     }
@@ -116,8 +116,10 @@ public class ActorAddressBookCryptoModuleDeveloperDatabaseFactory implements Dea
          */
         List<String> actorAddressBookTableColumns = new ArrayList<String>();
         actorAddressBookTableColumns.add(ActorAddressBookCryptoModuleDatabaseConstants.CRYPTO_ADDRESS_BOOK_TABLE_ID);
-        actorAddressBookTableColumns.add(ActorAddressBookCryptoModuleDatabaseConstants.CRYPTO_ADDRESS_BOOK_TABLE_ACTOR_ID);
-        actorAddressBookTableColumns.add(ActorAddressBookCryptoModuleDatabaseConstants.CRYPTO_ADDRESS_BOOK_TABLE_ACTOR_TYPE);
+        actorAddressBookTableColumns.add(ActorAddressBookCryptoModuleDatabaseConstants.CRYPTO_ADDRESS_BOOK_TABLE_DELIVERED_BY_ACTOR_ID);
+        actorAddressBookTableColumns.add(ActorAddressBookCryptoModuleDatabaseConstants.CRYPTO_ADDRESS_BOOK_TABLE_DELIVERED_BY_ACTOR_TYPE);
+        actorAddressBookTableColumns.add(ActorAddressBookCryptoModuleDatabaseConstants.CRYPTO_ADDRESS_BOOK_TABLE_DELIVERED_TO_ACTOR_ID);
+        actorAddressBookTableColumns.add(ActorAddressBookCryptoModuleDatabaseConstants.CRYPTO_ADDRESS_BOOK_TABLE_DELIVERED_TO_ACTOR_TYPE);
         actorAddressBookTableColumns.add(ActorAddressBookCryptoModuleDatabaseConstants.CRYPTO_ADDRESS_BOOK_TABLE_CRYPTO_ADDRESS);
         actorAddressBookTableColumns.add(ActorAddressBookCryptoModuleDatabaseConstants.CRYPTO_ADDRESS_BOOK_TABLE_CRYPTO_CURRENCY);
         actorAddressBookTableColumns.add(ActorAddressBookCryptoModuleDatabaseConstants.CRYPTO_ADDRESS_BOOK_TABLE_TIME_STAMP);

@@ -1,20 +1,18 @@
 package com.bitdubai.sub_app.developer.fragment;
 
 import android.app.AlertDialog;
+
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -26,14 +24,11 @@ import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperDatabaseT
 import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperDatabaseTableRecord;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Addons;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
-import com.bitdubai.fermat_api.layer.pip_actor.developer.DatabaseTool;
-import com.bitdubai.fermat_api.layer.pip_actor.developer.ToolManager;
+import com.bitdubai.fermat_pip_api.layer.pip_actor.developer.DatabaseTool;
+import com.bitdubai.fermat_pip_api.layer.pip_actor.developer.ToolManager;
 import com.bitdubai.sub_app.developer.common.Databases;
 import com.bitdubai.sub_app.developer.common.Resource;
-
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TableRow.LayoutParams;
+import com.bitdubai.sub_app.developer.common.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,12 +149,12 @@ public class DatabaseToolsDatabaseTableRecordListFragment extends Fragment {
 
         TableLayout tableLayout= new TableLayout(getActivity());
         TableLayout.LayoutParams tableLayoutParams = new TableLayout.LayoutParams();
-        tableLayout.setBackgroundColor(Color.BLACK);
+        tableLayout.setBackgroundColor(Color.parseColor("#b46a54"));
         tableLayout.setPadding(3,3,3,3);
         try {
             TableRow.LayoutParams tableRowParams = new TableRow.LayoutParams();
-            tableRowParams.setMargins(5, 5, 5, 5);
-            tableRowParams.weight = 1;
+            tableRowParams.setMargins(3, 3, 3, 3);
+            tableRowParams.weight =0.14f;
 
             TableRow tableRow = new TableRow(getActivity());
             if(lstColumns!=null) {
@@ -167,7 +162,9 @@ public class DatabaseToolsDatabaseTableRecordListFragment extends Fragment {
                 for (int i = 0; i < lstColumns.size(); i++) {
                     TextView textView = new TextView(getActivity());
                     textView.setBackgroundColor(Color.WHITE);
-                    textView.setText(lstColumns.get(i));
+                    String tableHeader=StringUtils.splitCamelCase(lstColumns.get(i));
+                    tableHeader=StringUtils.replaceStringByUnderScore(tableHeader);
+                    textView.setText(tableHeader);
                     textView.setTextColor(Color.BLACK);
                     textView.setPadding(10, 10, 10, 10);
                     textView.setTypeface(tf);

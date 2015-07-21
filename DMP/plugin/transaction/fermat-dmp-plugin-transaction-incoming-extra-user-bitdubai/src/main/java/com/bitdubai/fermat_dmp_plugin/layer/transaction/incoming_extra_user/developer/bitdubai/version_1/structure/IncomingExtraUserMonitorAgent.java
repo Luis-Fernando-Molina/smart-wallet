@@ -8,6 +8,7 @@ package com.bitdubai.fermat_dmp_plugin.layer.transaction.incoming_extra_user.dev
 
 import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
+import com.bitdubai.fermat_api.layer.all_definition.event.EventSource;
 import com.bitdubai.fermat_api.layer.all_definition.exceptions.InvalidParameterException;
 import com.bitdubai.fermat_api.layer.all_definition.transaction_transference_protocol.Specialist;
 import com.bitdubai.fermat_api.layer.all_definition.transaction_transference_protocol.Transaction;
@@ -15,13 +16,14 @@ import com.bitdubai.fermat_api.layer.all_definition.transaction_transference_pro
 import com.bitdubai.fermat_api.layer.all_definition.transaction_transference_protocol.crypto_transactions.CryptoTransaction;
 import com.bitdubai.fermat_api.layer.all_definition.transaction_transference_protocol.exceptions.CantConfirmTransactionException;
 import com.bitdubai.fermat_api.layer.all_definition.transaction_transference_protocol.exceptions.CantDeliverPendingTransactionsException;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.DealsWithErrors;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.ErrorManager;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_api.layer.pip_platform_service.event_manager.EventSource;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.DealsWithErrors;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
+
 import com.bitdubai.fermat_cry_api.layer.crypto_router.incoming_crypto.DealsWithIncomingCrypto;
 import com.bitdubai.fermat_cry_api.layer.crypto_router.incoming_crypto.IncomingCryptoManager;
 import com.bitdubai.fermat_dmp_plugin.layer.transaction.incoming_extra_user.developer.bitdubai.version_1.exceptions.CantAcknowledgeTransactionException;
+import com.bitdubai.fermat_dmp_plugin.layer.transaction.incoming_extra_user.developer.bitdubai.version_1.exceptions.CantAcquireResponsibilityException;
 import com.bitdubai.fermat_dmp_plugin.layer.transaction.incoming_extra_user.developer.bitdubai.version_1.exceptions.CantReadEventException;
 import com.bitdubai.fermat_dmp_plugin.layer.transaction.incoming_extra_user.developer.bitdubai.version_1.exceptions.CantSaveEventException;
 import com.bitdubai.fermat_dmp_plugin.layer.transaction.incoming_extra_user.developer.bitdubai.version_1.interfaces.DealsWithRegistry;
@@ -233,6 +235,7 @@ public class IncomingExtraUserMonitorAgent implements DealsWithIncomingCrypto, D
                 /**
                  * Now I do the main task.
                  */
+                registry.openRegistry();
                 doTheMainTask();
 
                 /**
@@ -246,10 +249,9 @@ public class IncomingExtraUserMonitorAgent implements DealsWithIncomingCrypto, D
         }
 
         private void doTheMainTask() {
-
             IncomingExtraUserRegistry.EventWrapper eventWrapper = null;
             try {
-                eventWrapper = this.registry.getNextPendingEvent();
+                eventWrapper = registry.getNextPendingEvent();
             } catch (CantReadEventException cantReadEvent) {
                 // we can report the exception and try again in next call.
                 errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_INCOMING_CRYPTO_TRANSACTION, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, cantReadEvent);
@@ -297,8 +299,8 @@ public class IncomingExtraUserMonitorAgent implements DealsWithIncomingCrypto, D
                     try {
                         source.confirmReception(transaction.getTransactionID());
                         System.out.println("TTF - EXTRA USER MONITOR: TRANSACTION RESPONSIBILITY ACQUIRED");
-                        this.registry.acquireResponsibility(transaction);
-                    } catch (CantConfirmTransactionException exception) {
+                        registry.acquireResponsibility(transaction);
+                    } catch (CantConfirmTransactionException | CantAcquireResponsibilityException exception) {
                         // TODO: Consultar si esto hace lo que pienso, si falla no registra en base de datos
                         //       la transacción
                         // We will inform the exception and try again in the next round
@@ -307,7 +309,7 @@ public class IncomingExtraUserMonitorAgent implements DealsWithIncomingCrypto, D
                 }
                 // After finishing all the steps we mark the event as seen.
                 try {
-                    this.registry.disableEvent(eventWrapper.eventId);
+                    registry.disableEvent(eventWrapper.eventId);
                     System.out.println("TTF - EXTRA USER MONITOR: EVENT DISABLED");
                 } catch (CantReadEventException | CantSaveEventException exception) { // There are two exceptions and we react in the same way to both
                     // We will inform the exception and try again in the next round

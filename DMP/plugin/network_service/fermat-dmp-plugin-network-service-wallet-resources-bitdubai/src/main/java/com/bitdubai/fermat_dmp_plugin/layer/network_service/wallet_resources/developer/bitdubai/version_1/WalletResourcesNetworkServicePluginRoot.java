@@ -4,12 +4,16 @@ package com.bitdubai.fermat_dmp_plugin.layer.network_service.wallet_resources.de
 import com.bitdubai.fermat_api.CantStartPluginException;
 import com.bitdubai.fermat_api.Plugin;
 import com.bitdubai.fermat_api.Service;
+import com.bitdubai.fermat_api.layer.all_definition.developer.LogManagerForDevelopers;
+import com.bitdubai.fermat_api.layer.all_definition.event.EventSource;
+import com.bitdubai.fermat_api.layer.all_definition.event.EventType;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
 import com.bitdubai.fermat_api.layer.dmp_network_service.CantCheckResourcesException;
 import com.bitdubai.fermat_api.layer.dmp_network_service.CantGetResourcesException;
+import com.bitdubai.fermat_api.layer.dmp_network_service.wallet_resources.WalletNavigationStructure;
+import com.bitdubai.fermat_api.layer.dmp_network_service.wallet_resources.WalletResources;
 import com.bitdubai.fermat_api.layer.dmp_network_service.wallet_resources.WalletResourcesManager;
 import com.bitdubai.fermat_api.layer.dmp_network_service.wallet_resources.enums.Repositories;
-import com.bitdubai.fermat_api.layer.dmp_middleware.app_runtime.enums.Wallets;
-import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.all_definition.enums.ServiceStatus;
 import com.bitdubai.fermat_api.layer.all_definition.event.PlatformEvent;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.FileLifeSpan;
@@ -18,16 +22,16 @@ import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginTextFile;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginBinaryFile;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantCreateFileException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantPersistFileException;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.DealsWithErrors;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.ErrorManager;
-import com.bitdubai.fermat_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_api.layer.pip_platform_service.event_manager.DealsWithEvents;
-import com.bitdubai.fermat_api.layer.pip_platform_service.event_manager.EventHandler;
-import com.bitdubai.fermat_api.layer.pip_platform_service.event_manager.EventListener;
-import com.bitdubai.fermat_api.layer.pip_platform_service.event_manager.EventManager;
-import com.bitdubai.fermat_api.layer.pip_platform_service.event_manager.EventSource;
-import com.bitdubai.fermat_api.layer.pip_platform_service.event_manager.EventType;
-import com.bitdubai.fermat_api.layer.pip_platform_service.event_manager.events.WalletResourcesInstalledEvent;
+import com.bitdubai.fermat_api.layer.osa_android.logger_system.DealsWithLogger;
+import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogLevel;
+import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogManager;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.DealsWithErrors;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.event_manager.DealsWithEvents;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.event_manager.EventHandler;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.event_manager.EventListener;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.event_manager.EventManager;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.event_manager.events.WalletResourcesInstalledEvent;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.DealsWithPluginFileSystem;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
 import com.bitdubai.fermat_api.layer.dmp_network_service.NetworkService;
@@ -47,6 +51,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -67,7 +72,7 @@ import java.util.UUID;
  * * * * * * * 
  */
 
-public class WalletResourcesNetworkServicePluginRoot implements Service, NetworkService,WalletResourcesManager, DealsWithEvents, DealsWithErrors, DealsWithPluginFileSystem,Plugin {
+public class WalletResourcesNetworkServicePluginRoot implements Service, NetworkService,WalletResourcesManager, DealsWithEvents, DealsWithErrors,DealsWithLogger, DealsWithPluginFileSystem,LogManagerForDevelopers,Plugin {
 
 
     /**
@@ -85,6 +90,13 @@ public class WalletResourcesNetworkServicePluginRoot implements Service, Network
      * DealsWithEvents Interface member variables.
      */
     ErrorManager errorManager;
+
+    /**
+     * DealsWithLogger interface member variable
+     */
+    LogManager logManager;
+
+    static Map<String, LogLevel> newLoggingLevel = new HashMap<String, LogLevel>();
 
     /**
      * UsesFileSystem Interface member variables.
@@ -179,10 +191,21 @@ public class WalletResourcesNetworkServicePluginRoot implements Service, Network
      */
 
 
-    @Override
+    //@Override
     public void setwalletType(Wallets type) {
         this.walletType = type;
     }
+
+    @Override
+    public WalletResources getWalletResources(UUID resourcesId) {
+        return null;
+    }
+
+    @Override
+    public WalletNavigationStructure getWalletNavigationStructure(UUID walletNavigationStructureId) {
+        return null;
+    }
+
 
     /**
      * <p>This method read wallet manifest file to get resources names, to download from repository.
@@ -307,7 +330,7 @@ public class WalletResourcesNetworkServicePluginRoot implements Service, Network
      * @return byte image object
      * @throws CantGetResourcesException
      */
-    @Override
+    //@Override
     public byte[] getImageResource(String imageName) throws CantGetResourcesException {
 
         byte[] imageResource = new byte[16384];
@@ -346,7 +369,7 @@ public class WalletResourcesNetworkServicePluginRoot implements Service, Network
      * @return string layout object
      * @throws CantGetResourcesException
      */
-    @Override
+    //@Override
     public String getLayoutResource(String layoutName) throws CantGetResourcesException {
 
         String content = "";
@@ -511,6 +534,52 @@ public class WalletResourcesNetworkServicePluginRoot implements Service, Network
     public void setId(UUID pluginId) {
         this.pluginId = pluginId;
     }
+
+
+    /**
+     * DealsWithLogger Interface implementation.
+     */
+
+    @Override
+    public void setLogManager(LogManager logManager) {
+        this.logManager = logManager;
+    }
+
+    /**
+     * LogManagerForDevelopers Interface implementation.
+     */
+
+    @Override
+    public List<String> getClassesFullPath() {
+        List<String> returnedClasses = new ArrayList<String>();
+        returnedClasses.add("com.bitdubai.fermat_dmp_plugin.layer.network_service.wallet_resources.developer.bitdubai.version_1.WalletResourcesNetworkServicePluginRoot");
+              /**
+         * I return the values.
+         */
+        return returnedClasses;
+    }
+
+
+    @Override
+    public void setLoggingLevelPerClass(Map<String, LogLevel> newLoggingLevel) {
+        /**
+         * I will check the current values and update the LogLevel in those which is different
+         */
+
+        for (Map.Entry<String, LogLevel> pluginPair : newLoggingLevel.entrySet()) {
+            /**
+             * if this path already exists in the Root.bewLoggingLevel I'll update the value, else, I will put as new
+             */
+            if (WalletResourcesNetworkServicePluginRoot.newLoggingLevel.containsKey(pluginPair.getKey())) {
+                WalletResourcesNetworkServicePluginRoot.newLoggingLevel.remove(pluginPair.getKey());
+                WalletResourcesNetworkServicePluginRoot.newLoggingLevel.put(pluginPair.getKey(), pluginPair.getValue());
+            } else {
+                WalletResourcesNetworkServicePluginRoot.newLoggingLevel.put(pluginPair.getKey(), pluginPair.getValue());
+            }
+        }
+
+    }
+
 
 
 }
