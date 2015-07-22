@@ -359,6 +359,43 @@ public class AndroidDatabaseTable implements  DatabaseTable {
         }
     }
 
+
+    @Override
+    public void deleteRecord(DatabaseTableRecord record) throws CantDeleteRecordException {
+        try{
+
+
+            List<DatabaseRecord> records =  record.getValues();
+
+            String queryWhereClause="";
+
+            if(!records.isEmpty()) {
+                for (int i = 0; i < records.size(); ++i) {
+
+                    if (queryWhereClause.length() > 0) {
+                        queryWhereClause += " and ";
+                        queryWhereClause += records.get(i).getName();
+                    } else
+                        queryWhereClause += records.get(i).getName();
+                    queryWhereClause += "=";
+                    queryWhereClause += records.get(i).getValue();
+                }
+            }else{
+                queryWhereClause=null;
+            }
+
+
+            if(queryWhereClause!=null){
+                this.database.execSQL("DELETE FROM " + tableName + " WHERE " + queryWhereClause);
+            }else{
+                this.database.execSQL("DELETE FROM " + tableName);
+            }
+
+        }catch (Exception exception) {
+            throw new CantDeleteRecordException();
+        }
+    }
+
     /**
      * <p>This method inserts a new record in the database
      *
@@ -774,7 +811,7 @@ public class AndroidDatabaseTable implements  DatabaseTable {
         return strFilter.toString();
     }
 
-    public String makeGroupFilters(DatabaseTableFilterGroup databaseTableFilterGroup){
+    private String makeGroupFilters(DatabaseTableFilterGroup databaseTableFilterGroup){
 
         StringBuffer strFilter = new StringBuffer();
         String filter = "";
@@ -811,41 +848,7 @@ public class AndroidDatabaseTable implements  DatabaseTable {
         return filter;
     }
 
-    @Override
-    public void deleteRecord(DatabaseTableRecord record) throws CantDeleteRecordException {
-        try{
 
-
-            List<DatabaseRecord> records =  record.getValues();
-
-            String queryWhereClause="";
-
-            if(!records.isEmpty()) {
-                for (int i = 0; i < records.size(); ++i) {
-
-                    if (queryWhereClause.length() > 0) {
-                        queryWhereClause += " and ";
-                        queryWhereClause += records.get(i).getName();
-                    } else
-                        queryWhereClause += records.get(i).getName();
-                    queryWhereClause += "=";
-                    queryWhereClause += records.get(i).getValue();
-                }
-            }else{
-                queryWhereClause=null;
-            }
-
-
-            if(queryWhereClause!=null){
-                this.database.execSQL("DELETE FROM " + tableName + " WHERE " + queryWhereClause);
-            }else{
-                this.database.execSQL("DELETE FROM " + tableName);
-            }
-
-        }catch (Exception exception) {
-            throw new CantDeleteRecordException();
-        }
-    }
 
     //testear haber si funciona así de abstracto o hay que hacerlo más especifico
     @Override

@@ -42,6 +42,7 @@ public class StartTest extends TestCase {
      */
     @Mock
     private EventManager mockEventManager;
+
     @Mock
     private EventListener mockEventListener;
 
