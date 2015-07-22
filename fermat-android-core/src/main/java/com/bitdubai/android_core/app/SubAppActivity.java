@@ -70,149 +70,149 @@ public class SubAppActivity extends FermatActivity implements FermatScreenSwappe
      * This method replaces the current fragment by the next in navigation
      * @param fragmentType Type Id of fragment to show
      */
-        private void loadFragment(Fragments fragmentType)
-        {
-            FragmentTransaction transaction;
-            com.bitdubai.fermat_api.layer.all_definition.navigation_structure.Fragment fragment=null;
-            switch (fragmentType) {
+    private void loadFragment(Fragments fragmentType)
+    {
+        FragmentTransaction transaction;
+        com.bitdubai.fermat_api.layer.all_definition.navigation_structure.Fragment fragment=null;
+        switch (fragmentType) {
 
 
-                //developer app fragments
-                case CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS:
-                    fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS);
-                        DatabaseToolsFragment frag= DatabaseToolsFragment.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
-                        //set data pass to fragment
-                        fragment.setContext(screenObjects);
+            //developer app fragments
+            case CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS:
+                fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS);
+                DatabaseToolsFragment frag= DatabaseToolsFragment.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
+                //set data pass to fragment
+                fragment.setContext(screenObjects);
 
-                         transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.databasecontainer, frag);
-                        // Commit the transaction
-                        transaction.commit();
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.databasecontainer, frag);
+                // Commit the transaction
+                transaction.commit();
 
-                    break;
+                break;
 
-                case CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS_DATABASES:
-                    fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS_DATABASES);
+            case CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS_DATABASES:
+                fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS_DATABASES);
 
-                        DatabaseToolsDatabaseListFragment fragd= DatabaseToolsDatabaseListFragment.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
-                        fragd.setResource((Resource)screenObjects[0]);
-                        //set data pass to fragment
-                        fragment.setContext(screenObjects);
+                DatabaseToolsDatabaseListFragment fragd= DatabaseToolsDatabaseListFragment.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
+                fragd.setResource((Resource)screenObjects[0]);
+                //set data pass to fragment
+                fragment.setContext(screenObjects);
 
-                         transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.startContainer, fragd);
-                        // Commit the transaction
-                        transaction.commit();
-
-
-                    break;
-                case CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS_TABLES:
-
-                    fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS_TABLES);
-
-                        DatabaseToolsDatabaseTableListFragment fragt= DatabaseToolsDatabaseTableListFragment.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
-
-                        //set data pass to fragment
-                        fragment.setContext(screenObjects);
-                        fragt.setResource((Resource) screenObjects[0]);
-                        fragt.setDeveloperDatabase((DeveloperDatabase) screenObjects[1]);
-
-                         transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.startContainer, fragt);
-                        // Commit the transaction
-                        transaction.commit();
-
-                    break;
-                case CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS_RECORDS:
-
-                    fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS_RECORDS);
-
-                    DatabaseToolsDatabaseTableRecordListFragment fragr= DatabaseToolsDatabaseTableRecordListFragment.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.startContainer, fragd);
+                // Commit the transaction
+                transaction.commit();
 
 
-                    //set data pass to fragment
-                    fragment.setContext(screenObjects);
-                    fragr.setResource((Resource) screenObjects[0]);
-                    fragr.setDeveloperDatabase((DeveloperDatabase) screenObjects[1]);
-                    fragr.setDeveloperDatabaseTable((DeveloperDatabaseTable) screenObjects[2]);
+                break;
+            case CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS_TABLES:
 
-                    transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.startContainer, fragr);
-                    // Commit the transaction
-                    transaction.commit();
-                    break;
+                fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS_TABLES);
 
-                case CWP_SUB_APP_DEVELOPER_LOG_TOOLS:
-                    fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_LOG_TOOLS);
+                DatabaseToolsDatabaseTableListFragment fragt= DatabaseToolsDatabaseTableListFragment.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
 
-                        LogToolsFragment frag1= LogToolsFragment.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
+                //set data pass to fragment
+                fragment.setContext(screenObjects);
+                fragt.setResource((Resource) screenObjects[0]);
+                fragt.setDeveloperDatabase((DeveloperDatabase) screenObjects[1]);
 
-                        //set data pass to fragment
-                        fragment.setContext(screenObjects);
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.startContainer, fragt);
+                // Commit the transaction
+                transaction.commit();
 
-                        FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
-                        transaction1.replace(R.id.logContainer, frag1);
-                        // Commit the transaction
-                        transaction1.commit();
-                    break;
+                break;
+            case CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS_RECORDS:
 
-                case CWP_SUB_APP_DEVELOPER_LOG_LEVEL_1_TOOLS:
+                fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_DATABASE_TOOLS_RECORDS);
 
-                    fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_LOG_LEVEL_1_TOOLS);
-
-                    LogToolsFragmentLevel1 fragl= LogToolsFragmentLevel1.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
-                    fragl.setLoggers((ArrayListLoggers) screenObjects[0]);
-                    //set data pass to fragment
-                    fragment.setContext(screenObjects);
-
-                     transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.logContainer, fragl);
-                    // Commit the transaction
-                    transaction.commit();
-                    break;
-
-                case CWP_SUB_APP_DEVELOPER_LOG_LEVEL_2_TOOLS:
-
-                    fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_LOG_LEVEL_2_TOOLS);
-
-                    LogToolsFragmentLevel2 fragl2= LogToolsFragmentLevel2.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
-                    fragl2.setLoggers((ArrayListLoggers) screenObjects[0]);
-                    fragl2.setLoggerLevel((int)screenObjects[1]);
-
-                        //set data pass to fragment
-                        fragment.setContext(screenObjects);
-
-                       transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.logContainer, fragl2);
-                        // Commit the transaction
-                        transaction.commit();
-                    break;
-
-                case CWP_SUB_APP_DEVELOPER_LOG_LEVEL_3_TOOLS:
-
-                    fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_LOG_LEVEL_2_TOOLS);
-
-                    LogToolsFragmentLevel3 fragl3= LogToolsFragmentLevel3.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
-                    fragl3.setLoggers((ArrayListLoggers) screenObjects[0]);
-                    fragl3.setLoggerLevel((int) screenObjects[1]);
-                    //set data pass to fragment
-                    fragment.setContext(screenObjects);
-
-                  transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.logContainer, fragl3);
-                    // Commit the transaction
-                    transaction.commit();
-                    break;
+                DatabaseToolsDatabaseTableRecordListFragment fragr= DatabaseToolsDatabaseTableRecordListFragment.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
 
 
-            }
+                //set data pass to fragment
+                fragment.setContext(screenObjects);
+                fragr.setResource((Resource) screenObjects[0]);
+                fragr.setDeveloperDatabase((DeveloperDatabase) screenObjects[1]);
+                fragr.setDeveloperDatabaseTable((DeveloperDatabaseTable) screenObjects[2]);
+
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.startContainer, fragr);
+                // Commit the transaction
+                transaction.commit();
+                break;
+
+            case CWP_SUB_APP_DEVELOPER_LOG_TOOLS:
+                fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_LOG_TOOLS);
+
+                LogToolsFragment frag1= LogToolsFragment.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
+
+                //set data pass to fragment
+                fragment.setContext(screenObjects);
+
+                FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+                transaction1.replace(R.id.logContainer, frag1);
+                // Commit the transaction
+                transaction1.commit();
+                break;
+
+            case CWP_SUB_APP_DEVELOPER_LOG_LEVEL_1_TOOLS:
+
+                fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_LOG_LEVEL_1_TOOLS);
+
+                LogToolsFragmentLevel1 fragl= LogToolsFragmentLevel1.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
+                fragl.setLoggers((ArrayListLoggers) screenObjects[0]);
+                //set data pass to fragment
+                fragment.setContext(screenObjects);
+
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.logContainer, fragl);
+                // Commit the transaction
+                transaction.commit();
+                break;
+
+            case CWP_SUB_APP_DEVELOPER_LOG_LEVEL_2_TOOLS:
+
+                fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_LOG_LEVEL_2_TOOLS);
+
+                LogToolsFragmentLevel2 fragl2= LogToolsFragmentLevel2.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
+                fragl2.setLoggers((ArrayListLoggers) screenObjects[0]);
+                fragl2.setLoggerLevel((int)screenObjects[1]);
+
+                //set data pass to fragment
+                fragment.setContext(screenObjects);
+
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.logContainer, fragl2);
+                // Commit the transaction
+                transaction.commit();
+                break;
+
+            case CWP_SUB_APP_DEVELOPER_LOG_LEVEL_3_TOOLS:
+
+                fragment = ApplicationSession.getAppRuntimeMiddleware().getFragment(Fragments.CWP_SUB_APP_DEVELOPER_LOG_LEVEL_2_TOOLS);
+
+                LogToolsFragmentLevel3 fragl3= LogToolsFragmentLevel3.newInstance(0,ApplicationSession.getSubAppSessionManager().listOpenSubApps().get(SubApps.CWP_DEVELOPER_APP));
+                fragl3.setLoggers((ArrayListLoggers) screenObjects[0]);
+                fragl3.setLoggerLevel((int) screenObjects[1]);
+                //set data pass to fragment
+                fragment.setContext(screenObjects);
+
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.logContainer, fragl3);
+                // Commit the transaction
+                transaction.commit();
+                break;
+
+
         }
+    }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-            MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getMenuInflater();
 
 
         return super.onCreateOptionsMenu(menu);
@@ -275,18 +275,13 @@ public class SubAppActivity extends FermatActivity implements FermatScreenSwappe
 
         // get actual fragment on execute
         Fragments frgBackType = null;
-        try {
-            AppRuntimeManager appRuntimeManager = ApplicationSession.getAppRuntimeMiddleware();
-            com.bitdubai.fermat_api.layer.all_definition.navigation_structure.Fragment fragment = appRuntimeManager.getLastFragment();
+
+        AppRuntimeManager appRuntimeManager = ApplicationSession.getAppRuntimeMiddleware();
+        com.bitdubai.fermat_api.layer.all_definition.navigation_structure.Fragment fragment = appRuntimeManager.getLastFragment();
             //get setting fragment to back
             //if not fragment to back I back to desktop
-             frgBackType = fragment.getBack();
-
-        }catch (Exception e){
-            ApplicationSession.getErrorManager().reportUnexpectedSubAppException(ApplicationSession.getAppRuntimeMiddleware().getLastSubApp().getType(), UnexpectedSubAppExceptionSeverity.DISABLES_THIS_FRAGMENT, FermatException.wrapException(e));
-            e.printStackTrace();
-        }
-
+        if(fragment != null)
+            frgBackType = fragment.getBack();
 
 
         if(frgBackType != null){
@@ -401,7 +396,7 @@ public class SubAppActivity extends FermatActivity implements FermatScreenSwappe
 
                 if(fragmentType != null)
                 {
-                        this.loadFragment(fragmentType);
+                    this.loadFragment(fragmentType);
                 }
                 else
                 {
@@ -422,7 +417,7 @@ public class SubAppActivity extends FermatActivity implements FermatScreenSwappe
 
     @Override
     public void setScreen(String screen){
-      this.actionKey = screen;
+        this.actionKey = screen;
     }
 
     /**
