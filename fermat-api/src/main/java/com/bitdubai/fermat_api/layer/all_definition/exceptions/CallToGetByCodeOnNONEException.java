@@ -1,13 +1,11 @@
-package com.bitdubai.fermat_api.layer.dmp_middleware.wallet_settings.exceptions;
+package com.bitdubai.fermat_api.layer.all_definition.exceptions;
 
 import com.bitdubai.fermat_api.FermatException;
 
 /**
- * Created by eze on 2015.07.20..
+ * Created by eze on 2015.07.22..
  */
-public class CantSetDefaultLanguageException extends FermatException {
-
-    public static final String DEFAULT_MESSAGE = "ERROR SET DEFAULT WALLET LANGUAGE: ";
+public class CallToGetByCodeOnNONEException extends FermatException {
     /**
      * This is the constructor that every inherited FermatException must implement
      *
@@ -16,7 +14,7 @@ public class CantSetDefaultLanguageException extends FermatException {
      * @param context        a String that provides the values of the variables that could have affected the exception
      * @param possibleReason an explicative reason of why we believe this exception was most likely thrown
      */
-    public CantSetDefaultLanguageException(String message, Exception cause, String context, String possibleReason) {
+    public CallToGetByCodeOnNONEException(String message, Exception cause, String context, String possibleReason) {
         super(message, cause, context, possibleReason);
     }
 }

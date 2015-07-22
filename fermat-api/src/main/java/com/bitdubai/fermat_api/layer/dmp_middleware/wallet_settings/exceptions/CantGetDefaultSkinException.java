@@ -6,6 +6,9 @@ import com.bitdubai.fermat_api.FermatException;
  * Created by eze on 2015.07.20..
  */
 public class CantGetDefaultSkinException extends FermatException {
+
+    public static final String DEFAULT_MESSAGE = "ERROR GET DEFAULT WALLET SKIN: ";
+
     /**
      * This is the constructor that every inherited FermatException must implement
      *
