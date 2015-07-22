@@ -6,10 +6,8 @@ import com.bitdubai.fermat_api.layer.osa_android.database_system.PluginDatabaseS
 /**
  * Created by natalia on 21/07/15.
  */
-public class WalletManagerDatbaseConstants  {
+public class WalletManagerDatabaseConstants {
 
 
-    public void setPluginDatabaseSystem(PluginDatabaseSystem pluginDatabaseSystem) {
 
-    }
 }
