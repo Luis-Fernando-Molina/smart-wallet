@@ -17,6 +17,7 @@ import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantLoad
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantPersistFileException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.FileNotFoundException;
 import com.bitdubai.fermat_dmp_plugin.layer.middleware.wallet_settings.developer.bitdubai.version_1.exceptions.CantLoadSettingsFileException;
+import com.bitdubai.fermat_dmp_plugin.layer.middleware.wallet_settings.developer.bitdubai.version_1.exceptions.InvalidWalletIdException;
 import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
 import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
 
@@ -63,50 +64,46 @@ public class WalletSettingsSettings implements WalletSettings {
     @Override
     public UUID getDefaultLanguage() throws CantGetDefaultLanguageException {
 
-        try{
+        try {
             SAXBuilder builder = new SAXBuilder();
 
             /**
              * load file content
              */
-            try {
-                loadSettingsFile();
 
-            } catch (CantLoadSettingsFileException e) {
-                throw  e;
-            }
+            loadSettingsFile();
 
             /**
              * Get language settings on xml
+             *
+             * */
+
+            Document document = (Document) builder.build(new StringReader(this.walletSettingsXml.getContent()));
+
+            Element rootNode = document.getRootElement();
+
+            /**
+             * Check wallet id is equals to this wallet process
              */
-            try {
-
-                Document document = (Document) builder.build(new StringReader(this.walletSettingsXml.getContent()));
-
-                Element rootNode = document.getRootElement();
-
-                /**
-                 * Check wallet id is equals to this wallet process
-                 */
-                if(rootNode.getChildText(WalletSettingsConstants.WALLET_SETTINGS_XML_ID_NODE).equals(this.walletIdInTheDevice.toString()))
-                {
-                    return UUID.fromString(rootNode.getChildText(WalletSettingsConstants.WALLET_SETTINGS_XML_LANGUAGE_NODE).toString());
-                }else
-                {
-                    //error invalid wallet id
-                    throw new CantGetDefaultLanguageException("Error write settings data, the wallet Ids mismatched",null, "","Xml carrupted");
-                }
-
-
-            } catch(JDOMException|IOException e)
-            {
-                 throw e;
+            if (rootNode.getChildText(WalletSettingsConstants.WALLET_SETTINGS_XML_ID_NODE).equals(this.walletIdInTheDevice.toString())) {
+                return UUID.fromString(rootNode.getChildText(WalletSettingsConstants.WALLET_SETTINGS_XML_LANGUAGE_NODE).toString());
+            } else {
+                //error invalid wallet id
+                throw new CantGetDefaultLanguageException("Error write settings data, the wallet Ids mismatched", null, "", "Xml carrupted");
             }
 
-    } catch(Exception exception){
+        }
+        catch(JDOMException|IOException e) {
+            throw new CantGetDefaultLanguageException(CantGetDefaultLanguageException.DEFAULT_MESSAGE, FermatException.wrapException(e), null, null);
 
-        throw new CantGetDefaultLanguageException(CantGetDefaultLanguageException.DEFAULT_MESSAGE, FermatException.wrapException(exception), null, null);
-    }
+         } catch (CantLoadSettingsFileException cantLoadSettingsFileException) {
+            throw new CantGetDefaultLanguageException(CantGetDefaultLanguageException.DEFAULT_MESSAGE, FermatException.wrapException(cantLoadSettingsFileException), null, null);
+
+
+        } catch(Exception exception){
+
+            throw new CantGetDefaultLanguageException(CantGetDefaultLanguageException.DEFAULT_MESSAGE, FermatException.wrapException(exception), null, null);
+        }
 
 
 
@@ -120,17 +117,12 @@ public class WalletSettingsSettings implements WalletSettings {
         /**
          * load file content
          */
-        try {
-            loadSettingsFile();
 
-        } catch (CantLoadSettingsFileException e) {
-              throw e;
-        }
+            loadSettingsFile();
 
         /**
          * Get language settings on xml
          */
-        try {
 
             Document document = (Document) builder.build(new StringReader(this.walletSettingsXml.getContent()));
 
@@ -145,16 +137,22 @@ public class WalletSettingsSettings implements WalletSettings {
                 }else
                 {
                     //error invalid wallet id
-                    throw new CantGetDefaultSkinException("Error write settings data, the wallet Ids mismatched",null, "","Xml carrupted");
+                    throw new InvalidWalletIdException(InvalidWalletIdException.DEFAULT_MESSAGE,null,"","");
 
                 }
 
-            } catch(JDOMException|IOException e)
-            {
-                 throw e;
+        }
+        catch(JDOMException|IOException e){
 
-            }
-        } catch(Exception exception){
+            throw new CantGetDefaultSkinException(CantGetDefaultSkinException.DEFAULT_MESSAGE, FermatException.wrapException(e), null, null);
+
+
+        }
+        catch (CantLoadSettingsFileException cantLoadSettingsFileException) {
+            throw new CantGetDefaultSkinException(CantGetDefaultSkinException.DEFAULT_MESSAGE, FermatException.wrapException(cantLoadSettingsFileException), null, null);
+
+        }
+        catch(Exception exception){
 
             throw new CantGetDefaultSkinException(CantGetDefaultSkinException.DEFAULT_MESSAGE, FermatException.wrapException(exception), null, null);
         }
@@ -164,65 +162,60 @@ public class WalletSettingsSettings implements WalletSettings {
     @Override
     public void setDefaultLanguage(UUID languageId) throws CantSetDefaultLanguageException {
 
-        try
-        {
+        try {
             SAXBuilder builder = new SAXBuilder();
 
             /**
              * load file content
              */
-            try {
-                loadSettingsFile();
 
-            } catch (CantLoadSettingsFileException e) {
-                 throw e;
-            }
+            loadSettingsFile();
 
             /**
              * Get language settings on xml
              */
-            try {
 
-                Document document = (Document) builder.build(new StringReader(this.walletSettingsXml.getContent()));
+            Document document = (Document) builder.build(new StringReader(this.walletSettingsXml.getContent()));
 
-                Element rootNode = document.getRootElement();
+            Element rootNode = document.getRootElement();
 
-                /**
-                 * Check wallet id is equals to this wallet process
-                 */
-                if(rootNode.getChildText(WalletSettingsConstants.WALLET_SETTINGS_XML_ID_NODE).equals(this.walletIdInTheDevice.toString()))
-                {
-                    rootNode.getChild(WalletSettingsConstants.WALLET_SETTINGS_XML_LANGUAGE_NODE).setText(languageId.toString());
-                }else
-                {
-                    throw new CantSetDefaultLanguageException("Error write settings data, the wallet Ids mismatched",null, "","Xml carrupted");
-
-                }
-
-                XMLOutputter xmOut=new XMLOutputter();
-
-                walletSettingsXml.setContent(xmOut.outputString(document));
-
-            } catch(JDOMException|IOException e)
+            /**
+             * Check wallet id is equals to this wallet process
+             */
+            if (rootNode.getChildText(WalletSettingsConstants.WALLET_SETTINGS_XML_ID_NODE).equals(this.walletIdInTheDevice.toString())) {
+                rootNode.getChild(WalletSettingsConstants.WALLET_SETTINGS_XML_LANGUAGE_NODE).setText(languageId.toString());
+            } else
             {
-               throw e;
+                throw new InvalidWalletIdException(InvalidWalletIdException.DEFAULT_MESSAGE,null,"","");
 
             }
+
+            XMLOutputter xmOut = new XMLOutputter();
+
+            walletSettingsXml.setContent(xmOut.outputString(document));
+
             /**
              * persist xml file
              */
 
-            try {
-                walletSettingsXml.persistToMedia();
-
-            } catch (CantPersistFileException cantPersistFileException) {
-
-                throw cantPersistFileException;
-
-            }
+            walletSettingsXml.persistToMedia();
 
         }
-        catch(Exception exception){
+       catch(JDOMException|IOException e)
+            {
+                throw new CantSetDefaultLanguageException(CantSetDefaultLanguageException.DEFAULT_MESSAGE, FermatException.wrapException(e), null, null);
+            }
+
+          catch (CantPersistFileException cantPersistFileException) {
+
+                throw new CantSetDefaultLanguageException(CantSetDefaultLanguageException.DEFAULT_MESSAGE, FermatException.wrapException(cantPersistFileException), null, null);
+          }
+
+         catch (CantLoadSettingsFileException cantLoadSettingsFileException) {
+
+                throw new CantSetDefaultLanguageException(CantSetDefaultLanguageException.DEFAULT_MESSAGE, FermatException.wrapException(cantLoadSettingsFileException), null, null);
+         }
+         catch(Exception exception){
 
             throw new CantSetDefaultLanguageException(CantSetDefaultLanguageException.DEFAULT_MESSAGE, FermatException.wrapException(exception), null, null);
         }
@@ -240,18 +233,12 @@ public class WalletSettingsSettings implements WalletSettings {
             /**
              * load file content
              */
-            try {
+
                 loadSettingsFile();
-
-            } catch (CantLoadSettingsFileException e) {
-                 throw  e;
-
-            }
 
             /**
              * Get language settings on xml
              */
-            try {
 
                 Document document = (Document) builder.build(new StringReader(this.walletSettingsXml.getContent()));
 
@@ -269,42 +256,39 @@ public class WalletSettingsSettings implements WalletSettings {
                      throw new CantSetDefaultSkinException("Error write settings data, the wallet Ids mismatched",null, "","Xml carrupted");
 
                 }
-
-
                 XMLOutputter xmOut=new XMLOutputter();
 
                 walletSettingsXml.setContent(xmOut.outputString(document));
 
-            } catch(JDOMException|IOException e)
-            {
-                throw e;
-
-            }
-
             /**
              * persist xml file
              */
-
-            try {
                 walletSettingsXml.persistToMedia();
 
-            } catch (CantPersistFileException cantPersistFileException) {
+        } catch(JDOMException|IOException e)
+        {
+            throw new CantSetDefaultSkinException(CantSetDefaultSkinException.DEFAULT_MESSAGE, FermatException.wrapException(e), null, null);
 
-                throw cantPersistFileException;
+        } catch (CantPersistFileException cantPersistFileException) {
 
-            }
+            throw new CantSetDefaultSkinException(CantSetDefaultSkinException.DEFAULT_MESSAGE, FermatException.wrapException(cantPersistFileException), null, null);
 
-    } catch(Exception exception){
+
+        } catch (CantLoadSettingsFileException cantLoadSettingsFileException) {
+            throw new CantSetDefaultSkinException(CantSetDefaultSkinException.DEFAULT_MESSAGE, FermatException.wrapException(cantLoadSettingsFileException), null, null);
+
+        }
+        catch(Exception exception){
 
         throw new CantSetDefaultSkinException(CantSetDefaultSkinException.DEFAULT_MESSAGE, FermatException.wrapException(exception), null, null);
-    }
+        }
 
 
     }
 
 
     private void loadSettingsFile() throws CantLoadSettingsFileException {
-
+        StringBuffer strXml = new StringBuffer();
         try
         {
             /**
@@ -312,23 +296,9 @@ public class WalletSettingsSettings implements WalletSettings {
              * If not exists I created it.
              * * *
              */
-
-            StringBuffer strXml = new StringBuffer();
-            try {
-
-                try{
                     walletSettingsXml = pluginFileSystem.getTextFile(pluginId, this.walletIdInTheDevice.toString(), WALLET_SETTINGS_FILE_NAME, FilePrivacy.PRIVATE, FileLifeSpan.PERMANENT);
-                }
-                catch (CantCreateFileException cantCreateFileException ) {
 
-                    /**
-                     * If I can not save this file, then this plugin shouldn't be running at all.
-                     */
-
-                    throw cantCreateFileException;
-                }
-                try {
-                    /**
+                     /**
                      * Now I read the content of the file and place it in memory.
                      */
                     walletSettingsXml.loadFromMedia();
@@ -348,33 +318,12 @@ public class WalletSettingsSettings implements WalletSettings {
 
                         walletSettingsXml.setContent(strXml.toString());
 
-                        try
-                        {
-                            walletSettingsXml.persistToMedia();
-                        }
-                        catch (CantPersistFileException cantPersistFileException ) {
+                        walletSettingsXml.persistToMedia();
 
-                            /**
-                             * If I can not save this file, then this plugin shouldn't be running at all.
-                             */
-                             throw cantPersistFileException;
-                        }
                     }
 
 
-                }
-                catch (CantLoadFileException cantLoadFileException) {
 
-                    /**
-                     * In this situation we might have a corrupted file we can not read. For now the only thing I can do is
-                     * to prevent the plug-in from running.
-                     *
-                     * In the future there should be implemented a method to deal with this situation.
-                     * * * *
-                     */
-
-                    throw  cantLoadFileException;
-                }
             }
             catch (FileNotFoundException fileNotFoundException) {
                 /**
@@ -393,7 +342,8 @@ public class WalletSettingsSettings implements WalletSettings {
                     /**
                      * If I can not save this file, then this plugin shouldn't be running at all.
                      */
-                     throw cantCreateFileException;
+                    throw new CantLoadSettingsFileException(CantLoadSettingsFileException.DEFAULT_MESSAGE, FermatException.wrapException(cantCreateFileException), null, null);
+
                 }
                 try {
 
@@ -415,9 +365,31 @@ public class WalletSettingsSettings implements WalletSettings {
                     /**
                      * If I can not save this file, then this plugin shouldn't be running at all.
                      */
-                     throw cantPersistFileException;
+                    throw new CantLoadSettingsFileException(CantLoadSettingsFileException.DEFAULT_MESSAGE, FermatException.wrapException(cantPersistFileException), null, null);
+
                 }
             }
+
+        catch (CantLoadFileException cantLoadFileException) {
+
+            /**
+             * In this situation we might have a corrupted file we can not read. For now the only thing I can do is
+             * to prevent the plug-in from running.
+             *
+             * In the future there should be implemented a method to deal with this situation.
+             * * * *
+             */
+
+            throw new CantLoadSettingsFileException(CantLoadSettingsFileException.DEFAULT_MESSAGE, FermatException.wrapException(cantLoadFileException), null, null);
+
+        }
+        catch (CantCreateFileException cantCreateFileException ) {
+
+            /**
+             * If I can not save this file, then this plugin shouldn't be running at all.
+             */
+
+            throw new CantLoadSettingsFileException(CantLoadSettingsFileException.DEFAULT_MESSAGE, FermatException.wrapException(cantCreateFileException), null, null);
 
         }
         catch(Exception ex)
