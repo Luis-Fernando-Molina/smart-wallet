@@ -26,7 +26,8 @@ public class DeveloperBitDubai implements PluginDeveloper, PluginLicensor {
     }
 
     public DeveloperBitDubai () {
-        plugin = new DeveloperIdentityPluginRoot();
+        //TODO: Comentado por error al iniciar la APP
+      //  plugin = new DeveloperIdentityPluginRoot();
     }
 
     @Override

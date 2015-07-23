@@ -7,9 +7,7 @@ import com.bitdubai.fermat_api.layer.all_definition.exceptions.InvalidParameterE
  * Created by eze on 2015.07.19..
  */
 public enum NicheWallet {
-    /**
-     * The value NONE is used to store the information of no wallet
-     */
+
     NONE("NONE",null),
     UNKNOWN_WALLET ("UNKW", ReferenceWallet.BASIC_WALLET_BITCOIN_WALLET);
 

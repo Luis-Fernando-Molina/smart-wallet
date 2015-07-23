@@ -19,10 +19,10 @@ public class getPluginClassesTest {
 /*
     @Test
     public void getClasses(){
-        List<Class<?>> classes = ClassFinder.find(this.getClass().getPackage().getName());
-        for (Class<?> c : classes) {
-            System.out.println(c.getName());
-        }
+       // List<Class<?>> classes = ClassFinder.find(this.getClass().getPackage().getName());
+       // for (Class<?> c : classes) {
+       //     System.out.println(c.getName());
+       // }
 
     }*/
 }
