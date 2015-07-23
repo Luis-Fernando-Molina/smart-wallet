@@ -97,7 +97,7 @@ public class WalletSettingsSettings implements WalletSettings {
             throw new CantGetDefaultLanguageException(CantGetDefaultLanguageException.DEFAULT_MESSAGE, FermatException.wrapException(e), null, null);
 
          } catch (CantLoadSettingsFileException cantLoadSettingsFileException) {
-            throw new CantGetDefaultLanguageException(CantGetDefaultLanguageException.DEFAULT_MESSAGE, FermatException.wrapException(cantLoadSettingsFileException), null, null);
+            throw new CantGetDefaultLanguageException(CantGetDefaultLanguageException.DEFAULT_MESSAGE, cantLoadSettingsFileException, null, null);
 
 
         } catch(Exception exception){
@@ -149,7 +149,7 @@ public class WalletSettingsSettings implements WalletSettings {
 
         }
         catch (CantLoadSettingsFileException cantLoadSettingsFileException) {
-            throw new CantGetDefaultSkinException(CantGetDefaultSkinException.DEFAULT_MESSAGE, FermatException.wrapException(cantLoadSettingsFileException), null, null);
+            throw new CantGetDefaultSkinException(CantGetDefaultSkinException.DEFAULT_MESSAGE, cantLoadSettingsFileException, null, null);
 
         }
         catch(Exception exception){
@@ -208,12 +208,12 @@ public class WalletSettingsSettings implements WalletSettings {
 
           catch (CantPersistFileException cantPersistFileException) {
 
-                throw new CantSetDefaultLanguageException(CantSetDefaultLanguageException.DEFAULT_MESSAGE, FermatException.wrapException(cantPersistFileException), null, null);
+                throw new CantSetDefaultLanguageException(CantSetDefaultLanguageException.DEFAULT_MESSAGE, cantPersistFileException, null, null);
           }
 
          catch (CantLoadSettingsFileException cantLoadSettingsFileException) {
 
-                throw new CantSetDefaultLanguageException(CantSetDefaultLanguageException.DEFAULT_MESSAGE, FermatException.wrapException(cantLoadSettingsFileException), null, null);
+                throw new CantSetDefaultLanguageException(CantSetDefaultLanguageException.DEFAULT_MESSAGE, cantLoadSettingsFileException, null, null);
          }
          catch(Exception exception){
 
@@ -271,11 +271,11 @@ public class WalletSettingsSettings implements WalletSettings {
 
         } catch (CantPersistFileException cantPersistFileException) {
 
-            throw new CantSetDefaultSkinException(CantSetDefaultSkinException.DEFAULT_MESSAGE, FermatException.wrapException(cantPersistFileException), null, null);
+            throw new CantSetDefaultSkinException(CantSetDefaultSkinException.DEFAULT_MESSAGE, cantPersistFileException, null, null);
 
 
         } catch (CantLoadSettingsFileException cantLoadSettingsFileException) {
-            throw new CantSetDefaultSkinException(CantSetDefaultSkinException.DEFAULT_MESSAGE, FermatException.wrapException(cantLoadSettingsFileException), null, null);
+            throw new CantSetDefaultSkinException(CantSetDefaultSkinException.DEFAULT_MESSAGE, cantLoadSettingsFileException, null, null);
 
         }
         catch(Exception exception){
@@ -342,7 +342,7 @@ public class WalletSettingsSettings implements WalletSettings {
                     /**
                      * If I can not save this file, then this plugin shouldn't be running at all.
                      */
-                    throw new CantLoadSettingsFileException(CantLoadSettingsFileException.DEFAULT_MESSAGE, FermatException.wrapException(cantCreateFileException), null, null);
+                    throw new CantLoadSettingsFileException(CantLoadSettingsFileException.DEFAULT_MESSAGE, cantCreateFileException, null, null);
 
                 }
                 try {
@@ -365,7 +365,7 @@ public class WalletSettingsSettings implements WalletSettings {
                     /**
                      * If I can not save this file, then this plugin shouldn't be running at all.
                      */
-                    throw new CantLoadSettingsFileException(CantLoadSettingsFileException.DEFAULT_MESSAGE, FermatException.wrapException(cantPersistFileException), null, null);
+                    throw new CantLoadSettingsFileException(CantLoadSettingsFileException.DEFAULT_MESSAGE, cantPersistFileException, null, null);
 
                 }
             }
@@ -380,7 +380,7 @@ public class WalletSettingsSettings implements WalletSettings {
              * * * *
              */
 
-            throw new CantLoadSettingsFileException(CantLoadSettingsFileException.DEFAULT_MESSAGE, FermatException.wrapException(cantLoadFileException), null, null);
+            throw new CantLoadSettingsFileException(CantLoadSettingsFileException.DEFAULT_MESSAGE, cantLoadFileException, null, null);
 
         }
         catch (CantCreateFileException cantCreateFileException ) {
@@ -389,7 +389,7 @@ public class WalletSettingsSettings implements WalletSettings {
              * If I can not save this file, then this plugin shouldn't be running at all.
              */
 
-            throw new CantLoadSettingsFileException(CantLoadSettingsFileException.DEFAULT_MESSAGE, FermatException.wrapException(cantCreateFileException), null, null);
+            throw new CantLoadSettingsFileException(CantLoadSettingsFileException.DEFAULT_MESSAGE,cantCreateFileException, null, null);
 
         }
         catch(Exception ex)

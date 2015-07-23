@@ -262,15 +262,19 @@ public class AppRuntimeMiddlewarePluginRoot implements Service, AppRuntimeManage
     @Override
     public Fragment getLastFragment() {
 
-        Iterator<Map.Entry<Fragments, Fragment>> efragment = this.listFragments.entrySet().iterator();
+        if(lastFragment != null)
+        {
+            Iterator<Map.Entry<Fragments, Fragment>> efragment = this.listFragments.entrySet().iterator();
 
-        while (efragment.hasNext()) {
-            Map.Entry<Fragments, Fragment> fragmentEntry = efragment.next();
-            Fragment fragment = (Fragment) fragmentEntry.getValue();
-            if(fragment.getType().name().equals(this.lastFragment.name())){
-                return fragment;
+            while (efragment.hasNext()) {
+                Map.Entry<Fragments, Fragment> fragmentEntry = efragment.next();
+                Fragment fragment = (Fragment) fragmentEntry.getValue();
+                if(fragment.getType().name().equals(this.lastFragment.name())){
+                    return fragment;
+                }
             }
         }
+
 
         return null;
     }
@@ -372,38 +376,38 @@ public class AppRuntimeMiddlewarePluginRoot implements Service, AppRuntimeManage
 
         try
         {
-        RuntimeApp runtimeApp;
-        RuntimeSubApp runtimeSubApp;
-        Activity runtimeActivity;
-        Fragment runtimeFragment;
+            RuntimeApp runtimeApp;
+            RuntimeSubApp runtimeSubApp;
+            Activity runtimeActivity;
+            Fragment runtimeFragment;
 
-        TitleBar runtimeTitleBar;
-        SideMenu runtimeSideMenu;
-        MainMenu runtimeMainMenu;
-        MenuItem runtimeMenuItem;
-        TabStrip runtimeTabStrip;
-        StatusBar statusBar;
+            TitleBar runtimeTitleBar;
+            SideMenu runtimeSideMenu;
+            MainMenu runtimeMainMenu;
+            MenuItem runtimeMenuItem;
+            TabStrip runtimeTabStrip;
+            StatusBar statusBar;
 
-        Tab runtimeTab;
-        runtimeApp = new RuntimeApp();
+            Tab runtimeTab;
+            runtimeApp = new RuntimeApp();
 
-        runtimeApp.setType(Apps.CRYPTO_WALLET_PLATFORM);
+            runtimeApp.setType(Apps.CRYPTO_WALLET_PLATFORM);
 
 
-        runtimeSubApp = new RuntimeSubApp();
-        runtimeSubApp.setType(SubApps.CWP_SHELL);
-        runtimeApp.addSubApp(runtimeSubApp);
-        listSubApp.put(SubApps.CWP_SHELL, runtimeSubApp);
+            runtimeSubApp = new RuntimeSubApp();
+            runtimeSubApp.setType(SubApps.CWP_SHELL);
+            runtimeApp.addSubApp(runtimeSubApp);
+            listSubApp.put(SubApps.CWP_SHELL, runtimeSubApp);
 
-        runtimeActivity= new Activity();
-        runtimeActivity.setType(Activities.CWP_SHELL_LOGIN);
-        runtimeSubApp.addActivity(runtimeActivity);
-        listActivities.put(Activities.CWP_SHELL_LOGIN, runtimeActivity);
+            runtimeActivity= new Activity();
+            runtimeActivity.setType(Activities.CWP_SHELL_LOGIN);
+            runtimeSubApp.addActivity(runtimeActivity);
+            listActivities.put(Activities.CWP_SHELL_LOGIN, runtimeActivity);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_SHELL_LOGIN);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_SHELL_LOGIN, runtimeFragment);
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_SHELL_LOGIN);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_SHELL_LOGIN, runtimeFragment);
 
 
             /**
@@ -548,14 +552,14 @@ public class AppRuntimeMiddlewarePluginRoot implements Service, AppRuntimeManage
              * End of Developer tabs.
              */
 
-        //wallet factory app
-        runtimeSubApp = new RuntimeSubApp();
-        runtimeSubApp.setType(SubApps.CWP_WALLET_FACTORY);
-        runtimeApp.addSubApp(runtimeSubApp);
-        listSubApp.put(SubApps.CWP_WALLET_FACTORY, runtimeSubApp);
+            //wallet factory app
+            runtimeSubApp = new RuntimeSubApp();
+            runtimeSubApp.setType(SubApps.CWP_WALLET_FACTORY);
+            runtimeApp.addSubApp(runtimeSubApp);
+            listSubApp.put(SubApps.CWP_WALLET_FACTORY, runtimeSubApp);
 
-        runtimeActivity= new Activity();
-        runtimeActivity.setType(Activities.CWP_WALLET_FACTORY_MAIN);
+            runtimeActivity= new Activity();
+            runtimeActivity.setType(Activities.CWP_WALLET_FACTORY_MAIN);
             runtimeActivity.setColor("#b46a54");
             //runtimeActivity.setStatusBarColor("");
 
@@ -564,7 +568,7 @@ public class AppRuntimeMiddlewarePluginRoot implements Service, AppRuntimeManage
 
             runtimeTitleBar = new TitleBar();
             runtimeTitleBar.setLabel("Wallet Factory");
-             runtimeActivity.setTitleBar(runtimeTitleBar);
+            runtimeActivity.setTitleBar(runtimeTitleBar);
 
             runtimeTabStrip = new TabStrip();
             runtimeTabStrip.setTabsColor("#d07b62");
@@ -581,12 +585,12 @@ public class AppRuntimeMiddlewarePluginRoot implements Service, AppRuntimeManage
 
 
             runtimeSubApp.addActivity(runtimeActivity);
-        listActivities.put(Activities.CWP_WALLET_FACTORY_MAIN, runtimeActivity);
+            listActivities.put(Activities.CWP_WALLET_FACTORY_MAIN, runtimeActivity);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_FACTORY_MAIN);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_FACTORY_MAIN,runtimeFragment);
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_FACTORY_MAIN);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_FACTORY_MAIN,runtimeFragment);
 
             /**End Wallet Publisher*/
 
@@ -629,146 +633,146 @@ public class AppRuntimeMiddlewarePluginRoot implements Service, AppRuntimeManage
 
             /**End Wallet Publisher*/
 
-        runtimeSubApp = new RuntimeSubApp();
-        runtimeSubApp.setType(SubApps.CWP_WALLET_MANAGER);
-        runtimeApp.addSubApp(runtimeSubApp);
-        listSubApp.put(SubApps.CWP_WALLET_MANAGER,runtimeSubApp);
-        lastSubapp = SubApps.CWP_WALLET_MANAGER;
+            runtimeSubApp = new RuntimeSubApp();
+            runtimeSubApp.setType(SubApps.CWP_WALLET_MANAGER);
+            runtimeApp.addSubApp(runtimeSubApp);
+            listSubApp.put(SubApps.CWP_WALLET_MANAGER,runtimeSubApp);
+            lastSubapp = SubApps.CWP_WALLET_MANAGER;
 
-        runtimeActivity= new Activity();
-        runtimeActivity.setType(Activities.CWP_WALLET_MANAGER_MAIN);
-        runtimeSubApp.addActivity(runtimeActivity);
-        listActivities.put(Activities.CWP_WALLET_MANAGER_MAIN, runtimeActivity);
+            runtimeActivity= new Activity();
+            runtimeActivity.setType(Activities.CWP_WALLET_MANAGER_MAIN);
+            runtimeSubApp.addActivity(runtimeActivity);
+            listActivities.put(Activities.CWP_WALLET_MANAGER_MAIN, runtimeActivity);
 
-        lastActivity = Activities.CWP_WALLET_MANAGER_MAIN;
-
-
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_MANAGER_MAIN);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_MANAGER_MAIN, runtimeFragment);
-
-        //Desktop page Developer sub App
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_SUB_APP_DEVELOPER);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_SUB_APP_DEVELOPER,runtimeFragment);
+            lastActivity = Activities.CWP_WALLET_MANAGER_MAIN;
 
 
-        runtimeSubApp = new RuntimeSubApp();
-        runtimeSubApp.setType(SubApps.CWP_WALLET_RUNTIME);
-        runtimeApp.addSubApp(runtimeSubApp);
-        listSubApp.put(SubApps.CWP_WALLET_RUNTIME,runtimeSubApp);
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_MANAGER_MAIN);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_MANAGER_MAIN, runtimeFragment);
+
+            //Desktop page Developer sub App
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_SUB_APP_DEVELOPER);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_SUB_APP_DEVELOPER,runtimeFragment);
 
 
-        runtimeSubApp = new RuntimeSubApp();
-        runtimeSubApp.setType(SubApps.CWP_WALLET_STORE);
-        runtimeApp.addSubApp(runtimeSubApp);
-        listSubApp.put(SubApps.CWP_WALLET_STORE,runtimeSubApp);
-
-        runtimeActivity= new Activity();
-        runtimeActivity.setType(Activities.CWP_WALLET_STORE_MAIN);
-        runtimeSubApp.addActivity(runtimeActivity);
-        listActivities.put(Activities.CWP_WALLET_STORE_MAIN, runtimeActivity);
-
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_STORE_MAIN);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_STORE_MAIN,runtimeFragment);
+            runtimeSubApp = new RuntimeSubApp();
+            runtimeSubApp.setType(SubApps.CWP_WALLET_RUNTIME);
+            runtimeApp.addSubApp(runtimeSubApp);
+            listSubApp.put(SubApps.CWP_WALLET_RUNTIME,runtimeSubApp);
 
 
-        /**
-         * Definition of Shop Manager
-         */
+            runtimeSubApp = new RuntimeSubApp();
+            runtimeSubApp.setType(SubApps.CWP_WALLET_STORE);
+            runtimeApp.addSubApp(runtimeSubApp);
+            listSubApp.put(SubApps.CWP_WALLET_STORE,runtimeSubApp);
 
-        runtimeActivity= new Activity();
-        runtimeActivity.setType(Activities.CWP_WALLET_ADULTS_ALL_SHOPS);
-        runtimeActivity.setColor("#76dc4a");
-        runtimeSubApp.addActivity(runtimeActivity);
-        listActivities.put(Activities.CWP_WALLET_ADULTS_ALL_SHOPS, runtimeActivity);
+            runtimeActivity= new Activity();
+            runtimeActivity.setType(Activities.CWP_WALLET_STORE_MAIN);
+            runtimeSubApp.addActivity(runtimeActivity);
+            listActivities.put(Activities.CWP_WALLET_STORE_MAIN, runtimeActivity);
 
-
-
-        runtimeTitleBar = new TitleBar();
-        runtimeTitleBar.setLabel("My Shop");
-
-        runtimeActivity.setTitleBar(runtimeTitleBar);
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_STORE_MAIN);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_STORE_MAIN,runtimeFragment);
 
 
-        runtimeTabStrip = new TabStrip();
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("Shop");
-        runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_SHOP);
-        runtimeTabStrip.addTab(runtimeTab);
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("Products");
-        runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_PRODUCTS);
-        runtimeTabStrip.addTab(runtimeTab);
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("Reviews");
-        runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_REVIEWS);
-        runtimeTabStrip.addTab(runtimeTab);
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("Chat");
-        runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_CHAT);
-        runtimeTabStrip.addTab(runtimeTab);
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("History");
-        runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_HISTORY);
-        runtimeTabStrip.addTab(runtimeTab);
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("Map");
-        runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_MAP);
-        runtimeTabStrip.addTab(runtimeTab);
+            /**
+             * Definition of Shop Manager
+             */
+
+            runtimeActivity= new Activity();
+            runtimeActivity.setType(Activities.CWP_WALLET_ADULTS_ALL_SHOPS);
+            runtimeActivity.setColor("#76dc4a");
+            runtimeSubApp.addActivity(runtimeActivity);
+            listActivities.put(Activities.CWP_WALLET_ADULTS_ALL_SHOPS, runtimeActivity);
 
 
-        runtimeTabStrip.setDividerColor(0xFFFFFFFF);
-        runtimeTabStrip.setIndicatorColor(0xFFFFFFFF);
-        runtimeTabStrip.setIndicatorHeight(9);
-        runtimeTabStrip.setBackgroundColor(0xFF76dc4a);
-        runtimeTabStrip.setTextColor(0xFFFFFFFF);
-        runtimeActivity.setTabStrip(runtimeTabStrip);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_SHOP);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_SHOP,runtimeFragment);
+            runtimeTitleBar = new TitleBar();
+            runtimeTitleBar.setLabel("My Shop");
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_PRODUCTS);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_PRODUCTS,runtimeFragment);
+            runtimeActivity.setTitleBar(runtimeTitleBar);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_REVIEWS);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_REVIEWS,runtimeFragment);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_CHAT);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_CHAT,runtimeFragment);
+            runtimeTabStrip = new TabStrip();
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("Shop");
+            runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_SHOP);
+            runtimeTabStrip.addTab(runtimeTab);
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("Products");
+            runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_PRODUCTS);
+            runtimeTabStrip.addTab(runtimeTab);
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("Reviews");
+            runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_REVIEWS);
+            runtimeTabStrip.addTab(runtimeTab);
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("Chat");
+            runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_CHAT);
+            runtimeTabStrip.addTab(runtimeTab);
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("History");
+            runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_HISTORY);
+            runtimeTabStrip.addTab(runtimeTab);
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("Map");
+            runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_MAP);
+            runtimeTabStrip.addTab(runtimeTab);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_HISTORY);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_HISTORY,runtimeFragment);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_MAP);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_MAP,runtimeFragment);
-        /**
-         * End of SHOPS tabs.
-         */
+            runtimeTabStrip.setDividerColor(0xFFFFFFFF);
+            runtimeTabStrip.setIndicatorColor(0xFFFFFFFF);
+            runtimeTabStrip.setIndicatorHeight(9);
+            runtimeTabStrip.setBackgroundColor(0xFF76dc4a);
+            runtimeTabStrip.setTextColor(0xFFFFFFFF);
+            runtimeActivity.setTabStrip(runtimeTabStrip);
+
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_SHOP);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_SHOP,runtimeFragment);
+
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_PRODUCTS);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_PRODUCTS,runtimeFragment);
+
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_REVIEWS);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_REVIEWS,runtimeFragment);
+
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_CHAT);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_CHAT,runtimeFragment);
+
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_HISTORY);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_HISTORY,runtimeFragment);
+
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_MAP);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_SHOP_MAP,runtimeFragment);
+            /**
+             * End of SHOPS tabs.
+             */
 
 
 
 
 
         /*-- wallet store --*/
-        runtimeActivity= new Activity();
-        runtimeActivity.setType(Activities.CWP_WALLET_RUNTIME_STORE_MAIN);
+            runtimeActivity= new Activity();
+            runtimeActivity.setType(Activities.CWP_WALLET_RUNTIME_STORE_MAIN);
 
             runtimeActivity.setColor("#b46a54");
 
@@ -786,188 +790,188 @@ public class AppRuntimeMiddlewarePluginRoot implements Service, AppRuntimeManage
             runtimeTabStrip.setTabsTextColor("#FFFFFF");
             runtimeTabStrip.setTabsIndicateColor("#b46a54");
             runtimeSubApp.addActivity(runtimeActivity);
-        listActivities.put(Activities.CWP_WALLET_RUNTIME_STORE_MAIN, runtimeActivity);
+            listActivities.put(Activities.CWP_WALLET_RUNTIME_STORE_MAIN, runtimeActivity);
 
 
 
 
-        //mati
-        SearchView runtimeSearchView= new SearchView();
-        runtimeSearchView.setLabel("Search");
-        runtimeTitleBar.setRuntimeSearchView(runtimeSearchView);
+            //mati
+            SearchView runtimeSearchView= new SearchView();
+            runtimeSearchView.setLabel("Search");
+            runtimeTitleBar.setRuntimeSearchView(runtimeSearchView);
 
-        runtimeActivity.setTitleBar(runtimeTitleBar);
+            runtimeActivity.setTitleBar(runtimeTitleBar);
 
-        runtimeTabStrip = new TabStrip();
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("All");
-        runtimeTab.setFragment(Fragments.CWP_SHOP_MANAGER_MAIN);
-        runtimeTabStrip.addTab(runtimeTab);
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("Free");
-        runtimeTab.setFragment(Fragments.CWP_SHOP_MANAGER_FREE);
-        runtimeTabStrip.addTab(runtimeTab);
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("Paid");
-        runtimeTab.setFragment(Fragments.CWP_SHOP_MANAGER_PAID);
-        runtimeTabStrip.addTab(runtimeTab);
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("Accepted nearby");
-        runtimeTab.setFragment(Fragments.CWP_SHOP_MANAGER_ACCEPTED_NEARBY);
-        runtimeTabStrip.addTab(runtimeTab);
+            runtimeTabStrip = new TabStrip();
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("All");
+            runtimeTab.setFragment(Fragments.CWP_SHOP_MANAGER_MAIN);
+            runtimeTabStrip.addTab(runtimeTab);
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("Free");
+            runtimeTab.setFragment(Fragments.CWP_SHOP_MANAGER_FREE);
+            runtimeTabStrip.addTab(runtimeTab);
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("Paid");
+            runtimeTab.setFragment(Fragments.CWP_SHOP_MANAGER_PAID);
+            runtimeTabStrip.addTab(runtimeTab);
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("Accepted nearby");
+            runtimeTab.setFragment(Fragments.CWP_SHOP_MANAGER_ACCEPTED_NEARBY);
+            runtimeTabStrip.addTab(runtimeTab);
 
 
 
-        runtimeActivity.setTabStrip(runtimeTabStrip);
+            runtimeActivity.setTabStrip(runtimeTabStrip);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_SHOP_MANAGER_MAIN);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_SHOP_MANAGER_MAIN,runtimeFragment);
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_SHOP_MANAGER_MAIN);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_SHOP_MANAGER_MAIN,runtimeFragment);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_SHOP_MANAGER_FREE);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_SHOP_MANAGER_FREE,runtimeFragment);
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_SHOP_MANAGER_FREE);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_SHOP_MANAGER_FREE,runtimeFragment);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_SHOP_MANAGER_PAID);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_SHOP_MANAGER_PAID,runtimeFragment);
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_SHOP_MANAGER_PAID);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_SHOP_MANAGER_PAID,runtimeFragment);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_SHOP_MANAGER_ACCEPTED_NEARBY);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_SHOP_MANAGER_ACCEPTED_NEARBY,runtimeFragment);
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_SHOP_MANAGER_ACCEPTED_NEARBY);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_SHOP_MANAGER_ACCEPTED_NEARBY,runtimeFragment);
 
 
 /**
  * End of Wallet Store
  */
 
-        //Account Details
+            //Account Details
 
-        runtimeActivity= new Activity();
-        runtimeActivity.setType(Activities.CWP_WALLET_RUNTIME_ADULTS_ALL_ACCOUNT_DETAIL);
-        runtimeActivity.setColor("#F0E173");
-        runtimeSubApp.addActivity(runtimeActivity);
-        listActivities.put(Activities.CWP_WALLET_RUNTIME_ADULTS_ALL_ACCOUNT_DETAIL, runtimeActivity);
-
-
-
-        runtimeTitleBar = new TitleBar();
-        runtimeTitleBar.setLabel("Account details");
-
-        runtimeActivity.setTitleBar(runtimeTitleBar);
+            runtimeActivity= new Activity();
+            runtimeActivity.setType(Activities.CWP_WALLET_RUNTIME_ADULTS_ALL_ACCOUNT_DETAIL);
+            runtimeActivity.setColor("#F0E173");
+            runtimeSubApp.addActivity(runtimeActivity);
+            listActivities.put(Activities.CWP_WALLET_RUNTIME_ADULTS_ALL_ACCOUNT_DETAIL, runtimeActivity);
 
 
-        runtimeTabStrip = new TabStrip();
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("Debits");
-        runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_DEBITS);
-        runtimeTabStrip.addTab(runtimeTab);
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("Credits");
-        runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNT_CREDITS);
-        runtimeTabStrip.addTab(runtimeTab);
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("All");
-        runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_ALL);
-        runtimeTabStrip.addTab(runtimeTab);
 
-        runtimeActivity.setTabStrip(runtimeTabStrip);
+            runtimeTitleBar = new TitleBar();
+            runtimeTitleBar.setLabel("Account details");
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_DEBITS);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_DEBITS,runtimeFragment);
+            runtimeActivity.setTitleBar(runtimeTitleBar);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNT_CREDITS);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNT_CREDITS,runtimeFragment);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_ALL);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_ALL,runtimeFragment);
+            runtimeTabStrip = new TabStrip();
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("Debits");
+            runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_DEBITS);
+            runtimeTabStrip.addTab(runtimeTab);
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("Credits");
+            runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNT_CREDITS);
+            runtimeTabStrip.addTab(runtimeTab);
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("All");
+            runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_ALL);
+            runtimeTabStrip.addTab(runtimeTab);
+
+            runtimeActivity.setTabStrip(runtimeTabStrip);
+
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_DEBITS);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_DEBITS,runtimeFragment);
+
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNT_CREDITS);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNT_CREDITS,runtimeFragment);
+
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_ALL);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_ALL,runtimeFragment);
 
 
 
         /*------------------------------*/
 
-        runtimeActivity= new Activity();
-        runtimeActivity.setType(Activities.CWP_WALLET_ADULTS_ALL_REFFILS);
-        runtimeSubApp.addActivity(runtimeActivity);
-        listActivities.put(Activities.CWP_WALLET_ADULTS_ALL_REFFILS, runtimeActivity);
+            runtimeActivity= new Activity();
+            runtimeActivity.setType(Activities.CWP_WALLET_ADULTS_ALL_REFFILS);
+            runtimeSubApp.addActivity(runtimeActivity);
+            listActivities.put(Activities.CWP_WALLET_ADULTS_ALL_REFFILS, runtimeActivity);
 //-----------------------------------------------------------------------------------
-        runtimeActivity= new Activity();
-        runtimeActivity.setType(Activities.CWP_WALLET_ADULTS_ALL_REQUESTS_RECEIVED);
-        runtimeSubApp.addActivity(runtimeActivity);
-        listActivities.put(Activities.CWP_WALLET_ADULTS_ALL_REQUESTS_RECEIVED, runtimeActivity);
+            runtimeActivity= new Activity();
+            runtimeActivity.setType(Activities.CWP_WALLET_ADULTS_ALL_REQUESTS_RECEIVED);
+            runtimeSubApp.addActivity(runtimeActivity);
+            listActivities.put(Activities.CWP_WALLET_ADULTS_ALL_REQUESTS_RECEIVED, runtimeActivity);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_ADULTS_ALL_REQUESTS_RECEIVED);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_ADULTS_ALL_REQUESTS_RECEIVED,runtimeFragment);
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_ADULTS_ALL_REQUESTS_RECEIVED);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_ADULTS_ALL_REQUESTS_RECEIVED,runtimeFragment);
 //------------------------------------------------------------------------------------
-        runtimeActivity= new Activity();
-        runtimeActivity.setType(Activities.CWP_WALLET_ADULTS_ALL_REQUEST_SEND);
-        runtimeSubApp.addActivity(runtimeActivity);
-        listActivities.put(Activities.CWP_WALLET_ADULTS_ALL_REQUEST_SEND, runtimeActivity);
+            runtimeActivity= new Activity();
+            runtimeActivity.setType(Activities.CWP_WALLET_ADULTS_ALL_REQUEST_SEND);
+            runtimeSubApp.addActivity(runtimeActivity);
+            listActivities.put(Activities.CWP_WALLET_ADULTS_ALL_REQUEST_SEND, runtimeActivity);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_ADULTS_ALL_REQUEST_SEND);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_ADULTS_ALL_REQUEST_SEND,runtimeFragment);
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_ADULTS_ALL_REQUEST_SEND);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_ADULTS_ALL_REQUEST_SEND,runtimeFragment);
 //-----------------------------------------------------------------------------------
-        runtimeActivity= new Activity();
-        runtimeActivity.setType(Activities.CWP_WALLET_RUNTIME_ADULTS_ALL_ACCOUNTS);
-        runtimeSubApp.addActivity(runtimeActivity);
-        listActivities.put(Activities.CWP_WALLET_RUNTIME_ADULTS_ALL_ACCOUNTS, runtimeActivity);
+            runtimeActivity= new Activity();
+            runtimeActivity.setType(Activities.CWP_WALLET_RUNTIME_ADULTS_ALL_ACCOUNTS);
+            runtimeSubApp.addActivity(runtimeActivity);
+            listActivities.put(Activities.CWP_WALLET_RUNTIME_ADULTS_ALL_ACCOUNTS, runtimeActivity);
 
-        runtimeTitleBar = new TitleBar();
-        runtimeTitleBar.setLabel("Account details");
-        runtimeActivity.setTitleBar(runtimeTitleBar);
+            runtimeTitleBar = new TitleBar();
+            runtimeTitleBar.setLabel("Account details");
+            runtimeActivity.setTitleBar(runtimeTitleBar);
 
-        runtimeTabStrip = new TabStrip();
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("Debits");
-        runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_DEBITS);
-        runtimeTabStrip.addTab(runtimeTab);
+            runtimeTabStrip = new TabStrip();
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("Debits");
+            runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_DEBITS);
+            runtimeTabStrip.addTab(runtimeTab);
 
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("Credits");
-        runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNT_CREDITS);
-        runtimeTabStrip.addTab(runtimeTab);
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("Credits");
+            runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNT_CREDITS);
+            runtimeTabStrip.addTab(runtimeTab);
 
-        runtimeTab = new Tab();
-        runtimeTab.setLabel("All");
-        runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_ALL);
-        runtimeTabStrip.addTab(runtimeTab);
+            runtimeTab = new Tab();
+            runtimeTab.setLabel("All");
+            runtimeTab.setFragment(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_ALL);
+            runtimeTabStrip.addTab(runtimeTab);
 
 
-        runtimeActivity.setTabStrip(runtimeTabStrip);
+            runtimeActivity.setTabStrip(runtimeTabStrip);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_DEBITS);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_DEBITS,runtimeFragment);
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_DEBITS);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_DEBITS,runtimeFragment);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNT_CREDITS);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNT_CREDITS,runtimeFragment);
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNT_CREDITS);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNT_CREDITS,runtimeFragment);
 
-        runtimeFragment = new Fragment();
-        runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_ALL);
-        runtimeActivity.addFragment(runtimeFragment);
-        listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_ALL,runtimeFragment);
-        listApps.put(Apps.CRYPTO_WALLET_PLATFORM,runtimeApp);
-        lastApp = Apps.CRYPTO_WALLET_PLATFORM;
-        /**
-         * End of Wallet Accounts tabs.
-         */
+            runtimeFragment = new Fragment();
+            runtimeFragment.setType(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_ALL);
+            runtimeActivity.addFragment(runtimeFragment);
+            listFragments.put(Fragments.CWP_WALLET_RUNTIME_WALLET_ADULTS_ALL_BITDUBAI_ACCOUNTS_ALL,runtimeFragment);
+            listApps.put(Apps.CRYPTO_WALLET_PLATFORM,runtimeApp);
+            lastApp = Apps.CRYPTO_WALLET_PLATFORM;
+            /**
+             * End of Wallet Accounts tabs.
+             */
         }
         catch(Exception e)
         {
