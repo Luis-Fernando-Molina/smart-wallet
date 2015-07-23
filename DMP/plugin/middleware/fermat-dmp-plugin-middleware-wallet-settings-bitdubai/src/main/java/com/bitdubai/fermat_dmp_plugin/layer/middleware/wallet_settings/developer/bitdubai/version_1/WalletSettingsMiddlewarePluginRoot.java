@@ -51,7 +51,7 @@ import java.util.UUID;
  * @version 1.0
  * @since Java JDK 1.7
  */
-public class WalletSettingsMiddlewarePluginRoot implements DealsWithErrors,DatabaseManagerForDevelopers,DealsWithLogger,DealsWithPluginFileSystem,LogManagerForDevelopers, Plugin, Service,WalletSettingsManager {
+public class WalletSettingsMiddlewarePluginRoot implements DealsWithErrors,DealsWithLogger,DealsWithPluginFileSystem,LogManagerForDevelopers, Plugin, Service,WalletSettingsManager {
 
 
 
@@ -139,27 +139,6 @@ public class WalletSettingsMiddlewarePluginRoot implements DealsWithErrors,Datab
     public void setId(UUID pluginId) {
         this.pluginId = pluginId;
     }
-
-    /**
-     * DatabaseManagerForDevelopers Interface implementation.
-     */
-
-    @Override
-    public List<DeveloperDatabase> getDatabaseList(DeveloperObjectFactory developerObjectFactory){
-     return null;
-    }
-
-    @Override
-    public List<DeveloperDatabaseTable> getDatabaseTableList(DeveloperObjectFactory developerObjectFactory, DeveloperDatabase developerDatabase){
-        return null;
-    }
-
-    @Override
-    public List<DeveloperDatabaseTableRecord> getDatabaseTableContent(DeveloperObjectFactory developerObjectFactory, DeveloperDatabase developerDatabase, DeveloperDatabaseTable developerDatabaseTable){
-        return null;
-    }
-
-
 
     /**
      * DealsWithLogger Interface implementation.
