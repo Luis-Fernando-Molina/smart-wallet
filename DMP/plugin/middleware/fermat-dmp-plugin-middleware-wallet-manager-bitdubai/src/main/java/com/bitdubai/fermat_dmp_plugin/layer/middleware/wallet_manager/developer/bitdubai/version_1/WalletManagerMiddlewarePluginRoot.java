@@ -3,6 +3,11 @@ package com.bitdubai.fermat_dmp_plugin.layer.middleware.wallet_manager.developer
 import com.bitdubai.fermat_api.CantStartPluginException;
 import com.bitdubai.fermat_api.Plugin;
 import com.bitdubai.fermat_api.Service;
+import com.bitdubai.fermat_api.layer.all_definition.developer.DatabaseManagerForDevelopers;
+import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperDatabase;
+import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperDatabaseTable;
+import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperDatabaseTableRecord;
+import com.bitdubai.fermat_api.layer.all_definition.developer.DeveloperObjectFactory;
 import com.bitdubai.fermat_api.layer.all_definition.developer.LogManagerForDevelopers;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Languages;
 import com.bitdubai.fermat_api.layer.all_definition.enums.ServiceStatus;
@@ -21,9 +26,12 @@ import com.bitdubai.fermat_api.layer.dmp_middleware.wallet_manager.exceptions.Ca
 import com.bitdubai.fermat_api.layer.dmp_middleware.wallet_manager.interfaces.InstalledWallet;
 import com.bitdubai.fermat_api.layer.dmp_middleware.wallet_manager.interfaces.WalletInstallationProcess;
 import com.bitdubai.fermat_api.layer.dmp_middleware.wallet_manager.interfaces.WalletManagerManager;
+import com.bitdubai.fermat_api.layer.osa_android.database_system.DealsWithPluginDatabaseSystem;
+import com.bitdubai.fermat_api.layer.osa_android.database_system.PluginDatabaseSystem;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.DealsWithLogger;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogLevel;
 import com.bitdubai.fermat_api.layer.osa_android.logger_system.LogManager;
+import com.bitdubai.fermat_dmp_plugin.layer.middleware.wallet_manager.developer.bitdubai.version_1.structure.WalletManagerInstallationProcess;
 import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.DealsWithErrors;
 import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
 
@@ -44,7 +52,11 @@ import java.util.UUID;
  * @version 1.0
  * @since Java JDK 1.7
  */
-public class WalletManagerMiddlewarePluginRoot implements DealsWithErrors,DealsWithLogger,LogManagerForDevelopers, Plugin, Service, WalletManagerManager {
+public class WalletManagerMiddlewarePluginRoot implements DealsWithErrors,DatabaseManagerForDevelopers,DealsWithPluginDatabaseSystem,DealsWithLogger,LogManagerForDevelopers, Plugin, Service, WalletManagerManager {
+
+   private List<InstalledWallet> installedWallets;
+
+    private PluginDatabaseSystem pluginDatabaseSystem;
 
     /**
      * DealsWithErrors Interface member variables.
@@ -93,6 +105,13 @@ public class WalletManagerMiddlewarePluginRoot implements DealsWithErrors,DealsW
         return this.serviceStatus;
     }
 
+    /**
+     * DealsWithPluginDatabaseSystem Interface implementation.
+     */
+    @Override
+    public void setPluginDatabaseSystem(PluginDatabaseSystem pluginDatabaseSystem){
+            this.pluginDatabaseSystem = pluginDatabaseSystem;
+    }
 
     /**
      * DealWithErrors Interface implementation. 
@@ -111,6 +130,24 @@ public class WalletManagerMiddlewarePluginRoot implements DealsWithErrors,DealsW
     }
 
 
+    /**
+     * DatabaseManagerForDevelopers Interface implementation.
+     */
+
+    @Override
+    public List<DeveloperDatabase> getDatabaseList(DeveloperObjectFactory developerObjectFactory) {
+        return null;
+    }
+
+    @Override
+    public List<DeveloperDatabaseTable> getDatabaseTableList(DeveloperObjectFactory developerObjectFactory, DeveloperDatabase developerDatabase) {
+        return null;
+    }
+
+    @Override
+    public List<DeveloperDatabaseTableRecord> getDatabaseTableContent(DeveloperObjectFactory developerObjectFactory, DeveloperDatabase developerDatabase, DeveloperDatabaseTable developerDatabaseTable) {
+        return null;
+    }
 
 
     /**
@@ -167,11 +204,12 @@ public class WalletManagerMiddlewarePluginRoot implements DealsWithErrors,DealsW
 
     @Override
     public List<InstalledWallet> getInstalledWallets() throws CantListWalletsException {
-        return null;
+        return this.installedWallets;
     }
 
     @Override
     public void installLanguage(UUID walletCatalogueId, UUID languageId, Languages language, String label, Version version) throws CantInstallLanguageException {
+
 
     }
 
@@ -209,4 +247,6 @@ public class WalletManagerMiddlewarePluginRoot implements DealsWithErrors,DealsW
     public void renameWallet(UUID walletIdInTheDevice, String newName) throws CantRenameWalletException {
 
     }
+
+
 }

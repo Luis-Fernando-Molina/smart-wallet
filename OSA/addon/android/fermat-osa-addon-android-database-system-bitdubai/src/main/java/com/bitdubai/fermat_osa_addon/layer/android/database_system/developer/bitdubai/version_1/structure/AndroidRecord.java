@@ -58,9 +58,9 @@ public class AndroidRecord implements DatabaseRecord {
     }
 
     /**
-     * Returns true if the record record was changed
+     * Returns true if the record  was change to a variable value
      *
-     * @return boolean if change
+     * @return boolean if acept variable
      */
     @Override
     public boolean getUseValueofVariable(){
@@ -95,6 +95,11 @@ public class AndroidRecord implements DatabaseRecord {
         this.recordChange = change;
     }
 
+    /**
+     * Set if the record was changed to value of variable
+     * @param ifvariable
+     */
+    @Override
     public void setUseValueofVariable (boolean ifvariable){
         this.ifvariable = ifvariable;
     }

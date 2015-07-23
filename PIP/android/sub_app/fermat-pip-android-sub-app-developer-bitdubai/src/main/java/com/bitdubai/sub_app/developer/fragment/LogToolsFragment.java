@@ -279,7 +279,7 @@ public class LogToolsFragment extends Fragment {
                         Loggers item = (Loggers) gridView.getItemAtPosition(position);
 
 
-                        ArrayListLoggers lst = lstLoggers.getListFromLevel(item, ArrayListLoggers.LEVEL_0);
+                        ArrayListLoggers lst = lstLoggers.getListFromLevel(item, ArrayListLoggers.LEVEL_1);
 
                         //set the next fragment and params
                         Object[] params = new Object[1];
