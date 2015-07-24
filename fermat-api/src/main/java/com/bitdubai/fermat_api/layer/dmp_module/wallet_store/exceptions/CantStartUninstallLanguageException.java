@@ -1,11 +1,11 @@
-package com.bitdubai.fermat_api.layer.dmp_module.wallet_store.exceptions_milestone2;
+package com.bitdubai.fermat_api.layer.dmp_module.wallet_store.exceptions;
 
 import com.bitdubai.fermat_api.FermatException;
 
 /**
- * Created by eze on 2015.07.14..
+ * Created by eze on 2015.07.18..
  */
-public class CantStartInstallationException extends FermatException {
+public class CantStartUninstallLanguageException extends FermatException {
     /**
      * This is the constructor that every inherited FermatException must implement
      *
@@ -14,7 +14,7 @@ public class CantStartInstallationException extends FermatException {
      * @param context        a String that provides the values of the variables that could have affected the exception
      * @param possibleReason an explicative reason of why we believe this exception was most likely thrown
      */
-    public CantStartInstallationException(String message, Exception cause, String context, String possibleReason) {
+    public CantStartUninstallLanguageException(String message, Exception cause, String context, String possibleReason) {
         super(message, cause, context, possibleReason);
     }
 }

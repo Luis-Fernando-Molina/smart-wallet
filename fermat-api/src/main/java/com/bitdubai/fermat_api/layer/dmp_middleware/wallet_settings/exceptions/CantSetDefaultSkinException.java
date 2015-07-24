@@ -1,12 +1,11 @@
-package com.bitdubai.fermat_api.layer.dmp_module.wallet_store.exceptions_milestone2;
+package com.bitdubai.fermat_api.layer.dmp_middleware.wallet_settings.exceptions;
 
 import com.bitdubai.fermat_api.FermatException;
 
 /**
- * Created by eze on 2015.07.18..
+ * Created by eze on 2015.07.20..
  */
-public class CantStartUninstallSkinException extends FermatException
-{
+public class CantSetDefaultSkinException extends FermatException {
     /**
      * This is the constructor that every inherited FermatException must implement
      *
@@ -15,7 +14,7 @@ public class CantStartUninstallSkinException extends FermatException
      * @param context        a String that provides the values of the variables that could have affected the exception
      * @param possibleReason an explicative reason of why we believe this exception was most likely thrown
      */
-    public CantStartUninstallSkinException(String message, Exception cause, String context, String possibleReason) {
+    public CantSetDefaultSkinException(String message, Exception cause, String context, String possibleReason) {
         super(message, cause, context, possibleReason);
     }
 }
