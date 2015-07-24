@@ -18,13 +18,13 @@ import com.bitdubai.fermat_pip_api.layer.pip_platform_service.event_manager.even
 
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantPersistFileException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.FileNotFoundException;
-import com.bitdubai.fermat_api.layer.pip_user.device_user.DeviceUser;
+import com.bitdubai.fermat_pip_api.layer.pip_user.device_user.DeviceUser;
 
-import com.bitdubai.fermat_api.layer.pip_user.device_user.DeviceUserStatus;
-import com.bitdubai.fermat_api.layer.pip_user.device_user.exceptions.CantCreateDeviceUserException;
-import com.bitdubai.fermat_api.layer.pip_user.device_user.exceptions.CantLoadDeviceUserException;
-import com.bitdubai.fermat_api.layer.pip_user.device_user.exceptions.CantPersistDeviceUserException;
-import com.bitdubai.fermat_api.layer.pip_user.device_user.exceptions.LoginFailedException;
+import com.bitdubai.fermat_pip_api.layer.pip_user.device_user.DeviceUserStatus;
+import com.bitdubai.fermat_pip_api.layer.pip_user.device_user.exceptions.DEPRECATED_CantCreateDeviceUserException;
+import com.bitdubai.fermat_pip_api.layer.pip_user.device_user.exceptions.CantLoadDeviceUserException;
+import com.bitdubai.fermat_pip_api.layer.pip_user.device_user.exceptions.CantPersistDeviceUserException;
+import com.bitdubai.fermat_pip_api.layer.pip_user.device_user.exceptions.LoginFailedException;
 
 import java.util.UUID;
 
@@ -91,7 +91,7 @@ public class PlatformDeviceUser implements DealsWithEvents, DealsWithErrors,Deal
      * This method is to be used for creating a new user.
      */
 
-    public void createUser () throws CantCreateDeviceUserException {
+    public void createUser () throws DEPRECATED_CantCreateDeviceUserException {
 
         this.userId = UUID.randomUUID();
         this.status = DeviceUserStatus.LOGGED_OUT;
@@ -105,7 +105,7 @@ public class PlatformDeviceUser implements DealsWithEvents, DealsWithErrors,Deal
              * This is bad, but lets handle it...
              */
             errorManager.reportUnexpectedAddonsException(Addons.DEVICE_USER, UnexpectedAddonsExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_ADDONS, cantPersistDeviceUserException);
-            throw new CantCreateDeviceUserException();
+            throw new DEPRECATED_CantCreateDeviceUserException();
         }
 
         /**

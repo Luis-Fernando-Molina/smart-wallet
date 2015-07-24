@@ -28,7 +28,8 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.Actors;
 import com.bitdubai.fermat_api.layer.all_definition.enums.CryptoCurrency;
 import com.bitdubai.fermat_api.layer.all_definition.enums.ReferenceWallet;
 import com.bitdubai.fermat_api.layer.all_definition.money.CryptoAddress;
-import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.enums.Wallets;
+
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Wallets;
 import com.bitdubai.fermat_api.layer.dmp_middleware.wallet_contacts.interfaces.WalletContactRecord;
 import com.bitdubai.fermat_api.layer.dmp_niche_wallet_type.crypto_wallet.exceptions.CantCreateWalletContactException;
 import com.bitdubai.fermat_api.layer.dmp_niche_wallet_type.crypto_wallet.exceptions.CantGetAllWalletContactsException;
@@ -39,11 +40,11 @@ import com.bitdubai.fermat_api.layer.dmp_niche_wallet_type.crypto_wallet.interfa
 import com.bitdubai.fermat_api.layer.dmp_niche_wallet_type.crypto_wallet.interfaces.CryptoWalletManager;
 import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
 import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.UnexpectedWalletExceptionSeverity;
-import com.bitdubai.reference_niche_wallet.bitcoin_wallet.IntentIntegrator;
-import com.bitdubai.reference_niche_wallet.bitcoin_wallet.IntentResult;
-import com.bitdubai.reference_niche_wallet.bitcoin_wallet.Platform;
-import com.bitdubai.reference_niche_wallet.bitcoin_wallet.common.WalletContact;
-import com.bitdubai.reference_niche_wallet.bitcoin_wallet.common.WalletContactListAdapter;
+import com.bitdubai.reference_niche_wallet.bitcoin_wallet.common.bar_code_scanner.IntentIntegrator;
+import com.bitdubai.reference_niche_wallet.bitcoin_wallet.common.bar_code_scanner.IntentResult;
+import com.bitdubai.fermat_android_api.layer.definition.wallet.interfaces.WalletSession;
+import com.bitdubai.reference_niche_wallet.bitcoin_wallet.common.contacts_list_adapter.WalletContact;
+import com.bitdubai.reference_niche_wallet.bitcoin_wallet.common.contacts_list_adapter.WalletContactListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,11 @@ import java.util.UUID;
  * Created by natalia on 19/06/15.
  */
 public class SendFragment extends Fragment{
+
+    /**
+     * Wallet session
+     */
+    WalletSession walletSession;
 
     private static final String ARG_POSITION = "position";
     View rootView;
@@ -68,7 +74,6 @@ public class SendFragment extends Fragment{
      * DealsWithNicheWalletTypeCryptoWallet Interface member variables.
      */
     private static CryptoWalletManager cryptoWalletManager;
-    private static Platform platform = new Platform();
     CryptoWallet cryptoWallet;
     private ErrorManager errorManager;
 
@@ -83,8 +88,9 @@ public class SendFragment extends Fragment{
     private LinearLayout linear_send;
 
 
-    public static SendFragment newInstance(int position) {
+    public static SendFragment newInstance(int position,WalletSession walletSession) {
         SendFragment f = new SendFragment();
+        f.setWalletSession(walletSession);
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);
         f.setArguments(b);
@@ -96,9 +102,9 @@ public class SendFragment extends Fragment{
         setRetainInstance(true);
         tf=Typeface.createFromAsset(getActivity().getAssets(), "fonts/CaviarDreams.ttf");
 
-        this.savedInstanceState = savedInstanceState;
-        cryptoWalletManager = platform.getCryptoWalletManager();
-        errorManager = platform.getErrorManager();
+
+        cryptoWalletManager = walletSession.getCryptoWalletManager();
+        errorManager = walletSession.getErrorManager();
 
         try {
             cryptoWallet = cryptoWalletManager.getCryptoWallet();
@@ -344,5 +350,9 @@ public class SendFragment extends Fragment{
         });
         //alertDialog.setIcon(R.drawable.icon);
         alertDialog.show();
+    }
+
+    public void setWalletSession(WalletSession walletSession) {
+        this.walletSession = walletSession;
     }
 }
