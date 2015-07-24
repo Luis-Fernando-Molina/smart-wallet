@@ -57,4 +57,3 @@ public interface IPinnedHeader {
      */
     void configurePinnedHeader(View header, int position);
 }
-
