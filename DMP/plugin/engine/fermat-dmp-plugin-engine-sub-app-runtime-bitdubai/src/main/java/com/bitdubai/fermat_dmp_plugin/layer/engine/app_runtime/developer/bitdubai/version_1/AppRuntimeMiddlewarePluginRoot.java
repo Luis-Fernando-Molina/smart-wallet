@@ -12,20 +12,20 @@ import com.bitdubai.fermat_api.layer.all_definition.enums.ServiceStatus;
 import com.bitdubai.fermat_api.layer.all_definition.event.EventType;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.Activity;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.Fragment;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.MainMenu;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.SearchView;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.SideMenu;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.StatusBar;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.Tab;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.MenuItem;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.TabStrip;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.TitleBar;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
+import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Fragments;
 import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.App;
 import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.AppRuntimeManager;
-import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.MainMenu;
-import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.StatusBar;
 import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.SubApp;
-import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.enums.Activities;
 import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.enums.Apps;
-import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.enums.Fragments;
 import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.enums.SubApps;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.DealsWithPluginFileSystem;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
@@ -210,35 +210,33 @@ public class AppRuntimeMiddlewarePluginRoot implements Service, AppRuntimeManage
 
     @Override
     public App getLastApp() {
-        Iterator<Map.Entry<Apps, App>> eapp = this.listApps.entrySet().iterator();
+        if(lastApp != null){
+            Iterator<Map.Entry<Apps, App>> eapp = this.listApps.entrySet().iterator();
 
-        while (eapp.hasNext()) {
-            Map.Entry<Apps, App> appEntry = eapp.next();
-            RuntimeApp app = (RuntimeApp) appEntry.getValue();
-            if(app.getType().name().equals(lastApp.name())){
-                return app;
+            while (eapp.hasNext()) {
+                Map.Entry<Apps, App> appEntry = eapp.next();
+                RuntimeApp app = (RuntimeApp) appEntry.getValue();
+                if(app.getType().name().equals(lastApp.name())){
+                    return app;
+                }
             }
-
-
         }
         return null;
-
     }
 
     @Override
     public SubApp getLastSubApp() {
-        Iterator<Map.Entry<SubApps, SubApp>> esubapp = this.listSubApp.entrySet().iterator();
+        if(lastSubapp != null){
+            Iterator<Map.Entry<SubApps, SubApp>> esubapp = this.listSubApp.entrySet().iterator();
 
-        while (esubapp.hasNext()) {
-            Map.Entry<SubApps, SubApp> subappEntry = esubapp.next();
-            RuntimeSubApp subapp = (RuntimeSubApp) subappEntry.getValue();
-            if(subapp.getType().name().equals(this.lastSubapp.name())){
-                return subapp;
+            while (esubapp.hasNext()) {
+                Map.Entry<SubApps, SubApp> subappEntry = esubapp.next();
+                RuntimeSubApp subapp = (RuntimeSubApp) subappEntry.getValue();
+                if(subapp.getType().name().equals(this.lastSubapp.name())){
+                    return subapp;
+                }
             }
-
-
         }
-
         return null;
     }
 
@@ -246,32 +244,33 @@ public class AppRuntimeMiddlewarePluginRoot implements Service, AppRuntimeManage
 
     @Override
     public Activity getLasActivity() {
-        Iterator<Map.Entry<Activities, Activity>> eactivity = this.listActivities.entrySet().iterator();
+        if(lastActivity != null){
+            Iterator<Map.Entry<Activities, Activity>> eactivity = this.listActivities.entrySet().iterator();
 
-        while (eactivity.hasNext()) {
-            Map.Entry<Activities, Activity> activityEntry = eactivity.next();
-            Activity activity = (Activity) activityEntry.getValue();
-            if(activity.getType().name().equals(this.lastActivity.name())){
-                return activity;
+            while (eactivity.hasNext()) {
+                Map.Entry<Activities, Activity> activityEntry = eactivity.next();
+                Activity activity = (Activity) activityEntry.getValue();
+                if(activity.getType().name().equals(this.lastActivity.name())){
+                    return activity;
+                }
             }
         }
-
         return null;
     }
 
     @Override
     public Fragment getLastFragment() {
+        if(lastFragment != null){
+            Iterator<Map.Entry<Fragments, Fragment>> efragment = this.listFragments.entrySet().iterator();
 
-        Iterator<Map.Entry<Fragments, Fragment>> efragment = this.listFragments.entrySet().iterator();
-
-        while (efragment.hasNext()) {
-            Map.Entry<Fragments, Fragment> fragmentEntry = efragment.next();
-            Fragment fragment = (Fragment) fragmentEntry.getValue();
-            if(fragment.getType().name().equals(this.lastFragment.name())){
-                return fragment;
+            while (efragment.hasNext()) {
+                Map.Entry<Fragments, Fragment> fragmentEntry = efragment.next();
+                Fragment fragment = (Fragment) fragmentEntry.getValue();
+                if(fragment.getType().name().equals(this.lastFragment.name())){
+                    return fragment;
+                }
             }
         }
-
         return null;
     }
 
