@@ -280,25 +280,20 @@ public class SubAppActivity extends FermatActivity implements FermatScreenSwappe
 
         // get actual fragment on execute
         Fragments frgBackType = null;
-        try {
+
             AppRuntimeManager appRuntimeManager = getAppRuntimeMiddleware();
             com.bitdubai.fermat_api.layer.all_definition.navigation_structure.Fragment fragment = appRuntimeManager.getLastFragment();
             //get setting fragment to back
             //if not fragment to back I back to desktop
+
+        if(fragment != null)
              frgBackType = fragment.getBack();
-
-        }catch (Exception e){
-            getErrorManager().reportUnexpectedUIException(UISource.ACTIVITY, UnexpectedUIExceptionSeverity.UNSTABLE, e);
-        }
-
 
 
         if(frgBackType != null){
 
             com.bitdubai.fermat_api.layer.all_definition.navigation_structure.Fragment fragmentBack = getAppRuntimeMiddleware().getFragment(frgBackType); //set back fragment to actual fragment to run
 
-            //I get string context with params pass to fragment to return with this data
-            ApplicationSession.mParams=fragmentBack.getContext();
 
             this.loadFragment(frgBackType);
         }
@@ -330,9 +325,12 @@ public class SubAppActivity extends FermatActivity implements FermatScreenSwappe
      */
 
     @Override
-    public void changeScreen() {
+    public void changeScreen(String screen,Object[] objects) {
 
         try {
+
+            this.screenObjects = objects;
+            this.actionKey = screen;
 
             Intent intent;
 
@@ -419,25 +417,7 @@ public class SubAppActivity extends FermatActivity implements FermatScreenSwappe
 
     }
 
-    /**
-     *
-     * @param screen
-     */
-    @Override
-    public void setScreen(String screen){
-      this.actionKey = screen;
-    }
 
-    /**
-     * This method set de params to pass to screens
-     * @param objects
-     */
-
-    @Override
-    public void setParams(Object[] objects){
-        this.screenObjects = null;
-        this.screenObjects = objects;
-    }
 
     /**
      * Method that loads the UI
