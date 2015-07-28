@@ -39,14 +39,13 @@ import com.bitdubai.fermat_pip_api.layer.pip_identity.developer.interfaces.Devel
 import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.DealsWithErrors;
 import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
 import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.pip_user.device_user.interfaces_milestone2.DealsWithDeviceUser;
-import com.bitdubai.fermat_pip_api.layer.pip_user.device_user.interfaces_milestone2.DeviceUserManager;
+import com.bitdubai.fermat_pip_api.layer.pip_user.device_user.interfaces.DealsWithDeviceUser;
+import com.bitdubai.fermat_pip_api.layer.pip_user.device_user.interfaces.DeviceUserManager;
 
 import com.bitdubai.fermat_pip_api.layer.pip_identity.developer.exceptions.CantGetUserDeveloperIdentitiesException;
 import com.bitdubai.fermat_pip_api.layer.pip_identity.developer.exceptions.CantCreateNewDeveloperException;
 import com.bitdubai.fermat_pip_plugin.layer.identity.developer.developer.bitdubai.version_1.developerUtils.DeveloperIdentityDeveloperDataBaseFactory;
 import com.bitdubai.fermat_pip_plugin.layer.identity.developer.developer.bitdubai.version_1.exceptions.CantDeliverDatabaseException;
-import com.bitdubai.fermat_pip_plugin.layer.identity.developer.developer.bitdubai.version_1.exceptions.CantInitializeDeveloperIdentityDatabaseException;
 import com.bitdubai.fermat_pip_plugin.layer.identity.developer.developer.bitdubai.version_1.structure.DeveloperIdentityDao;
 import com.bitdubai.fermat_pip_plugin.layer.identity.developer.developer.bitdubai.version_1.structure.DeveloperIdentityDatabaseConstants;
 import com.bitdubai.fermat_pip_plugin.layer.identity.developer.developer.bitdubai.version_1.structure.DeveloperIdentityDatabaseFactory;
@@ -219,10 +218,10 @@ public class DeveloperIdentityPluginRoot implements DealsWithDeviceUser, DealsWi
             if (this.dao == null) {
 
                 this.dao = new DeveloperIdentityDao (this.pluginDatabaseSystem, new DeveloperIdentityDatabaseFactory(this.pluginDatabaseSystem), this.pluginId,this.logManager);
-                this.dao.initializeDatabase (this.pluginId, this.getClass ().getName ());
+                this.dao.initializeDatabase (this.pluginId, this.getClass().getName());
 
             } else {
-                 this.dao.initializeDatabase (this.pluginId, this.getClass ().getName ());
+                 this.dao.initializeDatabase (this.pluginId, this.getClass().getName());
             }
 
         } catch (Exception e) {
@@ -283,7 +282,7 @@ public class DeveloperIdentityPluginRoot implements DealsWithDeviceUser, DealsWi
 
             // Get developer list.
             logManager.log (DeveloperIdentityPluginRoot.getLogLevelByClass(this.getClass().getName()), "Getting developers from current device user for : " + deviceUserManager.getLoggedInDeviceUser(), _DEFAUL_STRING, _DEFAUL_STRING);
-            return this.dao.getDevelopersFromCurrentDeviceUser (deviceUserManager.getLoggedInDeviceUser ());
+            return this.dao.getDevelopersFromCurrentDeviceUser (deviceUserManager.getLoggedInDeviceUser());
 
         } catch (CantGetUserDeveloperIdentitiesException ce) {
 
@@ -318,7 +317,7 @@ public class DeveloperIdentityPluginRoot implements DealsWithDeviceUser, DealsWi
             }
 
             logManager.log (DeveloperIdentityPluginRoot.getLogLevelByClass(this.getClass().getName()), "Creating new developer for : " + alias, _DEFAUL_STRING, _DEFAUL_STRING);
-            return this.dao.createNewDeveloper(alias, new ECCKeyPair(), deviceUserManager.getLoggedInDeviceUser());
+            return this.dao.createNewDeveloper(alias,null , null); //new ECCKeyPair(),deviceUserManager.getLoggedInDeviceUser()
 
         } catch (CantGetUserDeveloperIdentitiesException ce) {
 
