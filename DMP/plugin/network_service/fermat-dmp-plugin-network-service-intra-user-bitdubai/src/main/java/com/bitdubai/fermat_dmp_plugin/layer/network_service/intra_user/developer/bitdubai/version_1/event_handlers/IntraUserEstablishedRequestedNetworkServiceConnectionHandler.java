@@ -54,6 +54,7 @@ public class IntraUserEstablishedRequestedNetworkServiceConnectionHandler implem
 
             /*
              *  TemplateManager make the job
+             *  ActorIntraUserManager make the job
              */
             EstablishedNetworkServiceConnectionEvent stablishedNetworkServiceConnectionEvent = (EstablishedNetworkServiceConnectionEvent) platformEvent;
             ((IntraUserNetworkServiceManager) this.intraUserManager).handleEstablishedRequestedNetworkServiceConnection(stablishedNetworkServiceConnectionEvent.getCommunicationChannels(),
