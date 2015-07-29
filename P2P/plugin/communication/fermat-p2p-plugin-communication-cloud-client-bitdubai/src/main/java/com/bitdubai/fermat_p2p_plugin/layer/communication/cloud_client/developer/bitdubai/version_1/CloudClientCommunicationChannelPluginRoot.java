@@ -352,6 +352,10 @@ public class CloudClientCommunicationChannelPluginRoot implements CommunicationC
     @Override
     public void start() {
 
+		if(true){ //Skip connect to server
+			return;
+		}
+
         System.out.println("Starting plugin CloudClientCommunicationChannelPluginRoot");
         System.out.println("Trying to connect to server: "+serverAddress);
 		System.out.println("Server Identity Public Key:  "+serverPublicKey);
