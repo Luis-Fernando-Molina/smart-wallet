@@ -111,6 +111,21 @@ public class IntraUserUserAddonRoot implements Addon, DealsWithDeviceUser, Deals
 
 
     /**
+     * TemplateManager Interface implementation.
+     */
+
+    @Override
+    public void createActor(String deviceUserPublicKey) throws CantCreateIntraUserException {
+
+    }
+
+    @Override
+    public Actor getActor(String deviceUserPublicKey){
+        return null;
+    }
+
+
+    /**
      * Service Interface implementation.
      */
     @Override
