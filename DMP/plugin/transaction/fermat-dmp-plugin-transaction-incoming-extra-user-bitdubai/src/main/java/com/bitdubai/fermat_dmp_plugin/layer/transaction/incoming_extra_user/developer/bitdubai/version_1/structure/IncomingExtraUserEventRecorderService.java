@@ -94,6 +94,7 @@ public class IncomingExtraUserEventRecorderService implements DealsWithEvents, D
         /**
          * I will initialize the handling of com.bitdubai.platform events.
          */
+        try{
         EventListener onBlockchainEventListener = eventManager.getNewListener(EventType.INCOMING_CRYPTO_ON_BLOCKCHAIN_WAITING_TRANSFERENCE_EXTRA_USER);
         EventListener onCryptoNetworkEventListener = eventManager.getNewListener(EventType.INCOMING_CRYPTO_ON_CRYPTO_NETWORK_WAITING_TRANSFERENCE_EXTRA_USER);
         EventListener reversedOnBlockchainEventListener = eventManager.getNewListener(EventType.INCOMING_CRYPTO_REVERSED_ON_BLOCKCHAIN_WAITING_TRANSFERENCE_EXTRA_USER);
@@ -115,7 +116,11 @@ public class IncomingExtraUserEventRecorderService implements DealsWithEvents, D
         listenersAdded.add(reversedOnCryptoNetworkEventListener);
 
         this.serviceStatus = ServiceStatus.STARTED;
-        
+        }catch(CantStartServiceException e){
+       throw new CantStartServiceException(CantStartServiceException.DEFAULT_MESSAGE, FermatException.wrapException(e),"", "Check the cause of this error");
+}    
+
+   
     }
 
     @Override
