@@ -117,7 +117,7 @@ public class IncomingExtraUserEventRecorderService implements DealsWithEvents, D
 
         this.serviceStatus = ServiceStatus.STARTED;
         }catch(CantStartServiceException e){
-       throw new CantStartServiceException(CantStartServiceException.DEFAULT_MESSAGE, FermatException.wrapException(e),"", "..Check the cause of this error");
+       throw new CantStartServiceException(CantStartServiceException.DEFAULT_MESSAGE, FermatException.wrapException(e),"", ".Check the cause of this error");
 }    
 
    
