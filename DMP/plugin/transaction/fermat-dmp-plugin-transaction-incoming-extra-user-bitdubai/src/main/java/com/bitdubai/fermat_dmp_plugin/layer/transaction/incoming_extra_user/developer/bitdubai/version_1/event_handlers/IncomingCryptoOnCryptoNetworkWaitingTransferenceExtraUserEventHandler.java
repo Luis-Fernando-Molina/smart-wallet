@@ -26,7 +26,7 @@ public class IncomingCryptoOnCryptoNetworkWaitingTransferenceExtraUserEventHandl
      * EventHandler interface implementation
      */
     @Override
-    public void handleEvent(PlatformEvent platformEvent) throws Exception {
+    public void handleEvent(PlatformEvent platformEvent) throws TransactionServiceNotStartedException, CantSaveEventException {
         if(!eventRecorderService.getStatus().equals(ServiceStatus.STARTED))
             throw new TransactionServiceNotStartedException(TransactionServiceNotStartedException.DEFAULT_MESSAGE, null, null, "Events can't be handled if the service is not started");
 
