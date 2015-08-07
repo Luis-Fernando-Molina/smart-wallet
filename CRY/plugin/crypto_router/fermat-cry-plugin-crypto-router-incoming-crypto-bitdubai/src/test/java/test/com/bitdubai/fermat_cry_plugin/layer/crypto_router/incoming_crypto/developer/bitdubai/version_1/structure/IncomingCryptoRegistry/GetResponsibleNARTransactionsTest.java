@@ -13,33 +13,31 @@ import com.bitdubai.fermat_api.layer.osa_android.database_system.Database;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.DatabaseTable;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.DatabaseTableRecord;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.PluginDatabaseSystem;
-import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantInsertRecordException;
 import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.CantLoadTableToMemoryException;
-import com.bitdubai.fermat_cry_plugin.layer.crypto_router.incoming_crypto.developer.bitdubai.version_1.exceptions.CantGetRecordException;
-import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
 import com.bitdubai.fermat_cry_plugin.layer.crypto_router.incoming_crypto.developer.bitdubai.version_1.structure.IncomingCryptoDataBaseConstants;
 import com.bitdubai.fermat_cry_plugin.layer.crypto_router.incoming_crypto.developer.bitdubai.version_1.structure.IncomingCryptoRegistry;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
 import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
-
-import static org.fest.assertions.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static com.googlecode.catchexception.CatchException.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.exceptions.verification.WantedButNotInvoked;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
 /**
- * Created by Franklin Marcano 04/08/15.
+ * Created by franklin on 07/08/15.
  */
-@RunWith(MockitoJUnitRunner.class)
-public class AcknowledgeTransactionsTest {
+public class GetResponsibleNARTransactionsTest {
     @Mock
     private PluginDatabaseSystem mockPluginDatabaseSystem = mock(PluginDatabaseSystem.class);
     @Mock
@@ -89,22 +87,9 @@ public class AcknowledgeTransactionsTest {
         testRegistry.setErrorManager(mockErrorManager);
         testRegistry.initialize(testId);
     }
-
+    /**
     @Test
-    public void AcknowledgeTransactions_TransactionProcessed_MethodInvokedSuccesfully() throws Exception{
-        when(mockPluginDatabaseSystem.openDatabase(testId, IncomingCryptoDataBaseConstants.INCOMING_CRYPTO_DATABASE)).thenReturn(mockDatabase);
-        when(mockDatabase.getTable(IncomingCryptoDataBaseConstants.INCOMING_CRYPTO_REGISTRY_TABLE_NAME)).thenReturn(mockTable);
-        when(mockTable.getEmptyRecord()).thenReturn(mockRecord);
-
-        setUpRegistry();
-
-        testRegistry.acknowledgeTransactions(testTransactionList);
-
-        verifyZeroInteractions(mockErrorManager);
-    }
-
-    @Test
-    public void AcknowledgeTransactions_EmptyList_MethodInvokedSuccesfully() throws Exception{
+    public void getResponsibleNARTransactions_EmptyList_MethodInvokedSuccesfully() throws Exception{
         when(mockPluginDatabaseSystem.openDatabase(testId, IncomingCryptoDataBaseConstants.INCOMING_CRYPTO_DATABASE)).thenReturn(mockDatabase);
         when(mockDatabase.getTable(IncomingCryptoDataBaseConstants.INCOMING_CRYPTO_REGISTRY_TABLE_NAME)).thenReturn(mockTable);
         when(mockTable.getEmptyRecord()).thenReturn(mockRecord);
@@ -112,9 +97,37 @@ public class AcknowledgeTransactionsTest {
         setUpRegistry();
         testTransactionList.clear();
 
-        testRegistry.acknowledgeTransactions(testTransactionList);
+        testRegistry.getResponsibleNARTransactions();
 
         verifyZeroInteractions(mockErrorManager);
+    }
+    */
+    @Test
+    public void getResponsibleNARTransactions_TransactionProcessed_MethodInvokedSuccesfully() throws Exception{
+        when(mockPluginDatabaseSystem.openDatabase(testId, IncomingCryptoDataBaseConstants.INCOMING_CRYPTO_DATABASE)).thenReturn(mockDatabase);
+        when(mockDatabase.getTable(IncomingCryptoDataBaseConstants.INCOMING_CRYPTO_REGISTRY_TABLE_NAME)).thenReturn(mockTable);
+        when(mockTable.getEmptyRecord()).thenReturn(mockRecord);
+
+        setUpRegistry();
+
+        testRegistry.getResponsibleNARTransactions();
+
+        verifyZeroInteractions(mockErrorManager);
+    }
+
+    @Test
+    public void getResponsibleNARTransactions_TableCantBeLoadToMemory_ThrowsCantAcknowledgeTransactionException() throws Exception{
+        when(mockPluginDatabaseSystem.openDatabase(testId, IncomingCryptoDataBaseConstants.INCOMING_CRYPTO_DATABASE)).thenReturn(mockDatabase);
+        when(mockDatabase.getTable(IncomingCryptoDataBaseConstants.INCOMING_CRYPTO_REGISTRY_TABLE_NAME)).thenReturn(mockTable);
+
+        CantLoadTableToMemoryException mockException = new CantLoadTableToMemoryException("MOCK", null, null, null);
+        doThrow(mockException).when(mockTable).loadToMemory();
+
+        setUpRegistry();
+
+        testRegistry.getResponsibleNARTransactions();
+
+        verify(mockErrorManager).reportUnexpectedPluginException(Plugins.BITDUBAI_INCOMING_CRYPTO_TRANSACTION, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, mockException);
     }
 
     @Test
@@ -124,40 +137,9 @@ public class AcknowledgeTransactionsTest {
 
         setUpRegistry();
 
-        testRegistry.acknowledgeTransactions(testTransactionList);
+        testRegistry.getResponsibleNARTransactions();
 
         verify(mockErrorManager).reportUnexpectedPluginException(any(Plugins.class), any(UnexpectedPluginExceptionSeverity.class), any(Exception.class));
     }
 
-    @Test
-    public void AcknowledgeTransactions_TableCantBeLoadToMemory_ThrowsCantAcknowledgeTransactionException() throws Exception{
-        when(mockPluginDatabaseSystem.openDatabase(testId, IncomingCryptoDataBaseConstants.INCOMING_CRYPTO_DATABASE)).thenReturn(mockDatabase);
-        when(mockDatabase.getTable(IncomingCryptoDataBaseConstants.INCOMING_CRYPTO_REGISTRY_TABLE_NAME)).thenReturn(mockTable);
-
-        CantLoadTableToMemoryException mockException = new CantLoadTableToMemoryException("MOCK", null, null, null);
-        doThrow(mockException).when(mockTable).loadToMemory();
-
-        setUpRegistry();
-
-        testRegistry.acknowledgeTransactions(testTransactionList);
-
-        verify(mockErrorManager).reportUnexpectedPluginException(Plugins.BITDUBAI_INCOMING_CRYPTO_TRANSACTION, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, mockException);
-    }
-
-    @Test
-    public void AcknowledgeTransactions_TableCantInsertRecord_ThrowsCantAcknowledgeTransactionException() throws Exception {
-        when(mockPluginDatabaseSystem.openDatabase(testId, IncomingCryptoDataBaseConstants.INCOMING_CRYPTO_DATABASE)).thenReturn(mockDatabase);
-        when(mockDatabase.getTable(IncomingCryptoDataBaseConstants.INCOMING_CRYPTO_REGISTRY_TABLE_NAME)).thenReturn(mockTable);
-        when(mockTable.getRecords()).thenReturn(testTableRecordList);
-        when(mockTable.getEmptyRecord()).thenReturn(new MockDatabaseTableRecord());
-
-        CantInsertRecordException mockException = new CantInsertRecordException("MOCK", null, null, null);
-        doThrow(mockException).when(mockTable).insertRecord(any(DatabaseTableRecord.class));
-
-        setUpRegistry();
-
-        testRegistry.acknowledgeTransactions(testTransactionList);
-
-        verify(mockErrorManager).reportUnexpectedPluginException(Plugins.BITDUBAI_INCOMING_CRYPTO_TRANSACTION, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN, mockException);
-    }
 }
