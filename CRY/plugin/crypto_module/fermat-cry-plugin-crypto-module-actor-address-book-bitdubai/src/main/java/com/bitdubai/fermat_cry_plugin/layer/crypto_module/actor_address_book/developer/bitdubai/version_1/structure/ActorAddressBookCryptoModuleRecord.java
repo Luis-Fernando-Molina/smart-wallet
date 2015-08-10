@@ -1,8 +1,13 @@
 package com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.structure;
 
+import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Actors;
+import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.all_definition.money.CryptoAddress;
 import com.bitdubai.fermat_cry_api.layer.crypto_module.actor_address_book.interfaces.ActorAddressBookRecord;
+import com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.exceptions.CantInitializeActorAddressBookCryptoModuleException;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
 
 import java.util.UUID;
 
@@ -16,6 +21,10 @@ import java.util.UUID;
 public class ActorAddressBookCryptoModuleRecord implements ActorAddressBookRecord {
 
     /**
+     * DealsWithErrors Interface member variables.
+     */
+    ErrorManager errorManager;
+    /**
      * ActorAddressBookRecord Interface member variables.
      */
     private UUID deliveredByActorId ;
@@ -24,7 +33,9 @@ public class ActorAddressBookCryptoModuleRecord implements ActorAddressBookRecor
     private Actors deliveredToActorType;
     private CryptoAddress cryptoAddress;
 
-
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager.
+    * */
     /**
      * Constructor.
      */
@@ -32,11 +43,16 @@ public class ActorAddressBookCryptoModuleRecord implements ActorAddressBookRecor
         /**
          * Set actor settings.
          */
-        this.deliveredByActorId = deliveredByActorId;
-        this.deliveredByActorType = deliveredByActorType;
-        this.deliveredToActorId = deliveredToActorId;
-        this.deliveredToActorType = deliveredToActorType;
-        this.cryptoAddress = cryptoAddress;
+        try{
+            this.deliveredByActorId = deliveredByActorId;
+            this.deliveredByActorType = deliveredByActorType;
+            this.deliveredToActorId = deliveredToActorId;
+            this.deliveredToActorType = deliveredToActorType;
+            this.cryptoAddress = cryptoAddress;
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT CREATE SET ACTOR");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
     }
 
 
