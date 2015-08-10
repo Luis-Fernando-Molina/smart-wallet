@@ -1,0 +1,39 @@
+Wallets
+
+Que son los wallets
+
+Las wallets o monederos  digitales son aquellos donde, mediante ciertos procesos podemos realizar operaciones sobre nuestras cryptocurrency.
+
+Tipos de Wallet Fermat
+
+En Fermat tenemos dos tipos de wallets que dependiendo del usuario pueden ser:
+
+Wallet Básica: Este monedero es capaz de manejar operaciones simples como: enviar, recibir, ver lista de transacciones  y balance de nuestras cryptocurrency, también nos muestra una lista de contactos de los otros usuarios con los que se realizan transacciones. Su entorno gráfico es simple y neutro.
+
+Wallet de fábrica: Son aquellas wallets que si bien conservan la estructura de una básica, son editadas en el entorno grafico para hacer la interacción con el usuario de una forma más fácil.
+Wallet Factory
+
+Para tener una wallet de fábrica, estas deben ser creadas por las fábricas de wallets que nos permiten editar la estructura de navegación, esta edición solo es de una forma visual ya que tanto el código como su estructura será la misma.
+
+Para entender el funcionamiento debemos conocer como está estructurada una wallet, las mismas involucran una gran cantidad de módulos donde los principales son dos:
+
+-Front-end: aquí están todos los módulos vinculados a lo que el usuario ve y usa para interactuar.
+
+-Back-end: aquí se encuentran todos los módulos que realizan las acciones que el usuario indica (los códigos de todas las transacciones y demás acciones disponibles).
+Creando una Wallet de Fábrica
+
+Al crear una  nueva wallet de fábrica se debe pasar por distintos niveles de creación para que la misma llegue a los usuarios finales.
+
+1-      Registrarse en Developer PIP sub APP, esta sub app le provee a los desarrolladores herramientas para testear sus wallets y otros plugins de la plataforma.
+
+2-      El desarrollador crea una nueva wallet en la plataforma con Wallet Factory SUB APP realizando la edición de la estructura de navegación y la edición de recursos creando un proyecto que llamaremos Wallet Factory Projects.
+
+3-      Para que este proyecto esté disponible para el usuario aún debe ser manejado por el Wallet Publisher, el cual permite tomar el WFP en desarrollo y enviarlo a la Wallet Store.
+
+4-      Ya con nuestra wallet disponible en Wallet Store se muestra en un catálogo, donde el usuario puede instalar, mostrar información de estas wallets y permitir iniciar la instalación.
+
+5-      En el proceso de instalación seremos guiados por el Wallet Manager, que nos indicara en nuestro dispositivo móvil todo lo referente con la instalación, así como abrir por primera vez la misma, calificarla, desinstalar, entre otras.
+
+
+
+Aquí me gustaría poner una gráfica que represente los puntos del 1 a 5
