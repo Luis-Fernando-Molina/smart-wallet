@@ -19,5 +19,4 @@ public interface UserRegistry {
 
     public Actor getUser(UUID userId) throws CantGetExtraUserRegistry;
 
-
 }

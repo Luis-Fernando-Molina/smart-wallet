@@ -6,7 +6,9 @@ package com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.de
  */
 
 import com.bitdubai.fermat_api.DealsWithPluginIdentity;
+import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.layer.all_definition.enums.Actors;
+import com.bitdubai.fermat_api.layer.all_definition.enums.Plugins;
 import com.bitdubai.fermat_api.layer.all_definition.money.CryptoAddress;
 import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.DealsWithErrors;
 import com.bitdubai.fermat_cry_api.layer.crypto_module.actor_address_book.exceptions.ActorAddressBookNotFoundException;
@@ -26,6 +28,7 @@ import com.bitdubai.fermat_api.layer.osa_android.database_system.exceptions.Cant
 import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.ErrorManager;
 import com.bitdubai.fermat_cry_api.layer.crypto_module.actor_address_book.interfaces.ActorAddressBookRecord;
 import com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.exceptions.CantInitializeActorAddressBookCryptoModuleException;
+import com.bitdubai.fermat_pip_api.layer.pip_platform_service.error_manager.UnexpectedPluginExceptionSeverity;
 
 import java.util.List;
 import java.util.UUID;
@@ -90,6 +93,8 @@ public class ActorAddressBookCryptoModuleDao implements DealsWithErrors, DealsWi
             database = this.pluginDatabaseSystem.openDatabase(this.pluginId, this.pluginId.toString());
             database.closeDatabase();
         } catch (CantOpenDatabaseException cantOpenDatabaseException) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE,FermatException.wrapException(cantOpenDatabaseException)," ","COULD NOT CREATE DATABASE");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantOpenDatabaseException);
             throw new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, cantOpenDatabaseException, "", "Exception not handled by the plugin, there is a problem and i cannot open the database.");
         } catch (DatabaseNotFoundException databaseNotFoundException) {
             ActorAddressBookCryptoModuleDatabaseFactory databaseFactory = new ActorAddressBookCryptoModuleDatabaseFactory();
@@ -101,6 +106,8 @@ public class ActorAddressBookCryptoModuleDao implements DealsWithErrors, DealsWi
                 database = databaseFactory.createDatabase(this.pluginId, this.pluginId);
                 database.closeDatabase();
             } catch (CantCreateDatabaseException cantCreateDatabaseException) {
+                FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE,FermatException.wrapException(cantCreateDatabaseException)," ","COULD NOT CREATE DATABASE");
+                this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantCreateDatabaseException);
                 throw new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, cantCreateDatabaseException, "", "There is a problem and i cannot create the database.");
             }
         }
@@ -127,6 +134,8 @@ public class ActorAddressBookCryptoModuleDao implements DealsWithErrors, DealsWi
         try {
             database.openDatabase();
         } catch (CantOpenDatabaseException | DatabaseNotFoundException  exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE,FermatException.wrapException(exception)," ","COULD NOT OPEN DATABASE");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, exception);
             throw new CantRegisterActorAddressBookException(CantRegisterActorAddressBookException.DEFAULT_MESSAGE, exception, null, "Check the cause");
         }
 
@@ -149,6 +158,8 @@ public class ActorAddressBookCryptoModuleDao implements DealsWithErrors, DealsWi
             database.closeDatabase();
         } catch (CantInsertRecordException cantInsertRecord) {
             database.closeDatabase();
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE,FermatException.wrapException(cantInsertRecord)," ","COULD NOT INSERT RECORD");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantInsertRecord);
             throw new CantRegisterActorAddressBookException(CantRegisterActorAddressBookException.DEFAULT_MESSAGE, cantInsertRecord, "", "Exception not handled by the plugin, there is a problem in database and i cannot insert the record.");
         }
     }
@@ -161,6 +172,8 @@ public class ActorAddressBookCryptoModuleDao implements DealsWithErrors, DealsWi
         try {
             database.openDatabase();
         } catch (CantOpenDatabaseException | DatabaseNotFoundException  exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE,FermatException.wrapException(exception)," ","COULD NOT OPEN DATABASE");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, exception);
             throw new CantGetActorAddressBookException(CantGetActorAddressBookException.DEFAULT_MESSAGE, exception, null, "Check the cause");
         }
 
@@ -175,6 +188,8 @@ public class ActorAddressBookCryptoModuleDao implements DealsWithErrors, DealsWi
             table.loadToMemory();
         } catch (CantLoadTableToMemoryException cantLoadTableToMemory) {
             database.closeDatabase();
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE,FermatException.wrapException(cantLoadTableToMemory)," ","COULD NOT LOAD TABLE");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantLoadTableToMemory);
             throw new CantGetActorAddressBookException(CantGetActorAddressBookException.DEFAULT_MESSAGE, cantLoadTableToMemory, "", "Exception not handled by the plugin, there is a problem in database and i cannot load the table.");
         }
 
@@ -195,30 +210,52 @@ public class ActorAddressBookCryptoModuleDao implements DealsWithErrors, DealsWi
         return new ActorAddressBookCryptoModuleRecord(deliveredByActorId, deliveredByActorType, deliveredToActorId, deliveredToActorType, cryptoAddress);
     }
 
+    /* YORDIN DA ROCHA 09/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager.
+    * */
     /**
      * DealsWithErrors interface implementation.
      */
-
     @Override
     public void setErrorManager(ErrorManager errorManager) {
-        this.errorManager = errorManager;
+        try {
+            this.errorManager = errorManager;
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT KNOW ERROR");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
     }
 
+    /* YORDIN DA ROCHA 09/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager.
+    * */
     /**
      * DealsWithPluginDatabaseSystem interface implementation.
      */
-
     @Override
     public void setPluginDatabaseSystem(PluginDatabaseSystem pluginDatabaseSystem) {
-        this.pluginDatabaseSystem = pluginDatabaseSystem;
+        try {
+            this.pluginDatabaseSystem = pluginDatabaseSystem;
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT KNOW PLUGIN DATABASE");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
     }
 
+    /* YORDIN DA ROCHA 09/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager.
+    * */
     /**
      * DealsWithPluginIdentity interface implementation.
      */
-
     @Override
     public void setPluginId(UUID pluginId) {
-        this.pluginId = pluginId;
+        try {
+            this.pluginId = pluginId;
+
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT KNOW ID");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO, UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
     }
 }

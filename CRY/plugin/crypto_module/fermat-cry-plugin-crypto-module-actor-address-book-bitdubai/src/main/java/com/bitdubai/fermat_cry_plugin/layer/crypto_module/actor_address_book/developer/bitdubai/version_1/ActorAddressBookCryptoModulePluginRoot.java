@@ -1,5 +1,6 @@
 package com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1;
 
+import com.bitdubai.fermat_api.FermatException;
 import com.bitdubai.fermat_api.Plugin;
 import com.bitdubai.fermat_api.Service;
 import com.bitdubai.fermat_api.layer.all_definition.developer.DatabaseManagerForDevelopers;
@@ -48,12 +49,27 @@ public class ActorAddressBookCryptoModulePluginRoot implements ActorAddressBookM
      * DatabaseManagerForDevelopers interface implementation
      * Returns the list of databases implemented on this plug in.
      */
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager, SE ALMACENO EN UNA VARIABLE EL RETORNO PARA GESTIONAR DE MEJOR MANERA LA EXCEPCION.
+    * */
+    /*
     @Override
     public List<DeveloperDatabase> getDatabaseList(DeveloperObjectFactory developerObjectFactory) {
         ActorAddressBookCryptoModuleDeveloperDatabaseFactory dbFactory = new ActorAddressBookCryptoModuleDeveloperDatabaseFactory(pluginDatabaseSystem, pluginId);
         return dbFactory.getDatabaseList(developerObjectFactory);
+    }*/
+    @Override
+    public List<DeveloperDatabase> getDatabaseList(DeveloperObjectFactory developerObjectFactory) {
+        ActorAddressBookCryptoModuleDeveloperDatabaseFactory dbFactory = new ActorAddressBookCryptoModuleDeveloperDatabaseFactory(pluginDatabaseSystem, pluginId);
+        List<DeveloperDatabase> developerDatabasesList = null;
+        try {
+            developerDatabasesList = dbFactory.getDatabaseList(developerObjectFactory);
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT RETURN THE LIST");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
+        return developerDatabasesList;
     }
-
     /**
      * returns the list of tables for the given database
      *
@@ -61,10 +77,25 @@ public class ActorAddressBookCryptoModulePluginRoot implements ActorAddressBookM
      * @param developerDatabase
      * @return
      */
-    @Override
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager, SE ALMACENO EN UNA VARIABLE EL RETORNO PARA GESTIONAR DE MEJOR MANERA LA EXCEPCION.
+    * */
+    /*@Override
     public List<DeveloperDatabaseTable> getDatabaseTableList(DeveloperObjectFactory developerObjectFactory, DeveloperDatabase developerDatabase) {
         ActorAddressBookCryptoModuleDeveloperDatabaseFactory dbFactory = new ActorAddressBookCryptoModuleDeveloperDatabaseFactory(pluginDatabaseSystem, pluginId);
         return dbFactory.getDatabaseTableList(developerObjectFactory);
+    }*/
+    @Override
+    public List<DeveloperDatabaseTable> getDatabaseTableList(DeveloperObjectFactory developerObjectFactory, DeveloperDatabase developerDatabase) {
+        ActorAddressBookCryptoModuleDeveloperDatabaseFactory dbFactory = new ActorAddressBookCryptoModuleDeveloperDatabaseFactory(pluginDatabaseSystem, pluginId);
+        List<DeveloperDatabaseTable> developerDatabaseTableList = null;
+        try {
+            developerDatabaseTableList = dbFactory.getDatabaseTableList(developerObjectFactory);
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT RETURN THE LIST");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
+        return developerDatabaseTableList;
     }
 
     /**
@@ -75,6 +106,9 @@ public class ActorAddressBookCryptoModulePluginRoot implements ActorAddressBookM
      * @param developerDatabaseTable
      * @return
      */
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager
+    * */
     @Override
     public List<DeveloperDatabaseTableRecord> getDatabaseTableContent(DeveloperObjectFactory developerObjectFactory, DeveloperDatabase developerDatabase, DeveloperDatabaseTable developerDatabaseTable) {
         ActorAddressBookCryptoModuleDeveloperDatabaseFactory dbFactory = new ActorAddressBookCryptoModuleDeveloperDatabaseFactory(pluginDatabaseSystem, pluginId);
@@ -82,8 +116,9 @@ public class ActorAddressBookCryptoModulePluginRoot implements ActorAddressBookM
         try {
             dbFactory.initializeDatabase();
             developerDatabaseTableRecordList = dbFactory.getDatabaseTableContent(developerObjectFactory, developerDatabaseTable);
-        } catch (Exception e) {
-            System.out.println("******* Error trying to get database table list for plugin Wallet Contacts");
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT RETURN THE LIST");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
         }
         return developerDatabaseTableRecordList;
     }
@@ -117,6 +152,9 @@ public class ActorAddressBookCryptoModulePluginRoot implements ActorAddressBookM
     /**
      * ActorAddressBookManager Interface implementation.
      */
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager, SE CAMBIO LA UBICACION DEL RETORNO
+    * */
     @Override
     public ActorAddressBookRegistry getActorAddressBookRegistry() throws CantGetActorAddressBookRegistryException {
         /**
@@ -130,51 +168,72 @@ public class ActorAddressBookCryptoModulePluginRoot implements ActorAddressBookM
 
         try {
             actorCryptoAddressBookRegistry.initialize();
-            return actorCryptoAddressBookRegistry;
+//            return actorCryptoAddressBookRegistry;
         } catch (CantInitializeActorAddressBookCryptoModuleException cantInitializeActorCryptoAddressBookException) {
-            errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantInitializeActorCryptoAddressBookException);
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE,FermatException.wrapException(cantInitializeActorCryptoAddressBookException)," ","COULD NOT CREATE INSTANCE");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO, UnexpectedPluginExceptionSeverity.DISABLES_THIS_PLUGIN, cantInitializeActorCryptoAddressBookException);
             throw new CantGetActorAddressBookRegistryException(CantGetActorAddressBookRegistryException.DEFAULT_MESSAGE, cantInitializeActorCryptoAddressBookException);
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT RETURN THE LIST");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+            //System.out.println("******* Error trying to get database table list for plugin Wallet Contacts");
         }
+        return actorCryptoAddressBookRegistry;
     }
 
-
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager, SE CAMBIO LA UBICACION DEL RETORNO
+    * */
     @Override
     public List<String> getClassesFullPath() {
         List<String> returnedClasses = new ArrayList<String>();
-        returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.ActorAddressBookCryptoModulePluginRoot");
-        returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.exceptions.CantInitializeActorAddressBookCryptoModuleException");
-        returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.structure.ActorAddressBookCryptoModuleDao");
-        returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.structure.ActorAddressBookCryptoModuleRecord");
-        returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.structure.ActorAddressBookCryptoModuleRegistry");
-        returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.structure.ActorAddressBookCryptoModuleDatabaseConstants");
-        returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.structure.ActorAddressBookCryptoModuleDeveloperDatabaseFactory");
-        returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.structure.ActorAddressBookCryptoModuleDatabaseFactory");
+        try {
+            returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.ActorAddressBookCryptoModulePluginRoot");
+            returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.exceptions.CantInitializeActorAddressBookCryptoModuleException");
+            returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.structure.ActorAddressBookCryptoModuleDao");
+            returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.structure.ActorAddressBookCryptoModuleRecord");
+            returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.structure.ActorAddressBookCryptoModuleRegistry");
+            returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.structure.ActorAddressBookCryptoModuleDatabaseConstants");
+            returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.structure.ActorAddressBookCryptoModuleDeveloperDatabaseFactory");
+            returnedClasses.add("com.bitdubai.fermat_cry_plugin.layer.crypto_module.actor_address_book.developer.bitdubai.version_1.structure.ActorAddressBookCryptoModuleDatabaseFactory");
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "", "CAN NOT RETURN THE CLASS");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
         /**
          * I return the values.
          */
         return returnedClasses;
     }
 
-
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager,
+    * */
     @Override
-    public void setLoggingLevelPerClass(Map<String, LogLevel> newLoggingLevel) {
-        /**
-         * I will check the current values and update the LogLevel in those which is different
-         */
-
-        for (Map.Entry<String, LogLevel> pluginPair : newLoggingLevel.entrySet()) {
+    public void setLoggingLevelPerClass(Map<String, LogLevel> newLoggingLevel){
+        try {
             /**
-             * if this path already exists in the Root.bewLoggingLevel I'll update the value, else, I will put as new
+             * I will check the current values and update the LogLevel in those which is different
              */
-            if (ActorAddressBookCryptoModulePluginRoot.newLoggingLevel.containsKey(pluginPair.getKey())) {
-                ActorAddressBookCryptoModulePluginRoot.newLoggingLevel.remove(pluginPair.getKey());
-                ActorAddressBookCryptoModulePluginRoot.newLoggingLevel.put(pluginPair.getKey(), pluginPair.getValue());
-            } else {
-                ActorAddressBookCryptoModulePluginRoot.newLoggingLevel.put(pluginPair.getKey(), pluginPair.getValue());
+            for (Map.Entry<String, LogLevel> pluginPair : newLoggingLevel.entrySet()) {
+                /**
+                 * if this path already exists in the Root.bewLoggingLevel I'll update the value, else, I will put as new
+                 */
+                if (ActorAddressBookCryptoModulePluginRoot.newLoggingLevel.containsKey(pluginPair.getKey())) {
+                    ActorAddressBookCryptoModulePluginRoot.newLoggingLevel.remove(pluginPair.getKey());
+                    ActorAddressBookCryptoModulePluginRoot.newLoggingLevel.put(pluginPair.getKey(), pluginPair.getValue());
+                } else {
+                    ActorAddressBookCryptoModulePluginRoot.newLoggingLevel.put(pluginPair.getKey(), pluginPair.getValue());
+                }
             }
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT CHECK VALUES");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
         }
 
+
     }
+
 
     /**
      * Static method to get the logging level from any class under root.
@@ -197,64 +256,134 @@ public class ActorAddressBookCryptoModulePluginRoot implements ActorAddressBookM
         }
     }
 
-
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager. SOLO SE GESTIONO EXCEPCIONES GENERICAS POR LA SIMPLICIDAD DEL METODO.
+    * */
     /**
      * Service Interface implementation.
      */
     @Override
     public void start() {
-        this.serviceStatus = ServiceStatus.STARTED;
+        try{
+            this.serviceStatus = ServiceStatus.STARTED;
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT START PLUGIN");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
     }
 
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager. SOLO SE GESTIONO EXCEPCIONES GENERICAS POR LA SIMPLICIDAD DEL METODO.
+    * */
     @Override
     public void pause() {
-        this.serviceStatus = ServiceStatus.PAUSED;
-
+        try{
+            this.serviceStatus = ServiceStatus.PAUSED;
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT PAUSE PLUGIN");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
     }
 
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager. SOLO SE GESTIONO EXCEPCIONES GENERICAS POR LA SIMPLICIDAD DEL METODO.
+    * */
     @Override
     public void resume() {
-        this.serviceStatus = ServiceStatus.STARTED;
-
+        try{
+            this.serviceStatus = ServiceStatus.STARTED;
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT RESUME PLUGIN");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
     }
 
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager. SOLO SE GESTIONO EXCEPCIONES GENERICAS POR LA SIMPLICIDAD DEL METODO.
+    * */
     @Override
     public void stop() {
-        this.serviceStatus = ServiceStatus.STOPPED;
+        try{
+            this.serviceStatus = ServiceStatus.STOPPED;
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT STOP PLUGIN");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
     }
 
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager. SOLO SE GESTIONO EXCEPCIONES GENERICAS POR LA SIMPLICIDAD DEL METODO.
+    * */
     @Override
     public ServiceStatus getStatus() {
-        return this.serviceStatus;
+        ServiceStatus serviceStatus = null;
+        try{
+            serviceStatus = this.serviceStatus;
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT KNOW THE STATUS SERVICE");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
+        return serviceStatus;
     }
 
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager. SOLO SE GESTIONO EXCEPCIONES GENERICAS POR LA SIMPLICIDAD DEL METODO.
+    * */
     /**
      *DealWithErrors Interface implementation.
      */
     @Override
     public void setErrorManager(ErrorManager errorManager) {
-        this.errorManager = errorManager;
+        try{
+            this.errorManager = errorManager;
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT KNOW ERROR");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
     }
 
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager. SOLO SE GESTIONO EXCEPCIONES GENERICAS POR LA SIMPLICIDAD DEL METODO.
+    * */
     /**
      * DealsWithPluginDatabaseSystem interface implementation.
      */
     @Override
     public void setPluginDatabaseSystem(PluginDatabaseSystem pluginDatabaseSystem) {
-        this.pluginDatabaseSystem = pluginDatabaseSystem;
+        try{
+            this.pluginDatabaseSystem = pluginDatabaseSystem;
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT KNOW PLUGIN DATABASE");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
     }
 
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager. SOLO SE GESTIONO EXCEPCIONES GENERICAS POR LA SIMPLICIDAD DEL METODO.
+    * */
     /**
      * DealsWithPluginIdentity methods implementation.
      */
     @Override
     public void setId(UUID pluginId) {
-        this.pluginId = pluginId;
+        try{
+            this.pluginId = pluginId;
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT KNOW ID");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
     }
 
-
+    /* YORDIN DA ROCHA 08/08/15
+    * SE AGREGO EXCEPCIONES FermatException. CON REPORTES GENERADOS EN ErrorManager. SOLO SE GESTIONO EXCEPCIONES GENERICAS POR LA SIMPLICIDAD DEL METODO.
+    * */
     @Override
     public void setLogManager(LogManager logManager) {
-        this.logManager = logManager;
+        try {
+            this.logManager = logManager;
+        }  catch (Exception exception) {
+            FermatException e = new CantInitializeActorAddressBookCryptoModuleException(CantInitializeActorAddressBookCryptoModuleException.DEFAULT_MESSAGE, FermatException.wrapException(exception), "","CAN NOT KNOW LOG");
+            this.errorManager.reportUnexpectedPluginException(Plugins.BITDUBAI_USER_ADDRESS_BOOK_CRYPTO,UnexpectedPluginExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_PLUGIN,e);
+        }
     }
 }
