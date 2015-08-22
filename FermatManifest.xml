@@ -2,9 +2,9 @@
     <columns>
         <column code="PIP" name="Plug-ins Platform" logo="PIP_logo.png">
 
-            <layer name="Niche Wallet"></layer>
-            <layer name="Reference Wallet"></layer>
-            <layer name="Sub App">
+            <layer name="Niche Wallet" language="java-android"></layer>
+            <layer name="Reference Wallet" language="java-android"></layer>
+            <layer name="Sub App" language="java-android">
 				<androids>
 					<android
 							name="Shell"
@@ -39,14 +39,16 @@
 					<android
 							name="Developer"
 							description=""
-							dificulty="1"
+							dificulty="5"
 							code-level="production"
 							>
 						<authors>
 							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
 							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+                            <author name="furszy" scope="implementation" percentage="100"></author>
 						</authors>
 						<mantainers>
+                            <mantainer name="furszy"></mantainer>
 						</mantainers>
 						<certifications>
 						</certifications>
@@ -66,6 +68,23 @@
 						<certifications>
 						</certifications>
 					</android>
+                    <android
+                            name="Sub App Manager"
+                            description=""
+                            dificulty=""
+                            code-level="production"
+                            >
+                        <authors>
+                            <author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+                            <author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+                            <author name="furszy" scope="implementation" percentage="100"></author>
+                        </authors>
+                        <mantainers>
+                            <mantainer name="furszy"></mantainer>
+                        </mantainers>
+                        <certifications>
+                        </certifications>
+                    </android>
 					<android
 							name="System Monitor"
 							description=""
@@ -134,15 +153,17 @@
 					<plugin
 							name="Sub App Runtime"
 							description=""
-							dificulty="6"
+							dificulty="8"
 							code-level="development"
 							>
 						<authors>
 							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
 							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
-						</authors>
-						<mantainers>
-						</mantainers>
+                            <author name="furszy" scope="implementation" percentage="100"></author>
+                        </authors>
+                        <mantainers>
+                            <mantainer name="furszy"></mantainer>
+                        </mantainers>
 						<certifications>
 						</certifications>
 					</plugin>
@@ -291,8 +312,10 @@
 						<authors>
 							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
 							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+							<author name="acostarodrigo" scope="implementation" percentage="100"></author>
 						</authors>
 						<mantainers>
+							<mantainer name="acostarodrigo"></mantainer>
 						</mantainers>
 						<certifications>
 						</certifications>
@@ -362,6 +385,23 @@
 						<certifications>
 						</certifications>
 					</plugin>
+                    <plugin
+                            name="Sub App Settings"
+                            description=""
+                            dificulty="2"
+                            code-level="development"
+                            >
+                        <authors>
+                            <author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+                            <author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+                            <author name="furszy" scope="implementation" percentage="100"></author>
+                        </authors>
+                        <mantainers>
+                            <mantainer name="furszy"></mantainer>
+                        </mantainers>
+                        <certifications>
+                        </certifications>
+                    </plugin>
 				</plugins>
 			</layer>
 
@@ -431,6 +471,23 @@
 
 			<layer name="Network Service" language="java">
 				<plugins>
+                    <plugin
+                            name="Sub App Resources"
+                            description=""
+                            dificulty="8"
+                            code-level="development"
+                            >
+                        <authors>
+                            <author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+                            <author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+                            <author name="furszy" scope="implementation" percentage="100"></author>
+                        </authors>
+                        <mantainers>
+                            <mantainer name="furszy"></mantainer>
+                        </mantainers>
+                        <certifications>
+                        </certifications>
+                    </plugin>
 					<plugin
 							name="System Monitor"
 							description=""
@@ -521,11 +578,214 @@
 						<certifications>
 						</certifications>
 					</plugin>
+
 				</plugins>
 			</layer>
 			<layer super_layer="P2P"></layer>
 			<layer super_layer="CRY"></layer>
 
+			<layer name="License" language="java">
+				<addons>
+					<addon
+							name="Plugin"
+							description=""
+							dificulty="3"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+				</addons>
+			</layer>
+			<layer name="Plugin" language="java">
+				<addons>
+					<addon
+							name="Identity"
+							description=""
+							dificulty="3"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+					<addon
+							name="Dependency"
+							description=""
+							dificulty="3"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+				</addons>
+			</layer>
+			<layer name="User" language="java">
+				<addons>
+					<addon
+							name="Device User"
+							description=""
+							dificulty="3"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+				</addons>
+			</layer>
+			<layer name="Hardware" language="java">
+				<addons>
+					<addon
+							name="Local Device"
+							description=""
+							dificulty="3"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+					<addon
+							name="Device Network"
+							description=""
+							dificulty="3"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+				</addons>
+			</layer>
+			<layer name="Platform Service" language="java">
+				<addons>
+					<addon
+							name="Error Manager"
+							description=""
+							dificulty="3"
+							code-level="production"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+					<addon
+							name="Event Manager"
+							description=""
+							dificulty="3"
+							code-level="production"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+					<addon
+							name="Connectivity Subsystem"
+							description=""
+							dificulty="3"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+					<addon
+							name="Location Subsystem"
+							description=""
+							dificulty="3"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+					<addon
+							name="Power Subsystem"
+							description=""
+							dificulty="3"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+					<addon
+							name="Platform Info"
+							description=""
+							dificulty="1"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+							<author name="acostarodrigo" scope="implementation" percentage="100"></author>
+						</authors>
+						<mantainers>
+							<mantainer name="acostarodrigo"></mantainer>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+				</addons>
+			</layer>
 			<layer super_layer="OSA"></layer>
         </column>
         <column code="DMP" name="Digital Money Platform" logo="DMP_logo.png">
@@ -537,14 +797,16 @@
 					<android
 							name="Bitcoin Wallet"
 							description=""
-							dificulty="1"
+							dificulty="8"
 							code-level="production"
 							>
 						<authors>
 							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
 							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
-						</authors>
-						<mantainers>
+                            <author name="furszy" scope="implementation" percentage="100"></author>
+                        </authors>
+                        <mantainers>
+                            <mantainer name="furszy"></mantainer>
 						</mantainers>
 						<certifications>
 						</certifications>
@@ -552,14 +814,16 @@
 					<android
 							name="Fiat Over Crypto"
 							description=""
-							dificulty="1"
+							dificulty="8"
 							code-level="concept"
 							>
 						<authors>
 							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
 							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
-						</authors>
-						<mantainers>
+                            <author name="furszy" scope="implementation" percentage="100"></author>
+                        </authors>
+                        <mantainers>
+                            <mantainer name="furszy"></mantainer>
 						</mantainers>
 						<certifications>
 						</certifications>
@@ -619,15 +883,17 @@
 					<plugin
 							name="Wallet Runtime"
 							description=""
-							dificulty="6"
+							dificulty="8"
 							code-level="production"
 							>
 						<authors>
 							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
 							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
-						</authors>
-						<mantainers>
-						</mantainers>
+                            <author name="furszy" scope="implementation" percentage="100"></author>
+                        </authors>
+                        <mantainers>
+                            <mantainer name="furszy"></mantainer>
+                        </mantainers>
 						<certifications>
 						</certifications>
 					</plugin>
@@ -774,7 +1040,7 @@
 					<plugin
 							name="Wallet Contacts"
 							description=""
-							dificulty="1"
+							dificulty="2"
 							code-level="development"
 							>
 						<authors>
@@ -795,9 +1061,11 @@
 						<authors>
 							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
 							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
-						</authors>
-						<mantainers>
-						</mantainers>
+                            <author name="furszy" scope="implementation" percentage="100"></author>
+                        </authors>
+                        <mantainers>
+                            <mantainer name="furszy"></mantainer>
+                        </mantainers>
 						<certifications>
 						</certifications>
 					</plugin>
@@ -816,6 +1084,23 @@
 						<certifications>
 						</certifications>
 					</plugin>
+                    <plugin
+                            name="Notification"
+                            description=""
+                            dificulty="6"
+                            code-level="development"
+                            >
+                        <authors>
+                            <author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+                            <author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+                            <author name="furszy" scope="implementation" percentage="100"></author>
+                        </authors>
+                        <mantainers>
+                            <mantainer name="furszy"></mantainer>
+                        </mantainers>
+                        <certifications>
+                        </certifications>
+                    </plugin>
 				</plugins>
             </layer>
 
@@ -1175,18 +1460,20 @@
 					<plugin
 							name="Wallet Resources"
 							description=""
-							dificulty="5"
+							dificulty="8"
 							code-level="development"
 							>
 						<authors>
 							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
 							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
-						</authors>
-						<mantainers>
-						</mantainers>
-						<certifications>
-						</certifications>
-					</plugin>
+                            <author name="furszy" scope="implementation" percentage="100"></author>
+                        </authors>
+                        <mantainers>
+                            <mantainer name="furszy"></mantainer>
+                        </mantainers>
+                        <certifications>
+                        </certifications>
+                    </plugin>
 					<plugin
 							name="Intra User"
 							description="Enables searching for Intra Users and conecting one to the other"
@@ -1316,7 +1603,25 @@
 					</plugin>
 				</plugins>
             </layer>
-
+			<layer name="License" language="java">
+				<addons>
+					<addon
+							name="Wallet"
+							description=""
+							dificulty="3"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+				</addons>
+			</layer>
         </column>
         <column code="WPD" name="Wallet Production and Distribution" logo="WPD_logo.png">
 
@@ -1374,14 +1679,16 @@
 					<plugin
 							name="Wallet Store"
 							description=""
-							dificulty="1"
+							dificulty="4"
 							code-level="concept"
 							>
 						<authors>
 							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
 							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+							<author name="acostarodrigo" scope="implementation" percentage="100"></author>
 						</authors>
 						<mantainers>
+							<mantainer name="acostarodrigo"></mantainer>
 						</mantainers>
 						<certifications>
 						</certifications>
@@ -1497,21 +1804,18 @@
 					<plugin
 							name="Wallet Store"
 							description="Enables searching for Intra Users and conecting one to the other"
-							dificulty="6"
+							dificulty="8"
 							code-level="development"
 							>
 						<authors>
 							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
 							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
-							<author name="lnacosta" scope="implementation" percentage="100"></author>
-							<author name="laderuner" scope="unit-tests" percentage="100"></author>
+							<author name="acostarodrigo" scope="implementation" percentage="100"></author>
 						</authors>
 						<mantainers>
-							<mantainer name="lnacosta"></mantainer>
+							<mantainer name="acostarodrigo"></mantainer>
 						</mantainers>
 						<certifications>
-							<certification type="implementation" signed-by="acostarodrigo"></certification>
-							<certification type="testing" signed-by="jorgeejgonzalez"></certification>
 						</certifications>
 					</plugin>
 					<plugin
@@ -1646,15 +1950,17 @@
                     <plugin
                             name="Bitcoin"
                             description=""
-                            dificulty="5"
+                            dificulty="10"
                             code-level="production"
                             >
                         <authors>
                             <author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
                             <author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
-                        </authors>
-                        <mantainers>
-                        </mantainers>
+							<author name="acostarodrigo" scope="implementation" percentage="100"></author>
+						</authors>
+						<mantainers>
+							<mantainer name="acostarodrigo"></mantainer>
+						</mantainers>
                         <certifications>
                         </certifications>
                     </plugin>
@@ -1725,14 +2031,16 @@
                     <plugin
                             name="Bitcoin"
                             description=""
-                            dificulty="5"
+                            dificulty="10"
                             code-level="production"
                             >
                         <authors>
                             <author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
                             <author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
-                        </authors>
-                        <mantainers>
+							<author name="acostarodrigo" scope="implementation" percentage="100"></author>
+						</authors>
+						<mantainers>
+							<mantainer name="acostarodrigo"></mantainer>
                         </mantainers>
                         <certifications>
                         </certifications>
@@ -1831,6 +2139,98 @@
                             <certification type="testing" signed-by="jorgeejgonzalez"></certification>
                         </certifications>
                     </addon>
+					<addon
+							name="Logger"
+							description=""
+							dificulty="4"
+							code-level="production"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+							<author name="acostarodrigo" scope="implementation" percentage="100"></author>
+						</authors>
+						<mantainers>
+							<mantainer name="acostarodrigo"></mantainer>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+					<addon
+							name="Device Location"
+							description=""
+							dificulty="4"
+							code-level="development"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+					<addon
+							name="Device Connectivity"
+							description=""
+							dificulty="4"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+					<addon
+							name="Device Power"
+							description=""
+							dificulty="4"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+					<addon
+							name="Device Contacts"
+							description=""
+							dificulty="4"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
+					<addon
+							name="Device Hardware"
+							description=""
+							dificulty="4"
+							code-level="concept"
+							>
+						<authors>
+							<author name="Luis-Fernando-Molina" scope="architecture" percentage="100"></author>
+							<author name="Luis-Fernando-Molina" scope="design" percentage="100"></author>
+						</authors>
+						<mantainers>
+						</mantainers>
+						<certifications>
+						</certifications>
+					</addon>
                 </addons>
             </layer>
         </super_layer>
