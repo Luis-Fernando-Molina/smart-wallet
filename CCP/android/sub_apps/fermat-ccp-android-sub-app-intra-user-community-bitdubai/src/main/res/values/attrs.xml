@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="robotoType" format="enum">
+        <enum name="BLACK" value="0" />
+        <enum name="BLACK_ITALIC" value="1" />
+        <enum name="BOLD" value="2" />
+        <enum name="BOLD_ITALIC" value="3" />
+        <enum name="ITALIC" value="4" />
+        <enum name="LIGHT" value="5" />
+        <enum name="LIGHT_ITALIC" value="6" />
+        <enum name="MEDIUM" value="7" />
+        <enum name="MEDIUM_ITALIC" value="8" />
+        <enum name="REGULAR" value="9" />
+        <enum name="THIN" value="10" />
+        <enum name="THIN_ITALIC" value="11" />
+        <enum name="CONDENSED_BOLD" value="12" />
+        <enum name="CONDENSED_BOLD_ITALIC" value="13" />
+        <enum name="CONDENSED_ITALIC" value="14" />
+        <enum name="CONDENSED_LIGHT" value="15" />
+        <enum name="CONDENSED_LIGHT_ITALIC" value="16" />
+        <enum name="CONDENSED_REGULAR" value="17" />
+        <enum name="MONO_BOLD" value="18" />
+        <enum name="MONO_BOLD_ITALIC" value="19" />
+        <enum name="MONO_ITALIC" value="20" />
+        <enum name="MONO_LIGHT" value="21" />
+        <enum name="MONO_LIGHT_ITALIC" value="22" />
+        <enum name="MONO_MEDIUM" value="23" />
+        <enum name="MONO_MEDIUM_ITALIC" value="24" />
+        <enum name="MONO_REGULAR" value="25" />
+        <enum name="MONO_THIN" value="26" />
+        <enum name="MONO_THIN_ITALIC" value="27" />
+
+    </attr>
+
+    <declare-styleable name="Text">
+        <attr name="robotoType" />
+    </declare-styleable>
+
+</resources>
