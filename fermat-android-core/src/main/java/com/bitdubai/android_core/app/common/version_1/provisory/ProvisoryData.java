@@ -145,7 +145,7 @@ public class ProvisoryData {
         item2.setPosition(5);
         lstIdentities.add(item2);
 
-        /*installedSubApp = new InstalledSubApp(
+        installedSubApp = new InstalledSubApp(
                 SubApps.TKY_FAN_IDENTITY_SUB_APP,
                 null,
                 null,
@@ -153,7 +153,9 @@ public class ProvisoryData {
                 "Tokenly Fan",
                 "sub_app_tky_fan_create_identity",
                 "tky_fan_sub_app",
-                new Version(1,0,0),Platforms.TOKENLY);
+                new Version(1,0,0),
+                Platforms.TOKENLY,
+                AppsStatus.ALPHA);
         item2 = new Item(installedSubApp);
         item2.setIconResource(R.drawable.tokenly_fan);
         item2.setPosition(6);
@@ -169,14 +171,13 @@ public class ProvisoryData {
                 SubAppsPublicKeys.TKY_ARTIST_IDENTITY.getCode(),
                 "sub_app_tky_artist_identity",
                 new Version(1, 0, 0),
-                Platforms.TOKENLY);
+                Platforms.TOKENLY,
+                AppsStatus.ALPHA);
 
         item2 = new Item(installedSubApp);
         item2.setIconResource(R.drawable.bitcoin_icon);
         item2.setPosition(7);
         lstIdentities.add(item2);
-
-
 
         /**
          * Chat identity added by Lozadaa
@@ -197,7 +198,7 @@ public class ProvisoryData {
         item2.setPosition(8);
         lstIdentities.add(item2);
 
-/*
+        //ART Identities
         installedSubApp = new InstalledSubApp(
                 SubApps.ART_ARTIST_IDENTITY,
                 null,
@@ -207,14 +208,31 @@ public class ProvisoryData {
                 SubAppsPublicKeys.ART_ARTIST_IDENTITY.getCode(),
                 "sub_app_art_artist_identity",
                 new Version(1, 0, 0),
-                Platforms.TOKENLY);
+                Platforms.PLATFORM_ART,
+                AppsStatus.ALPHA);
 
         item2 = new Item(installedSubApp);
         item2.setIconResource(R.drawable.icon_bitcoin_network_active);
         item2.setPosition(9);
         lstIdentities.add(item2);
 
-*/
+        installedSubApp = new InstalledSubApp(
+                SubApps.ART_FAN_IDENTITY,
+                null,
+                null,
+                "sub_app_art_fan_identity",
+                "Art Fan Identity",
+                SubAppsPublicKeys.ART_FAN_IDENTITY.getCode(),
+                "sub_app_art_fan_identity",
+                new Version(1,0,0),
+                Platforms.PLATFORM_ART,
+                AppsStatus.ALPHA);
+        item2 = new Item(installedSubApp);
+        item2.setIconResource(R.drawable.artist);
+        item2.setPosition(10);
+        lstIdentities.add(item2);
+
+
 
         FermatFolder fermatFolder = new FermatFolder("Profiles",lstIdentities,2);
         Item identityFolder = new Item(fermatFolder);
@@ -330,10 +348,28 @@ public class ProvisoryData {
                 SubAppsPublicKeys.ART_FAN_COMMUNITY.getCode(),
                 "sub_app_art_fan_community",
                 new Version(1, 0, 0),
-                Platforms.ART_PLATFORM, AppsStatus.DEV);
+                Platforms.PLATFORM_ART,
+                AppsStatus.DEV);
 
         item1 = new Item(installedSubApp);
         item1.setIconResource(R.drawable.communities_bar);
+        item1.setPosition(6);
+        lstCommunities.add(item1);
+
+        installedSubApp = new InstalledSubApp(
+                SubApps.ART_ARTIST_COMMUNITY,
+                null,
+                null,
+                "sub_app_art_artist_community",
+                "Artist",
+                SubAppsPublicKeys.ART_ARTIST_COMMUNITY.getCode(),
+                "sub_app_art_artist_community",
+                new Version(1, 0, 0),
+                Platforms.PLATFORM_ART,
+                AppsStatus.ALPHA);
+
+        item1 = new Item(installedSubApp);
+        item1.setIconResource(R.drawable.artist_banner);
         item1.setPosition(6);
         lstCommunities.add(item1);
 

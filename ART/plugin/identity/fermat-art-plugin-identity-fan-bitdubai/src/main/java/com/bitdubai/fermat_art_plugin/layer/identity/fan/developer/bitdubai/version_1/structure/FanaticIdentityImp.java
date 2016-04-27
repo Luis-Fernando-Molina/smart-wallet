@@ -9,6 +9,7 @@ import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginBinaryFile;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantCreateFileException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantPersistFileException;
+import com.bitdubai.fermat_art_api.all_definition.enums.ArtExternalPlatform;
 import com.bitdubai.fermat_art_api.layer.identity.fan.interfaces.Fanatic;
 import com.bitdubai.fermat_art_plugin.layer.identity.fan.developer.bitdubai.version_1.FanaticPluginRoot;
 import com.bitdubai.fermat_tky_api.all_definitions.enums.ExternalPlatform;
@@ -24,7 +25,7 @@ public class FanaticIdentityImp implements DealsWithPluginFileSystem, DealsWithP
     private String publicKey;
     private byte[] imageProfile;
     private UUID externalIdentityID;
-    private ExternalPlatform externalPlatform;
+    private ArtExternalPlatform externalPlatform;
     /**
      * DealsWithPluginFileSystem Interface member variables.
      */
@@ -43,12 +44,19 @@ public class FanaticIdentityImp implements DealsWithPluginFileSystem, DealsWithP
      * @param pluginFileSystem
      * @param pluginId
      */
-    public FanaticIdentityImp(String alias, String publicKey, UUID externalIdentityID, PluginFileSystem pluginFileSystem, UUID pluginId) {
+    public FanaticIdentityImp(
+            String alias,
+            String publicKey,
+            UUID externalIdentityID,
+            PluginFileSystem pluginFileSystem,
+            UUID pluginId,
+            ArtExternalPlatform artExternalPlatform) {
         this.alias = alias;
         this.publicKey = publicKey;
         this.externalIdentityID = externalIdentityID;
         this.pluginFileSystem = pluginFileSystem;
         this.pluginId = pluginId;
+        this.externalPlatform = artExternalPlatform;
     }
 
     /**
@@ -58,11 +66,17 @@ public class FanaticIdentityImp implements DealsWithPluginFileSystem, DealsWithP
      * @param imageProfile
      * @param externalIdentityID
      */
-    public FanaticIdentityImp(String alias, String publicKey, byte[] imageProfile, UUID externalIdentityID) {
+    public FanaticIdentityImp(
+            String alias,
+            String publicKey,
+            byte[] imageProfile,
+            UUID externalIdentityID,
+            ArtExternalPlatform artExternalPlatform) {
         this.alias = alias;
         this.publicKey = publicKey;
         this.imageProfile = imageProfile;
         this.externalIdentityID = externalIdentityID;
+        this.externalPlatform = artExternalPlatform;
     }
 
     /**
@@ -74,16 +88,37 @@ public class FanaticIdentityImp implements DealsWithPluginFileSystem, DealsWithP
      * @param pluginFileSystem
      * @param pluginId
      */
-    public FanaticIdentityImp(String alias, String publicKey, byte[] imageProfile, UUID externalIdentityID, PluginFileSystem pluginFileSystem, UUID pluginId) {
+    public FanaticIdentityImp(
+            String alias,
+            String publicKey,
+            byte[] imageProfile,
+            UUID externalIdentityID,
+            PluginFileSystem pluginFileSystem,
+            UUID pluginId,
+            ArtExternalPlatform artExternalPlatform) {
         this.alias = alias;
         this.publicKey = publicKey;
         this.imageProfile = imageProfile;
         this.externalIdentityID = externalIdentityID;
         this.pluginFileSystem = pluginFileSystem;
         this.pluginId = pluginId;
+        this.externalPlatform = artExternalPlatform;
     }
 
-    public FanaticIdentityImp(String publicKey, byte[] imageProfile, String alias, UUID externalIdentityID, ExternalPlatform externalPlatform) {
+    /**
+     * Default constructor with parameters
+     * @param publicKey
+     * @param imageProfile
+     * @param alias
+     * @param externalIdentityID
+     * @param externalPlatform
+     */
+    public FanaticIdentityImp(
+            String publicKey,
+            byte[] imageProfile,
+            String alias,
+            UUID externalIdentityID,
+            ArtExternalPlatform externalPlatform) {
         this.publicKey = publicKey;
         this.imageProfile = imageProfile;
         this.alias = alias;
@@ -139,11 +174,11 @@ public class FanaticIdentityImp implements DealsWithPluginFileSystem, DealsWithP
     }
 
     @Override
-    public ExternalPlatform getExternalPlatform() {
+    public ArtExternalPlatform getExternalPlatform() {
         return externalPlatform;
     }
 
-    public void setExternalPlatform(ExternalPlatform externalPlatform) {
+    public void setExternalPlatform(ArtExternalPlatform externalPlatform) {
         this.externalPlatform = externalPlatform;
     }
 

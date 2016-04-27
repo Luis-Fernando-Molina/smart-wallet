@@ -9,9 +9,9 @@ import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginBinaryFile;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.PluginFileSystem;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantCreateFileException;
 import com.bitdubai.fermat_api.layer.osa_android.file_system.exceptions.CantPersistFileException;
+import com.bitdubai.fermat_art_api.all_definition.enums.ArtExternalPlatform;
 import com.bitdubai.fermat_art_api.layer.identity.artist.interfaces.Artist;
 import com.bitdubai.fermat_art_plugin.layer.identity.artist.developer.bitdubai.version_1.ArtistIdentityPluginRoot;
-import com.bitdubai.fermat_tky_api.all_definitions.enums.ExternalPlatform;
 
 import java.util.UUID;
 
@@ -24,7 +24,7 @@ public class ArtistIdentityImp implements DealsWithPluginFileSystem, DealsWithPl
     private String publicKey;
     private byte[] imageProfile;
     private UUID externalIdentityID;
-    private ExternalPlatform externalPlatform;
+    private ArtExternalPlatform externalPlatform;
     /**
      * DealsWithPluginFileSystem Interface member variables.
      */
@@ -43,12 +43,19 @@ public class ArtistIdentityImp implements DealsWithPluginFileSystem, DealsWithPl
      * @param pluginFileSystem
      * @param pluginId
      */
-    public ArtistIdentityImp(String alias, String publicKey, UUID externalIdentityID, PluginFileSystem pluginFileSystem, UUID pluginId) {
+    public ArtistIdentityImp(
+            String alias,
+            String publicKey,
+            UUID externalIdentityID,
+            PluginFileSystem pluginFileSystem,
+            UUID pluginId,
+            ArtExternalPlatform artExternalPlatform) {
         this.alias = alias;
         this.publicKey = publicKey;
         this.externalIdentityID = externalIdentityID;
         this.pluginFileSystem = pluginFileSystem;
         this.pluginId = pluginId;
+        this.externalPlatform = artExternalPlatform;
     }
 
     /**
@@ -58,11 +65,17 @@ public class ArtistIdentityImp implements DealsWithPluginFileSystem, DealsWithPl
      * @param imageProfile
      * @param externalIdentityID
      */
-    public ArtistIdentityImp(String alias, String publicKey, byte[] imageProfile, UUID externalIdentityID) {
+    public ArtistIdentityImp(
+            String alias,
+            String publicKey,
+            byte[] imageProfile,
+            UUID externalIdentityID,
+            ArtExternalPlatform artExternalPlatform) {
         this.alias = alias;
         this.publicKey = publicKey;
         this.imageProfile = imageProfile;
         this.externalIdentityID = externalIdentityID;
+        this.externalPlatform = artExternalPlatform;
     }
 
     /**
@@ -74,16 +87,29 @@ public class ArtistIdentityImp implements DealsWithPluginFileSystem, DealsWithPl
      * @param pluginFileSystem
      * @param pluginId
      */
-    public ArtistIdentityImp(String alias, String publicKey, byte[] imageProfile,UUID externalIdentityID, PluginFileSystem pluginFileSystem, UUID pluginId) {
+    public ArtistIdentityImp(
+            String alias,
+            String publicKey,
+            byte[] imageProfile,
+            UUID externalIdentityID,
+            PluginFileSystem pluginFileSystem,
+            UUID pluginId,
+            ArtExternalPlatform artExternalPlatform) {
         this.alias = alias;
         this.publicKey = publicKey;
         this.imageProfile = imageProfile;
         this.externalIdentityID = externalIdentityID;
         this.pluginFileSystem = pluginFileSystem;
         this.pluginId = pluginId;
+        this.externalPlatform = artExternalPlatform;
     }
 
-    public ArtistIdentityImp(String publicKey, byte[] imageProfile, String alias, UUID externalIdentityID, ExternalPlatform externalPlatform) {
+    public ArtistIdentityImp(
+            String publicKey,
+            byte[] imageProfile,
+            String alias,
+            UUID externalIdentityID,
+            ArtExternalPlatform externalPlatform) {
         this.publicKey = publicKey;
         this.imageProfile = imageProfile;
         this.alias = alias;
@@ -139,11 +165,11 @@ public class ArtistIdentityImp implements DealsWithPluginFileSystem, DealsWithPl
     }
 
     @Override
-    public ExternalPlatform getExternalPlatform() {
+    public ArtExternalPlatform getExternalPlatform() {
         return externalPlatform;
     }
 
-    public void setExternalPlatform(ExternalPlatform externalPlatform) {
+    public void setExternalPlatform(ArtExternalPlatform externalPlatform) {
         this.externalPlatform = externalPlatform;
     }
 

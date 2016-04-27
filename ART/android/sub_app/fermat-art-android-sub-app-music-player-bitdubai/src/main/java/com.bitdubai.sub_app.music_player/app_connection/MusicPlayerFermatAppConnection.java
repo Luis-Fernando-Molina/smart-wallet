@@ -18,7 +18,7 @@ import com.bitdubai.sub_app.music_player.fragmentFactory.MusicPlayerFragmentFact
 import com.bitdubai.sub_app.music_player.session.MusicPlayerSession;
 
 /**
- * Created by Miguel Payarez on 28/03/16.
+ * Created by Miguel Payarez on 13/04/16.
  */
 public class MusicPlayerFermatAppConnection extends AppConnections {
 
@@ -34,7 +34,7 @@ public class MusicPlayerFermatAppConnection extends AppConnections {
     @Override
     public PluginVersionReference getPluginVersionReference() {
         return new PluginVersionReference(
-                Platforms.ART_PLATFORM,
+                Platforms.PLATFORM_ART,
                 Layers.SUB_APP_MODULE,
                 Plugins.MUSIC_PLAYER_SUB_APP_MODULE,
                 Developers.BITDUBAI,
