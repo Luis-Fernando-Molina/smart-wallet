@@ -75,7 +75,8 @@ implements FermatListItemListeners<CashMoneyWalletTransaction>, DialogInterface.
     com.getbase.floatingactionbutton.FloatingActionButton fabWithdraw;
     CreateTransactionFragmentDialog transactionFragmentDialog;
     HomeTutorialFragmentDialog homeTutorialDialog;
-    private static final DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance();
+    private static final DecimalFormat moneyFormat = new DecimalFormat("#,##0.00");
+
 
     public HomeFragment() {}
     public static HomeFragment newInstance() {return new HomeFragment();}
@@ -340,8 +341,9 @@ implements FermatListItemListeners<CashMoneyWalletTransaction>, DialogInterface.
 
     private void updateWalletBalances() {
 
-        bookTextView.setText(String.valueOf(this.walletBalances.getBookBalance()));
-        availableTextView.setText(String.valueOf(this.walletBalances.getAvailableBalance()));
+
+        bookTextView.setText(moneyFormat.format(this.walletBalances.getBookBalance()));
+        availableTextView.setText(moneyFormat.format(this.walletBalances.getAvailableBalance()));
         int topLipHeight = 0;
 
         //Hide book balance if balances are equal
@@ -382,7 +384,7 @@ implements FermatListItemListeners<CashMoneyWalletTransaction>, DialogInterface.
     private void handleWidhtrawalFabVisibilityAccordingToBalance()
     {
         if(this.walletBalances.getAvailableBalance().compareTo(new BigDecimal(0)) == 0 && this.walletBalances.getBookBalance().compareTo(new BigDecimal(0)) == 0)
-            fabWithdraw.setVisibility(View.INVISIBLE);
+            fabWithdraw.setVisibility(View.GONE);
         else
             fabWithdraw.setVisibility(View.VISIBLE);
 

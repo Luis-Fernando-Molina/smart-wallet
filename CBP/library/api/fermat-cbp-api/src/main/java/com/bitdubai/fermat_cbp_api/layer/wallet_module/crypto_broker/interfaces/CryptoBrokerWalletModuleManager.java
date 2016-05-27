@@ -679,9 +679,9 @@ public interface CryptoBrokerWalletModuleManager
     /**
      * Returns the Balance this BankMoneyWalletBalance belongs to. (Can be available or book)
      *
-     * @return A double, containing the balance.
+     * @return A BigDecimal, containing the balance.
      */
-    double getBalanceBankWallet(String walletPublicKey, String accountNumber)
+    BigDecimal getBalanceBankWallet(String walletPublicKey, String accountNumber)
             throws CantCalculateBalanceException, CantLoadBankMoneyWalletException;
 
     /**
