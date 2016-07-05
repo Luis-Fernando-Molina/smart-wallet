@@ -4,7 +4,6 @@ import com.bitdubai.fermat_api.layer.all_definition.components.enums.PlatformCom
 import com.bitdubai.fermat_cht_api.all_definition.enums.ContactStatus;
 import com.bitdubai.fermat_cht_api.layer.middleware.interfaces.Contact;
 
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -19,7 +18,7 @@ public class ContactImpl implements Contact {
     private String remoteActorPublicKey;
     private long creationDate;
     private byte[] image;
-    private ContactStatus contactStatus;
+    private String contactStatus;
 
     public ContactImpl(){}
 
@@ -30,7 +29,7 @@ public class ContactImpl implements Contact {
                        String remoteActorPublicKey,
                        long creationDate,
                        byte[] image,
-                       ContactStatus contactStatus)
+                       String contactStatus)
     {
         this.contactId            = contactId;
         this.remoteName           = remoteName;
@@ -113,12 +112,12 @@ public class ContactImpl implements Contact {
     }
 
     @Override
-    public ContactStatus getContactStatus() {
+    public String getContactStatus() {
         return contactStatus;
     }
 
     @Override
-    public void setContactStatus(ContactStatus contactStatus) {
+    public void setContactStatus(String contactStatus) {
         this.contactStatus = contactStatus;
     }
 

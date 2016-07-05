@@ -3,7 +3,6 @@ package com.bitdubai.fermat_cht_api.layer.middleware.interfaces;
 import com.bitdubai.fermat_api.layer.all_definition.components.enums.PlatformComponentType;
 import com.bitdubai.fermat_cht_api.all_definition.enums.ContactStatus;
 
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -25,6 +24,6 @@ public interface Contact { //TODO: agregar imagen
     void setCreationDate(long creationDate);
     byte[] getProfileImage();
     void setProfileImage(byte[] profileImage);
-    ContactStatus getContactStatus();
-    void setContactStatus(ContactStatus contactStatus);
+    String getContactStatus();
+    void setContactStatus(String contactStatus);
 }

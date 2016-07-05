@@ -11,9 +11,6 @@ import com.bitdubai.fermat_ccp_api.layer.wallet_module.loss_protected_wallet.int
 import com.bitdubai.reference_niche_wallet.loss_protected_wallet.common.enums.ShowMoneyType;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by Matias Furszyfer on 2015.07.22..
@@ -120,6 +117,54 @@ public class WalletUtils {
         stringAmount =df.format(amount);//+ " BTC";
 
         return stringAmount;
+    }
+
+    /**
+     *  Formationg Amount
+     * @param amount
+     * @return
+     */
+    public static String formatAmountStringWithDecimalEntry(double amount,int maxDecimal, int minDecimal) {
+
+        String stringAmount = "";
+
+            DecimalFormat df = new DecimalFormat();
+            df.setMaximumFractionDigits(maxDecimal);
+            df.setMinimumFractionDigits(minDecimal);
+
+           stringAmount = df.format(amount); //
+
+
+        return stringAmount;
+
+    }
+
+
+    /**
+     *  Formationg Amount
+     * @param amount
+     * @return
+     */
+    public static String formatBalanceStringWithDecimalEntry(long amount,int maxDecimal, int minDecimal,int typeAmount) {
+
+        String stringAmount = "";
+
+        if(typeAmount== ShowMoneyType.BITCOIN.getCode()){
+            DecimalFormat df = new DecimalFormat();
+            df.setMaximumFractionDigits(maxDecimal);
+            df.setMinimumFractionDigits(minDecimal);
+            String BTCFormat = "";
+
+            BTCFormat = df.format(amount / 100000000.0); //
+
+            stringAmount = BTCFormat ;//+ " BTC";
+        }else if(typeAmount== ShowMoneyType.BITS.getCode()){
+            stringAmount = String.valueOf(amount / 100);
+        }
+        showMoneyType=!showMoneyType;
+
+        return stringAmount;
+
     }
     /**
      *  Formationg Amount no decimal

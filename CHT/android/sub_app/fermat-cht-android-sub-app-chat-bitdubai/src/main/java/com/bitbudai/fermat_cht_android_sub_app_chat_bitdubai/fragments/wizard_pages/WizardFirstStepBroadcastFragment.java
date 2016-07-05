@@ -23,12 +23,10 @@ import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.A
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
 import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.enums.SubApps;
 import com.bitdubai.fermat_cht_android_sub_app_chat_bitdubai.R;
-import com.bitdubai.fermat_cht_api.all_definition.exceptions.CHTException;
 import com.bitdubai.fermat_cht_api.layer.sup_app_module.interfaces.ChatManager;
-import com.bitdubai.fermat_cht_api.layer.sup_app_module.interfaces.ChatModuleManager;
 import com.bitdubai.fermat_cht_api.layer.sup_app_module.interfaces.ChatPreferenceSettings;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedSubAppExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedSubAppExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
 
 /**
  * Created by Lozadaa on 20/01/16.
@@ -45,7 +43,8 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfac
      private ErrorManager errorManager;
      private SettingsManager<ChatSettings> settingsManager;
      private ChatPreferenceSettings chatSettings;
-
+     private ChatSession chatSession;
+     private ChatManager chatManager;
      public static WizardFirstStepBroadcastFragment newInstance() {
         return new WizardFirstStepBroadcastFragment();
      }
@@ -53,6 +52,8 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfac
  @Override
      public void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
+     chatSession=((ChatSession) appSession);
+     chatManager= chatSession.getModuleManager();
      ChatManager moduleManager = ((ChatSession) appSession).getModuleManager();
      //TODO:Revisar esto
 //         try {
@@ -66,7 +67,9 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfac
      //Obtain chatSettings  or create new chat settings if first time opening chat platform
      chatSettings = null;
      try {
-         chatSettings = moduleManager.getSettingsManager().loadAndGetSettings(appSession.getAppPublicKey());
+         chatSettings = chatManager.loadAndGetSettings(appSession.getAppPublicKey());
+         //chatSettings = (ChatPreferenceSettings) moduleManager.getSettingsManager().loadAndGetSettings(appSession.getAppPublicKey());
+         //chatSettings = moduleManager.getSettingsManager().loadAndGetSettings(appSession.getAppPublicKey());
      } catch (Exception e) {
          chatSettings = null;
      }
@@ -75,7 +78,7 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfac
          chatSettings = new ChatPreferenceSettings();
          chatSettings.setIsPresentationHelpEnabled(true);
          try {
-             moduleManager.getSettingsManager().persistSettings(appSession.getAppPublicKey(), chatSettings);
+             chatManager.persistSettings(appSession.getAppPublicKey(), chatSettings);
          } catch (Exception e) {
              if (errorManager != null)
                  errorManager.reportUnexpectedSubAppException(SubApps.CHT_CHAT, UnexpectedSubAppExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_FRAGMENT, e);
@@ -158,7 +161,7 @@ import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfac
      @Override
      public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
          menu.clear();
-         menu.add(0, ChtConstants.CHT_ICON_HELP, 0, "help").setIcon(R.drawable.ic_menu_help_cht)
+         menu.add(0, ChtConstants.CHT_ICON_HELP, 0, "help").setIcon(R.drawable.cht_help_icon)
                  .setVisible(true)
                  .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
      }

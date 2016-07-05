@@ -3,13 +3,12 @@ package com.bitdubai.sub_app.chat_community.fragments;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -23,20 +22,24 @@ import com.bitdubai.fermat_android_api.layer.definition.wallet.AbstractFermatFra
 import com.bitdubai.fermat_android_api.ui.interfaces.FermatListItemListeners;
 import com.bitdubai.fermat_android_api.ui.interfaces.FermatWorkerCallBack;
 import com.bitdubai.fermat_android_api.ui.util.FermatWorker;
+import com.bitdubai.fermat_api.FermatException;
+import com.bitdubai.fermat_api.layer.actor_connection.common.enums.ConnectionState;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedSubAppExceptionSeverity;
 import com.bitdubai.fermat_api.layer.all_definition.enums.UISource;
 import com.bitdubai.fermat_api.layer.all_definition.navigation_structure.enums.Activities;
 import com.bitdubai.fermat_api.layer.all_definition.settings.structure.SettingsManager;
+import com.bitdubai.fermat_api.layer.dmp_engine.sub_app_runtime.enums.SubApps;
 import com.bitdubai.fermat_api.layer.modules.exceptions.ActorIdentityNotSelectedException;
 import com.bitdubai.fermat_api.layer.modules.exceptions.CantGetSelectedActorIdentityException;
 import com.bitdubai.fermat_ccp_api.layer.module.intra_user.exceptions.CantGetActiveLoginIdentityException;
-import com.bitdubai.fermat_cht_api.layer.identity.exceptions.CantListChatIdentityException;
+import com.bitdubai.fermat_cht_api.layer.sup_app_module.interfaces.ChatActorCommunitySelectableIdentity;
 import com.bitdubai.fermat_cht_api.layer.sup_app_module.interfaces.chat_actor_community.exceptions.CantListChatActorException;
 import com.bitdubai.fermat_cht_api.layer.sup_app_module.interfaces.chat_actor_community.interfaces.ChatActorCommunityInformation;
 import com.bitdubai.fermat_cht_api.layer.sup_app_module.interfaces.chat_actor_community.interfaces.ChatActorCommunitySubAppModuleManager;
 import com.bitdubai.fermat_cht_api.layer.sup_app_module.interfaces.chat_actor_community.settings.ChatActorCommunitySettings;
 import com.bitdubai.fermat_pip_api.layer.network_service.subapp_resources.SubAppResourcesProviderManager;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.enums.UnexpectedUIExceptionSeverity;
-import com.bitdubai.fermat_pip_api.layer.platform_service.error_manager.interfaces.ErrorManager;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.error_manager.enums.UnexpectedUIExceptionSeverity;
+import com.bitdubai.fermat_api.layer.all_definition.common.system.interfaces.ErrorManager;
 import com.bitdubai.sub_app.chat_community.R;
 import com.bitdubai.sub_app.chat_community.adapters.ContactsListAdapter;
 import com.bitdubai.sub_app.chat_community.session.ChatUserSubAppSession;
@@ -49,6 +52,7 @@ import java.util.List;
  * ContactsListFragment
  *
  * @author Jose Cardozo josejcb (josejcb89@gmail.com) on 13/04/16.
+ * Updated by Lozadaa 26/05/2016
  * @version 1.0
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
@@ -94,20 +98,20 @@ public class ContactsListFragment
             chatUserSubAppSession = ((ChatUserSubAppSession) appSession);
             moduleManager = appSession.getModuleManager();
             errorManager = appSession.getErrorManager();
-            settingsManager = moduleManager.getSettingsManager();
+           // settingsManager = moduleManager.getSettingsManager();
             moduleManager.setAppPublicKey(appSession.getAppPublicKey());
-        lstChatUserInformations = new ArrayList<>();
+            lstChatUserInformations = new ArrayList<>();
             //Obtain Settings or create new Settings if first time opening subApp
             appSettings = null;
             try {
-                appSettings = this.settingsManager.loadAndGetSettings(appSession.getAppPublicKey());
+                appSettings = moduleManager.loadAndGetSettings(appSession.getAppPublicKey());
             }catch (Exception e){ appSettings = null; }
 
             if(appSettings == null){
                 appSettings = new ChatActorCommunitySettings();
                 appSettings.setIsPresentationHelpEnabled(true);
                 try {
-                    settingsManager.persistSettings(appSession.getAppPublicKey(), appSettings);
+                    moduleManager.persistSettings(appSession.getAppPublicKey(), appSettings);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -147,10 +151,13 @@ public class ContactsListFragment
             swipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh);
             swipeRefresh.setOnRefreshListener(this);
             swipeRefresh.setColorSchemeColors(Color.BLUE, Color.BLUE);
+            showEmpty(true, emptyView);
             onRefresh();
         } catch (Exception ex) {
             CommonLogger.exception(TAG, ex.getMessage(), ex);
-            Toast.makeText(getActivity().getApplicationContext(), "Oooops! recovering from system error", Toast.LENGTH_SHORT).show();
+            errorManager.reportUnexpectedUIException(UISource.ACTIVITY,
+                    UnexpectedUIExceptionSeverity.UNSTABLE, FermatException.wrapException(ex));
+            //Toast.makeText(getActivity().getApplicationContext(), "Oooops! recovering from system error", Toast.LENGTH_SHORT).show();
         }
         return rootView;
     }
@@ -166,7 +173,7 @@ public class ContactsListFragment
         if (!isRefreshing) {
             isRefreshing = true;
             final ProgressDialog connectionsProgressDialog = new ProgressDialog(getActivity());
-            connectionsProgressDialog.setMessage("Loading Connections");
+            connectionsProgressDialog.setMessage("Loading Contacts");
             connectionsProgressDialog.setCancelable(false);
             connectionsProgressDialog.show();
             FermatWorker worker = new FermatWorker() {
@@ -207,7 +214,9 @@ public class ContactsListFragment
                         if (swipeRefresh != null)
                             swipeRefresh.setRefreshing(false);
                         if (getActivity() != null)
-                            Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                            errorManager.reportUnexpectedUIException(UISource.ACTIVITY,
+                                    UnexpectedUIExceptionSeverity.UNSTABLE, FermatException.wrapException(ex));
+                        //Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_LONG).show();
                         ex.printStackTrace();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -217,8 +226,62 @@ public class ContactsListFragment
             worker.execute();
         }
     }
+    public class BackgroundAsyncTaskList extends
+            AsyncTask<Void, Integer, Void> {
+
+        @Override
+        protected void onPostExecute(Void result) {
+            //this.cancel(true);
+
+
+            return;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+//               con = chatManager.listWorldChatActor(identity, MAX, offset);
+//                contactname.clear();
+//                contactid.clear();
+//                contacticon.clear();
+//                contactStatus.clear();
+
+                    List<ChatActorCommunityInformation> con = moduleManager.listWorldChatActor(moduleManager.getSelectedActorIdentity(), MAX, offset);
+                    if (con != null) {
+                        int size = con.size();
+                        if (size > 0) {
+                            for (ChatActorCommunityInformation conta:con) {
+                                if (conta.getConnectionState() != null) {
+                                    if (conta.getConnectionState().getCode().equals(ConnectionState.CONNECTED.getCode())) {
+                                        try {
+                                            moduleManager.requestConnectionToChatActor(moduleManager.getSelectedActorIdentity(), conta);
+                                        } catch (Exception e) {
+                                            if (errorManager != null)
+                                                errorManager.reportUnexpectedSubAppException(SubApps.CHT_CHAT, UnexpectedSubAppExceptionSeverity.DISABLES_SOME_FUNCTIONALITY_WITHIN_THIS_FRAGMENT, e);
+                                        }
+                                    }
+                                }
+//                                        contactname.add(conta.getAlias());
+//                                        contactid.add(conta.getPublicKey());
+//                                        ByteArrayInputStream bytes = new ByteArrayInputStream(conta.getImage());
+//                                        BitmapDrawable bmd = new BitmapDrawable(bytes);
+//                                        contacticon.add(bmd.getBitmap());
+//                                        contactStatus.add(conta.getStatus());
+                                //}
+                                //}
+                            }
+                        }
+                    }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 
     private synchronized List<ChatActorCommunityInformation> getMoreData() {
+        BackgroundAsyncTaskList backWorldList = new BackgroundAsyncTaskList();
+        backWorldList.execute();
         List<ChatActorCommunityInformation> dataSet = new ArrayList<>();
         try {
             dataSet.addAll(moduleManager.listAllConnectedChatActor(moduleManager.getSelectedActorIdentity(), MAX, offset));
@@ -228,30 +291,35 @@ public class ContactsListFragment
 
         return dataSet;
     }
+
+
     public void showEmpty(boolean show, View emptyView) {
         Animation anim = AnimationUtils.loadAnimation(getActivity(),
                 show ? android.R.anim.fade_in : android.R.anim.fade_out);
-        if (show &&
-                (emptyView.getVisibility() == View.GONE || emptyView.getVisibility() == View.INVISIBLE)) {
+        if (show /*&&
+                (emptyView.getVisibility() == View.GONE || emptyView.getVisibility() == View.INVISIBLE)*/) {
             emptyView.setAnimation(anim);
             emptyView.setVisibility(View.VISIBLE);
-            emptyView.setBackgroundResource(R.drawable.fondo);
             noData.setAnimation(anim);
+            emptyView.setBackgroundResource(R.drawable.cht_comm_background);
             noDatalabel.setAnimation(anim);
-            noDatalabel.setVisibility(View.VISIBLE);
             noData.setVisibility(View.VISIBLE);
-            rootView.setBackgroundResource(R.drawable.fondo);
+            noDatalabel.setVisibility(View.VISIBLE);
+            rootView.setBackgroundResource(R.drawable.cht_comm_background);
             if (adapter != null)
                 adapter.changeDataSet(null);
-        } else if (!show && emptyView.getVisibility() == View.VISIBLE) {
+        } else if (!show /*&& emptyView.getVisibility() == View.VISIBLE*/) {
             emptyView.setAnimation(anim);
             emptyView.setVisibility(View.GONE);
+            noData.setAnimation(anim);
+            emptyView.setBackgroundResource(0);
+            noDatalabel.setAnimation(anim);
+            noData.setVisibility(View.GONE);
+            noDatalabel.setVisibility(View.GONE);
+            rootView.setBackgroundResource(0);
             ColorDrawable bgcolor = new ColorDrawable(Color.parseColor("#F9F9F9"));
             emptyView.setBackground(bgcolor);
-            noData.setAnimation(anim);
-            noDatalabel.setAnimation(anim);
-            noDatalabel.setVisibility(View.GONE);
-            noData.setVisibility(View.GONE);
+            rootView.setBackground(bgcolor);
         }
     }
 
