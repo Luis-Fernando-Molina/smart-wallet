@@ -16,7 +16,7 @@ public class ApplicationConstants {
 
 
     /**
-     * Intent data used to open a apps
+     * Intent data used to open apps
      */
     public static final String INTENT_DESKTOP_APP_PUBLIC_KEY = "publicKey";
     public static final String INSTALLED_FERMAT_APP = "installedFermatApp";
