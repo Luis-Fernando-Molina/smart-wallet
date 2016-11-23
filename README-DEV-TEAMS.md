@@ -29,8 +29,7 @@ Teams are organized in a hierarchical way. This helps the task of reviewing chan
 * Kabuto
 * Skynet
 * Monogatari
-* Navi Charlie
-* Navi Sierra
+* Navi
 * Fsociety
 
 ## Current Hierarchy
@@ -54,9 +53,8 @@ Teams are organized in a hierarchical way. This helps the task of reviewing chan
 
 | Level 1 | Level 2 | Level 3 | Level 4 |
 |:----:|:----:|:----:|:----:|
-| Navi Charlie | | | |
+| Navi | | | |
 | | Fsociety | | |
-| Navi Sierra | | | |
 
 ## Compensation
 
@@ -465,11 +463,11 @@ We can talk about any topic outside of work, as movies, video games (!), politic
 -----------------------------------
 ### ![alt text](https://raw.githubusercontent.com/Fermat-ORG/media-kit/62517a1ca7bf08166140453e64a5f6982f1aa2fe/MediaKit/Logotype/Fermat%20Teams/logo_charlie_team.jpg "logo Charlie team")
 
-Developers of dev.fermat.org on the client-side. We are responsible to show to the public and to the developers the current state and structure of this big project the best we can in a 3D graphic environment. We are a team of passionate developers with different levels of skills, from JavaScript developers through web testers to 3D graphics experts, we enjoy a lot what we do and work side-by-side with other teams like the Server-side, graphic designers and Fermat internal developers.
+Developers of dev.fermat.org on the client-side. We are responsible to show to the public and to the developers the current state and structure of this big project the best we can in a 3D graphic environment. We are a team of passionate developers with different levels of skills, from JavaScript developers (Client side, Node.js, MongoDB) through web testers to 3D graphics experts, we enjoy a lot what we do and work side-by-side with other teams like the Server-side, graphic designers and Fermat internal developers.
 
 #### Team Members:
 
-* **Miguel Celedon [Navi Team Leader]**<br/>
+* **Miguel Celedon [Navi New Parent Team Leader]**<br/>
 ---
     Email:   miguelceledon@outlook.com
     Skype:   miguel-209
@@ -500,6 +498,12 @@ Developers of dev.fermat.org on the client-side. We are responsible to show to t
     Skype:   ecolina4
     Github:  https://github.com/emmanuelcolina
 
+* **Luis Campo [Navi Developer]**<br/>
+---
+    Email:   campusprize@gmail.com
+    Skype:   campol
+    Github:  https://github.com/campol
+
 We welcome everyone who would like to join us. JavaScript is a hard language when it comes to write big projects, but we learn and teach techniques to keep it simple to everyone.
 
 <br/>
@@ -516,41 +520,13 @@ Here, in Fsociety, we are a team of developers who gets along well with programm
       Skype:   ricardodelgado460
       Github:  https://github.com/ricardo460
 
-* **Daril Rodriguez [Navi Developer]**<br/>
+* **Daril Rodriguez [Navi Veteran Developer]**<br/>
 ---
     Email:   darilrodriguez.2@gmail.com
     Skype:   mdmine90
     Github:  https://github.com/DarilRodriguez
 
 About the group: We like anime, TV shows, movies and videogames. We always find a good moment to talk about what we like. If you're interested to form part of the group you'll be always welcome.
-
-<br/>
-
-### Navi Sierra:
------------------------------------
-### ![alt text]( https://github.com/Fermat-ORG/media-kit/blob/master/MediaKit/Logotype/Fermat%20Teams/logo_sierra_team.jpg "logo Sierra team")
-
-In the Navi Sierra Team we look for the excellence in coding, following the best practices for our tools and using the optimum way to solve a problem. We are responsible to provide all the repository data and network data to the client-side so they can show to the public and the developers, the current state and structure of this big project. We are a small team of developers with different levels of expertise in JavaScript (Node.js), NoSQL database (MongoDB), RESTful API design, in train to give solutions to our developers and general public.
-
-#### Team Members:
-
-* **Luis Fuenmayor [Navi Team Leader]**<br/>
----
-    Email:   fuelusumar@gmail.com
-    Skype:   live:fuelusumar.
-    Github:  https://github.com/fuelusumar
-    
-* **German Mendoza [Navi Veteran Developer]**<br/>
----
-    Email:   german.mendoza.187@gmail.com
-    Skype:   german0296
-    Github:  https://github.com/kyxer
-
-* **Luis Campo [Navi Developer]**<br/>
----
-    Email:   campusprize@gmail.com
-    Skype:   campol
-    Github:  https://github.com/campol
 
 <br/>
 
